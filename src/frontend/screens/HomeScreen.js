@@ -1,17 +1,19 @@
 import { SafeAreaView, View, StyleSheet, Text } from 'react-native';
 import { COLORS } from '../utils/colors';
+import Name from '../components/Name';
+
 export default function HomeScreen() {
     return (
         <SafeAreaView style={styles.container}>  
             {/* Search Bar + filters*/}
             <View>
-                <Text>Search</Text>
+                <Text style={styles.text}>Search</Text>
             </View> 
             {/* List of Names */}
             <View>
-                <View><Text>Name 1</Text></View>
-                <View><Text>Name 2</Text></View>
-                <View><Text>Name 3</Text></View>
+                <Name firstName="John" lastName="Doe" />
+                <Name firstName="Adam" lastName="Smith" />
+                <Name firstName="Henry" lastName="Banks" />
             </View> 
         </SafeAreaView>
     )
@@ -19,8 +21,11 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: COLORS.white,
+        backgroundColor: COLORS.primary,
         flex: 1,
+    },
+    text: {
+        color: COLORS.off_white,
     },
 });
 
