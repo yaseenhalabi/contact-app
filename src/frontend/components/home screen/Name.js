@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { COLORS } from '../../utils/colors';
-import ThreeLines from '../../assets/images/ThreeLinesSVG';
+import ThreeLines from '../../assets/icons/ThreeLinesSVG';
 export default function Name({ firstName, lastName }) {
     return (
         <View style={styles.container}>

@@ -1,9 +1,11 @@
 import { SafeAreaView, View, StyleSheet, Text, ScrollView, Image, TextInput, Dimensions } from 'react-native';
 import { useState } from 'react';
 import { COLORS } from '../utils/colors';
-import searchIcon from '../assets/images/searchicon.png';
-import filterIcon from '../assets/images/filtericon.png';
+import searchIcon from '../assets/icons/searchicon.png';
+import filterIcon from '../assets/icons/filtericon.png';
 import Name from '../components/home screen/Name';
+import AddNameButton from '../components/home screen/AddNameButton';
+import NavigateToTagsButton from '../components/home screen/NavigateToTagsButton';
 
 export default function HomeScreen() {
 
@@ -19,6 +21,8 @@ export default function HomeScreen() {
     
     return (
         <SafeAreaView style={styles.container}>  
+            <AddNameButton />
+            <NavigateToTagsButton />
             {/* Search Bar + filters */}
             <View style={styles.searchContainer}>
                 <Image source={searchIcon} style={styles.searchImage}/>
