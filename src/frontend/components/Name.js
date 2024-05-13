@@ -9,7 +9,6 @@ export default function Name({ firstName, lastName }) {
         </View>
     )
 }
-
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
