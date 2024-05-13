@@ -1,25 +1,48 @@
-import { SafeAreaView, View, StyleSheet, Text, ScrollView, Image, TextInput } from 'react-native';
+import { SafeAreaView, View, StyleSheet, Text, ScrollView, Image, TextInput, Dimensions } from 'react-native';
+import { useState } from 'react';
 import { COLORS } from '../utils/colors';
 import searchIcon from '../assets/images/searchicon.png';
-import Name from '../components/Name';
+import filterIcon from '../assets/images/filtericon.png';
+import Name from '../components/home screen/Name';
 
 export default function HomeScreen() {
+
+    mock_data = [
+        {id: '29051', firstName: "John", lastName: "Doe"},
+        {id: '29052', firstName: "Adam", lastName: "Smith"},
+        {id: '29053', firstName: "Henry", lastName: "Banks"},
+        {id: '29054', firstName: "Jack", lastName: "Travis"},
+        {id: '29055', firstName: "Tom", lastName: "Hanks"}, 
+        {id: '29056', firstName: "Sam", lastName: "Smith"},
+    ]
+    const [searchContent, setSearchContent] = useState('');
+    
     return (
         <SafeAreaView style={styles.container}>  
             {/* Search Bar + filters */}
             <View style={styles.searchContainer}>
                 <Image source={searchIcon} style={styles.searchImage}/>
-                <TextInput style={styles.searchInput} placeholder="Search..." placeholderTextColor={styles.searchInputafr.color} />
+                <TextInput 
+                    style={styles.searchInput} 
+                    placeholder="Search..." 
+                    placeholderTextColor={styles.searchInput.color} 
+                    value={searchContent} 
+                    onChangeText={setSearchContent} 
+                />
+                <Image source={filterIcon} style={styles.searchImage}/>
+
             </View> 
             {/* List of Names */}
             <ScrollView>
-                <Name firstName="John" lastName="Doe" />
-                <Name firstName="Adam" lastName="Smith" />
-                <Name firstName="Henry" lastName="Banks" />
+            {mock_data.map((data) => (
+                <Name key={data.id} firstName={data.firstName} lastName={data.lastName} />
+            ))}
             </ScrollView> 
         </SafeAreaView>
     )   
 }
+
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
@@ -40,10 +63,13 @@ const styles = StyleSheet.create({
         fontFamily: 'Trebuc',
         fontSize: 20,
         opacity: .7,
+        width: width - 93, // Adjust the width based on your requirements
     },
     searchImage: {
         width: 20,
         height: 20,
+        alignContent: 'center',
+        alignItems: 'center',
         opacity: .7,
     },
 });
