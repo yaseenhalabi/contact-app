@@ -1,4 +1,4 @@
-import { SafeAreaView, View, StyleSheet, Text } from 'react-native';
+import { SafeAreaView, View, StyleSheet, Text, ScrollView } from 'react-native';
 import { COLORS } from '../utils/colors';
 import Name from '../components/Name';
 
@@ -10,11 +10,11 @@ export default function HomeScreen() {
                 <Text style={styles.text}>Search</Text>
             </View> 
             {/* List of Names */}
-            <View>
+            <ScrollView>
                 <Name firstName="John" lastName="Doe" />
                 <Name firstName="Adam" lastName="Smith" />
                 <Name firstName="Henry" lastName="Banks" />
-            </View> 
+            </ScrollView> 
         </SafeAreaView>
     )
 }

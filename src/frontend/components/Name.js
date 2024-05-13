@@ -21,12 +21,10 @@ const styles = StyleSheet.create({
     },
     text: {
         color: COLORS.off_white,
-        fontFamily: 'Inter-Black',
-        fontSize: 17,
+        fontFamily: 'Trebuc',
+        fontSize: 20,
     },
     image: {
-        width: '10%',
-        height: '200%',
     },
 });
 
