@@ -1,6 +1,6 @@
 import { SafeAreaView, View, StyleSheet, Text, ScrollView, Image, TextInput, Dimensions } from 'react-native';
 import { useState } from 'react';
-import { COLORS } from '../utils/colors';
+import { COLORS } from '../utils/colors.js';
 import searchIcon from '../assets/icons/searchicon.png';
 import Tag from '../components/tags screen/Tag';
 
@@ -10,20 +10,19 @@ export default function TagsScreen() {
     const [searchContent, setSearchContent] = useState('');
     
     return (
-        <SafeAreaView style={styles.container}>  
-            <View style={styles.header}>
-                <Text style={styles.headerText}>Tags</Text> 
-            </View>
-            <View style={styles.searchContainer}>
-                <Image source={searchIcon} style={styles.searchImage}/>
-                <TextInput 
-                    style={styles.searchInput} 
-                    placeholder="Search..." 
-                    placeholderTextColor={styles.searchInput.color} 
-                    value={searchContent} 
-                    onChangeText={setSearchContent} 
-                />
-            </View> 
+        <View style={styles.container}>  
+            <SafeAreaView>
+                <View style={styles.searchContainer}>
+                    <Image source={searchIcon} style={styles.searchImage}/>
+                    <TextInput 
+                        style={styles.searchInput} 
+                        placeholder="Search..." 
+                        placeholderTextColor={styles.searchInput.color} 
+                        value={searchContent} 
+                        onChangeText={setSearchContent} 
+                    />
+                </View>
+            </SafeAreaView> 
             <View style={styles.tagContainer}>
                 <ScrollView>
                     <Tag tagName="Hinsdale Central" color="#5151d6" relativeSize={.9}/>
@@ -31,7 +30,7 @@ export default function TagsScreen() {
                     <Tag tagName="Asbahi Family" color="#c4438a" relativeSize={.4}/>
                 </ScrollView> 
             </View>
-        </SafeAreaView>
+        </View>
     )   
 }
 
