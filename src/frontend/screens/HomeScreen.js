@@ -22,7 +22,6 @@ export default function HomeScreen() {
     return (
         <SafeAreaView style={styles.container}>  
             <AddNameButton />
-            <NavigateToTagsButton />
             {/* Search Bar + filters */}
             <View style={styles.searchContainer}>
                 <Image source={searchIcon} style={styles.searchImage}/>
