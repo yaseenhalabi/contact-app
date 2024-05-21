@@ -1,13 +1,12 @@
-import { SafeAreaView, View, StyleSheet, Text, ScrollView, Image, TextInput, Dimensions } from 'react-native';
+import { SafeAreaView, View, StyleSheet, Text, ScrollView, Image, TextInput, Dimensions, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { COLORS } from '../utils/colors';
 import searchIcon from '../assets/icons/searchicon.png';
 import filterIcon from '../assets/icons/filtericon.png';
 import Name from '../components/home screen/Name';
 import AddNameButton from '../components/home screen/AddNameButton';
-import NavigateToTagsButton from '../components/home screen/NavigateToTagsButton';
 
-export default function HomeScreen() {
+export default function PeopleScreen({ navigation }) {
 
     mock_data = [
         {id: '29051', firstName: "John", lastName: "Doe"},
@@ -18,7 +17,6 @@ export default function HomeScreen() {
         {id: '29056', firstName: "Sam", lastName: "Smith"},
     ]
     const [searchContent, setSearchContent] = useState('');
-    
     return (
         <SafeAreaView style={styles.container}>  
             <AddNameButton />
@@ -38,7 +36,9 @@ export default function HomeScreen() {
             {/* List of Names */}
             <ScrollView>
             {mock_data.map((data) => (
-                <Name key={data.id} firstName={data.firstName} lastName={data.lastName} />
+                <TouchableOpacity key={data.id} onPress={() => navigation.push('Profile')}>
+                    <Name firstName={data.firstName} lastName={data.lastName} />
+                </TouchableOpacity>
             ))}
             </ScrollView> 
         </SafeAreaView>
