@@ -7,12 +7,12 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import { COLORS } from '../utils/colors';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
 export default function ProfileScreen({ navigation }) {
-    const onSwipeRight = (gestureState) => {
+    const onSwipeRight = () => {
         navigation.pop();
     }
     return (
         <GestureRecognizer
-            onSwipeRight={(state) => onSwipeRight(state)}
+            onSwipeRight={() => onSwipeRight()}
             style={styles.container}
         >
             <View style={styles.container}>
@@ -24,6 +24,9 @@ export default function ProfileScreen({ navigation }) {
                         <View style={styles.tag}>
                             <Text style={styles.tagText}>Water Polo</Text>
                         </View>
+                        <TouchableOpacity style={{justifyContent: 'center', marginLeft: 5, opacity: .8}}>
+                            <Text style={styles.tagText}>+ Add Tag</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.birthdayContainer}>
                         <Text style={[styles.birthdayText, styles.boldBirthday]}>Birthday: </Text>
@@ -31,24 +34,29 @@ export default function ProfileScreen({ navigation }) {
                         <Text style={styles.birthdayTimingText}> (in 334 days)</Text>
                     </View>
                 </View>
-                <View style={[styles.section, {backgroundColor: COLORS.secondary, height: 300}]}>
+                <View style={[styles.section, {backgroundColor: COLORS.secondary, height: 250}]}>
                     <ScrollView>
                         <Text style={styles.subTitle}>Notes</Text>
                         <Text style={styles.birthdayText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, vestibulum mi nec, ultricies nunc. Nulla facilisi. Nullam nec nunc nec nunc.</Text>
+                        <Text />
                         <Text style={styles.birthdayText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, vestibulum mi nec, ultricies nunc. Nulla facilisi. Nullam nec nunc nec nunc.</Text>
+                        <Text />
                         <Text style={styles.birthdayText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, vestibulum mi nec, ultricies nunc. Nulla facilisi. Nullam nec nunc nec nunc.</Text>
                     </ScrollView>
                 </View>
                 <View style={styles.section}>
-                    <Text style={[styles.subTitle, {marginTop: 20}]}>Photos</Text>
+                    <TouchableOpacity style={styles.addPhotosButton}>
+                        <Text style={styles.addPhotosText}>Add Photo(s)</Text>
+                    </TouchableOpacity>
                     <View style={styles.images}>
                         <Image style={styles.image} source={ryanMatia}/>
                         <Image style={styles.image} source={billWalsh}/>
 
                     </View>
                 </View>
+                
                 <TouchableOpacity onPress={() => navigation.pop()} style={styles.backArrowIconContainer}>
-                    <Image source={backArrowIcon} style={{width: 30, height: 30}}/>
+                    <Image source={backArrowIcon} style={{width: 25, height: 25}}/>
                 </TouchableOpacity>
                 <View style={styles.socialsContainer}>
                     <TouchableOpacity>
@@ -100,7 +108,7 @@ styles = StyleSheet.create({
     },
     birthdayContainer: {
         flexDirection: 'row',
-        marginVertical: 10,
+        marginVertical: 15,
     },
     birthdayText: {
         color: COLORS.off_white,
@@ -138,11 +146,26 @@ styles = StyleSheet.create({
         gap: 20,
         position: 'absolute',
         bottom: 30,
-        left: 20,
+        right: 20,
     },
     backArrowIconContainer: {
         position: 'absolute',
-        top: 22,
+        top: 26,
         right: 20,
+        opacity: .5,
+    },
+    addPhotosButton: {
+        backgroundColor: COLORS.tertiary,
+        padding: 10,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginTop: 20,
+        marginBottom: 10,
+    },
+    addPhotosText: {
+        color: COLORS.off_white,
+        fontFamily: 'Trebuc',
+        fontWeight: 'bold',
+        fontSize: 11,
     }
 }); 
