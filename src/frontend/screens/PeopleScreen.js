@@ -8,13 +8,14 @@ import AddNameButton from '../components/home screen/AddNameButton';
 
 export default function PeopleScreen({ navigation }) {
 
-    mock_data = [
+    const mock_data = [
         {
             id: '29051', 
             firstName: "John", 
             lastName: "Doe", 
             tags: [["Hinsdale Central", "#df4040"], ["Asbahi Family", "#c4438a"], ["People I Hate", "#4fbf38"], ["Computer Science Club", "#1794a0"]], 
             birthday: "5/29/2001", 
+            address: "123 Fake Street",
             notes: "This is a note\nthis is more stuff\n\nthis is some more notes",
             xLink: "https://www.google.com",
             instagramLink: "https://www.instagram.com",
@@ -25,6 +26,7 @@ export default function PeopleScreen({ navigation }) {
             lastName: "Smith", 
             tags: [["University of California", "#ec7dd2"], ["Smith Family", "#2baa6a"]], 
             birthday: "03/05/1990", 
+            address: "3234 Fake Street",
             notes: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             xLink: "https://www.example.com",
             instagramLink: "https://www.instagram.com/janesmith",
@@ -35,6 +37,7 @@ export default function PeopleScreen({ navigation }) {
             lastName: "Johnson", 
             tags: [["Harvard University", "#122089"], ["Johnson Family", "#c2114c"]], 
             birthday: "07/22/1985", 
+            address: "None", 
             notes: "Nulla facilisi. Sed euismod, nunc a aliquam eleifend, mauris justo lacinia mauris, vitae luctus nunc risus a nunc.",
             xLink: "https://www.example.com",
             instagramLink: "https://www.instagram.com/michaeljohnson",

@@ -11,7 +11,7 @@ export default function ProfileScreen({ route, navigation }) {
     const onSwipeRight = () => {
         navigation.pop();
     }
-    const { id, birthday, firstName, lastName, tags, notes, instagramLink, xLink } = route.params;
+    const { id, birthday, firstName, lastName, tags, notes, address, instagramLink, xLink } = route.params;
     const calculateDaysUntilBirthday = (birthday) => {
         const birthdayDate = new Date(birthday.split('/')[2], parseInt(birthday.split('/')[0])-1, birthday.split('/')[1]);
         const today = new Date();
@@ -62,6 +62,10 @@ export default function ProfileScreen({ route, navigation }) {
                         <Text style={[styles.birthdayText, styles.boldBirthday]}>Birthday: </Text>
                         <Text style={styles.birthdayText}>{birthday}</Text>
                         <Text style={styles.birthdayTimingText}> {daysUntilBirthday == 0 ? "-Happy Birthday!-" : `(in ${daysUntilBirthday} day${daysUntilBirthday < 10 ? "" : "s"})`}</Text>
+                    </View>
+                    <View style={styles.birthdayContainer}>
+                        <Text style={[styles.birthdayText, styles.boldBirthday, {marginBottom: 15}]}>Address: </Text>
+                        <Text style={styles.birthdayText}>{address}</Text>
                     </View>
                 </View>
                 <View style={styles.notesContainer}>
@@ -135,7 +139,7 @@ styles = StyleSheet.create({
     },
     birthdayContainer: {
         flexDirection: 'row',
-        marginVertical: 15,
+        marginTop: 15,
     },
     birthdayText: {
         color: COLORS.off_white,
