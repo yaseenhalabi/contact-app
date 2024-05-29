@@ -6,10 +6,33 @@ import xLogo from '../assets/icons/xlogowhite.png';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import { COLORS } from '../utils/colors';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
-export default function ProfileScreen({ navigation }) {
+import Linking from 'react-native/Libraries/Linking/Linking';
+export default function ProfileScreen({ route, navigation }) {
     const onSwipeRight = () => {
         navigation.pop();
     }
+    const { id, birthday, firstName, lastName, tags, notes, instagramLink, xLink } = route.params;
+    const calculateDaysUntilBirthday = (birthday) => {
+        const birthdayDate = new Date(birthday.split('/')[2], parseInt(birthday.split('/')[0])-1, birthday.split('/')[1]);
+        const today = new Date();
+        const nextBirthday = new Date(today.getFullYear(), birthdayDate.getMonth(), birthdayDate.getDate());
+        if (nextBirthday < today) {
+            nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
+        }
+        const timeDifference = nextBirthday.getTime() - today.getTime();
+        const daysUntilBirthday = Math.ceil(timeDifference / (1000 * 3600 * 24));
+        if (daysUntilBirthday == 365) {
+            return 0;
+        }  
+        return daysUntilBirthday;
+    }
+    const daysUntilBirthday = calculateDaysUntilBirthday(birthday);
+    // we have current date and birthday
+    // we need to calculate days until tomorrow
+    // calculate next bday
+    
+    // calculate days until next bday
+
     return (
         <GestureRecognizer
             onSwipeRight={() => onSwipeRight()}
@@ -18,30 +41,33 @@ export default function ProfileScreen({ navigation }) {
             <View style={styles.container}>
                 <View style={styles.section}>
                     <SafeAreaView>
-                        <Text style={styles.titleText}>John Smith</Text>
+                        <Text style={styles.titleText}>{firstName} {lastName}</Text>
                     </SafeAreaView>
                     <View style={styles.tagsContainer}>
-                        <View style={styles.tag}>
-                            <Text style={styles.tagText}>Water Polo</Text>
-                        </View>
-                        <TouchableOpacity style={{justifyContent: 'center', marginLeft: 5, opacity: .8}}>
+                        {
+                            tags.map((tag) => {
+                                return (
+                                    <View key={tag} style={[styles.tag, {backgroundColor: tag[1]}]}>
+                                        <Text style={styles.tagText}>{tag[0]}</Text>
+                                    </View>
+                                )
+                            })
+                        }
+                        
+                        <TouchableOpacity style={{justifyContent: 'center', opacity: .8}}>
                             <Text style={styles.tagText}>+ Add Tag</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.birthdayContainer}>
                         <Text style={[styles.birthdayText, styles.boldBirthday]}>Birthday: </Text>
-                        <Text style={styles.birthdayText}>2/12/2006</Text>
-                        <Text style={styles.birthdayTimingText}> (in 334 days)</Text>
+                        <Text style={styles.birthdayText}>{birthday}</Text>
+                        <Text style={styles.birthdayTimingText}> {daysUntilBirthday == 0 ? "-Happy Birthday!-" : `(in ${daysUntilBirthday} day${daysUntilBirthday < 10 ? "" : "s"})`}</Text>
                     </View>
                 </View>
-                <View style={[styles.section, {backgroundColor: COLORS.secondary, height: 250}]}>
+                <View style={styles.notesContainer}>
                     <ScrollView>
                         <Text style={styles.subTitle}>Notes</Text>
-                        <Text style={styles.birthdayText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, vestibulum mi nec, ultricies nunc. Nulla facilisi. Nullam nec nunc nec nunc.</Text>
-                        <Text />
-                        <Text style={styles.birthdayText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, vestibulum mi nec, ultricies nunc. Nulla facilisi. Nullam nec nunc nec nunc.</Text>
-                        <Text />
-                        <Text style={styles.birthdayText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, vestibulum mi nec, ultricies nunc. Nulla facilisi. Nullam nec nunc nec nunc.</Text>
+                        <Text style={styles.birthdayText}>{notes}</Text>
                     </ScrollView>
                 </View>
                 <View style={styles.section}>
@@ -59,10 +85,10 @@ export default function ProfileScreen({ navigation }) {
                     <Image source={backArrowIcon} style={{width: 25, height: 25}}/>
                 </TouchableOpacity>
                 <View style={styles.socialsContainer}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => Linking.openURL(instagramLink)}>
                         <Image source={instagramLogo} style={{width: 40, height: 40}}/>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => Linking.openURL(xLink)}>
                         <Image source={xLogo} style={{width: 40, height: 40}}/>
                     </TouchableOpacity>
                 </View>
@@ -93,6 +119,7 @@ styles = StyleSheet.create({
     tagsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+        gap: 6,
     },
     tag: {
         backgroundColor: "#FF6B85",
@@ -124,12 +151,18 @@ styles = StyleSheet.create({
         fontSize: 14,
         opacity: .7,
     },
+    notesContainer: {
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        backgroundColor: COLORS.secondary, 
+        maxHeight: 250
+    },
     subTitle: {
         color: COLORS.off_white,
         fontFamily: 'Trebuc',
         fontSize: 14,
         fontWeight: 'bold',
-        marginVertical: 10,
+        marginBottom: 10,
     },
     image: {
         width: 100,
