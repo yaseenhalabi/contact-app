@@ -1,4 +1,5 @@
-import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, ScrollView, Image, TextInput } from 'react-native';
+import { useEffect, useState } from 'react';
 import ryanMatia from '../assets/images/ryanmatia.jpg';
 import billWalsh from '../assets/images/billwalsh.jpg';
 import instagramLogo from '../assets/icons/instagramlogowhite.png';
@@ -7,15 +8,20 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import { COLORS } from '../utils/colors';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
 import Linking from 'react-native/Libraries/Linking/Linking';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import * as ImagePicker from 'expo-image-picker';
 export default function ProfileScreen({ route, navigation }) {
     const onSwipeRight = () => {
         navigation.pop();
     }
-    const { id, birthday, firstName, lastName, tags, notes, address, instagramLink, xLink } = route.params;
+    const { id, birthday, name, tags, notes, address, instagramLink, xLink } = route.params;
+    const [noteState, setNoteState] = useState(notes);
+    const [nameState, setNameState] = useState(name);
+    const birthdayDate = new Date(birthday.split('/')[2], parseInt(birthday.split('/')[0])-1, birthday.split('/')[1]);
     const calculateDaysUntilBirthday = (birthday) => {
-        const birthdayDate = new Date(birthday.split('/')[2], parseInt(birthday.split('/')[0])-1, birthday.split('/')[1]);
         const today = new Date();
-        const nextBirthday = new Date(today.getFullYear(), birthdayDate.getMonth(), birthdayDate.getDate());
+        const nextBirthday = new Date(today.getFullYear(), birthday.getMonth(), birthday.getDate());
         if (nextBirthday < today) {
             nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
         }
@@ -26,29 +32,63 @@ export default function ProfileScreen({ route, navigation }) {
         }  
         return daysUntilBirthday;
     }
-    const daysUntilBirthday = calculateDaysUntilBirthday(birthday);
-    // we have current date and birthday
-    // we need to calculate days until tomorrow
-    // calculate next bday
+    const [daysUntilBirthday, setDaysUntilBirthday] = useState(calculateDaysUntilBirthday(birthdayDate));
+    const [date, setDate] = useState(birthdayDate)
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+      };
     
-    // calculate days until next bday
+      const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+      };
+    
+      const handleConfirm = (date) => {
+        console.log("A date has been picked: ", date);
+        setDaysUntilBirthday(calculateDaysUntilBirthday(date));
+        setDate(date);
+        hideDatePicker();
+      };
+      const [images, setImages] = useState([]);
 
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log(result);
+
+        if (!result.canceled) {
+            setImages([...images, result.assets[0].uri]);
+        }
+    };
+    const [addressState, setAddressState] = useState(address);
     return (
         <GestureRecognizer
             onSwipeRight={() => onSwipeRight()}
             style={styles.container}
+            config={
+                {
+                    velocityThreshold: 0.1,
+                    directionalOffsetThreshold: 30,
+                }
+            }
         >
             <View style={styles.container}>
                 <View style={styles.section}>
                     <SafeAreaView>
-                        <Text style={styles.titleText}>{firstName} {lastName}</Text>
+                        <TextInput style={styles.titleText} value={nameState} onChangeText={setNameState}/>
                     </SafeAreaView>
                     <View style={styles.tagsContainer}>
                         {
-                            tags.map((tag) => {
+                            tags.map(([tagName, color]) => {
                                 return (
-                                    <View key={tag} style={[styles.tag, {backgroundColor: tag[1]}]}>
-                                        <Text style={styles.tagText}>{tag[0]}</Text>
+                                    <View key={tagName} style={[styles.tag, {backgroundColor: color}]}>
+                                        <Text style={styles.tagText}>{tagName}</Text>
                                     </View>
                                 )
                             })
@@ -60,34 +100,49 @@ export default function ProfileScreen({ route, navigation }) {
                     </View>
                     <View style={styles.birthdayContainer}>
                         <Text style={[styles.birthdayText, styles.boldBirthday]}>Birthday: </Text>
-                        <Text style={styles.birthdayText}>{birthday}</Text>
+                        <View>
+                            <TouchableOpacity onPress={showDatePicker}><Text style={styles.birthdayText}>{date.getMonth() + 1}/{date.getDate()}</Text></TouchableOpacity>
+                            <DateTimePickerModal
+                                isVisible={isDatePickerVisible}
+                                mode="date"
+                                onConfirm={handleConfirm}
+                                onCancel={hideDatePicker}
+                                date={date}
+                            />
+                        </View>
                         <Text style={styles.birthdayTimingText}> {daysUntilBirthday == 0 ? "-Happy Birthday!-" : `(in ${daysUntilBirthday} day${daysUntilBirthday < 10 ? "" : "s"})`}</Text>
                     </View>
-                    <View style={styles.birthdayContainer}>
-                        <Text style={[styles.birthdayText, styles.boldBirthday, {marginBottom: 15}]}>Address: </Text>
-                        <Text style={styles.birthdayText}>{address}</Text>
+                    <View style={styles.addressContainer}>
+                        <Text style={[styles.birthdayText, styles.boldBirthday]}>Address: </Text>
+                        <TextInput style={styles.birthdayText} value={addressState} onChangeText={setAddressState}/>
                     </View>
                 </View>
+
                 <View style={styles.notesContainer}>
                     <ScrollView>
                         <Text style={styles.subTitle}>Notes</Text>
-                        <Text style={styles.birthdayText}>{notes}</Text>
+                        <TextInput 
+                            style={[styles.birthdayText, {maxHeight: 250}]}
+                            multiline={true}
+                            value={noteState}
+                            onChangeText={setNoteState}
+                        />
                     </ScrollView>
                 </View>
+
                 <View style={styles.section}>
-                    <TouchableOpacity style={styles.addPhotosButton}>
+                    <TouchableOpacity style={styles.addPhotosButton} onPress={pickImage}>
                         <Text style={styles.addPhotosText}>Add Photo(s)</Text>
                     </TouchableOpacity>
                     <View style={styles.images}>
-                        <Image style={styles.image} source={ryanMatia}/>
-                        <Image style={styles.image} source={billWalsh}/>
-
+                        {images.map((image, index) => <Image key={index} style={styles.image} source={{uri: image}}/>)}
                     </View>
                 </View>
                 
                 <TouchableOpacity onPress={() => navigation.pop()} style={styles.backArrowIconContainer}>
                     <Image source={backArrowIcon} style={{width: 25, height: 25}}/>
                 </TouchableOpacity>
+
                 <View style={styles.socialsContainer}>
                     <TouchableOpacity onPress={() => Linking.openURL(instagramLink)}>
                         <Image source={instagramLogo} style={{width: 40, height: 40}}/>
@@ -96,7 +151,6 @@ export default function ProfileScreen({ route, navigation }) {
                         <Image source={xLogo} style={{width: 40, height: 40}}/>
                     </TouchableOpacity>
                 </View>
-
             </View>
         </GestureRecognizer>
     )  
@@ -140,6 +194,15 @@ styles = StyleSheet.create({
     birthdayContainer: {
         flexDirection: 'row',
         marginTop: 15,
+    },
+    addressContainer: {
+        flexDirection: 'row',
+        marginVertical: 15,
+    },
+    birthdayPicker: {
+        color: COLORS.off_white,
+        fontFamily: 'Trebuc',
+        fontSize: 14,
     },
     birthdayText: {
         color: COLORS.off_white,

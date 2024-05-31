@@ -6,24 +6,23 @@ import filterIcon from '../assets/icons/filtericon.png';
 import Name from '../components/home screen/Name';
 import AddNameButton from '../components/home screen/AddNameButton';
 
-export default function PeopleScreen({ navigation }) {
+export default function NamesScreen({ navigation }) {
 
     const mock_data = [
         {
             id: '29051', 
-            firstName: "John", 
-            lastName: "Doe", 
+            name: "John Sock", 
             tags: [["Hinsdale Central", "#df4040"], ["Asbahi Family", "#c4438a"], ["People I Hate", "#4fbf38"], ["Computer Science Club", "#1794a0"]], 
             birthday: "5/29/2001", 
             address: "123 Fake Street",
-            notes: "This is a note\nthis is more stuff\n\nthis is some more notes",
+            notes: `This is a not
+this is more stuffthis is some more notes`,
             xLink: "https://www.google.com",
             instagramLink: "https://www.instagram.com",
         },
         {
             id: '12345', 
-            firstName: "Jane", 
-            lastName: "Smith", 
+            name: "Jane Mick", 
             tags: [["University of California", "#ec7dd2"], ["Smith Family", "#2baa6a"]], 
             birthday: "03/05/1990", 
             address: "3234 Fake Street",
@@ -33,8 +32,7 @@ export default function PeopleScreen({ navigation }) {
         },
         {
             id: '98765', 
-            firstName: "Michael", 
-            lastName: "Johnson", 
+            name: "Michael Johnson",
             tags: [["Harvard University", "#122089"], ["Johnson Family", "#c2114c"]], 
             birthday: "07/22/1985", 
             address: "None", 
@@ -65,7 +63,7 @@ export default function PeopleScreen({ navigation }) {
             <ScrollView>
             {mock_data.map((data) => (
                 <TouchableOpacity key={data.id} onPress={() => navigation.push('Profile', data)}>
-                    <Name firstName={data.firstName} lastName={data.lastName} />
+                    <Name name={data.name} />
                 </TouchableOpacity>
             ))}
             </ScrollView> 
