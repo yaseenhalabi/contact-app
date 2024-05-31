@@ -1,24 +1,19 @@
 import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, ScrollView, Image, TextInput } from 'react-native';
-import { useEffect, useState } from 'react';
-import ryanMatia from '../assets/images/ryanmatia.jpg';
-import billWalsh from '../assets/images/billwalsh.jpg';
-import instagramLogo from '../assets/icons/instagramlogowhite.png';
-import xLogo from '../assets/icons/xlogowhite.png';
+import { useState } from 'react';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import { COLORS } from '../utils/colors';
-import backArrowIcon from '../assets/icons/backarrowicon.png';
 import Linking from 'react-native/Libraries/Linking/Linking';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from 'expo-image-picker';
+
+import instagramLogo from '../assets/icons/instagramlogowhite.png';
+import backArrowIcon from '../assets/icons/backarrowicon.png';
+import xLogo from '../assets/icons/xlogowhite.png';
+import { COLORS } from '../utils/colors';
+
 export default function ProfileScreen({ route, navigation }) {
     const onSwipeRight = () => {
         navigation.pop();
     }
-    const { id, birthday, name, tags, notes, address, instagramLink, xLink } = route.params;
-    const [noteState, setNoteState] = useState(notes);
-    const [nameState, setNameState] = useState(name);
-    const birthdayDate = new Date(birthday.split('/')[2], parseInt(birthday.split('/')[0])-1, birthday.split('/')[1]);
     const calculateDaysUntilBirthday = (birthday) => {
         const today = new Date();
         const nextBirthday = new Date(today.getFullYear(), birthday.getMonth(), birthday.getDate());
@@ -32,19 +27,19 @@ export default function ProfileScreen({ route, navigation }) {
         }  
         return daysUntilBirthday;
     }
+    const { id, birthday, name, tags, notes, address, instagramLink, xLink } = route.params;
+    const birthdayDate = new Date(birthday.split('/')[2], parseInt(birthday.split('/')[0])-1, birthday.split('/')[1]);
+
+    const [noteState, setNoteState] = useState(notes);
+    const [nameState, setNameState] = useState(name);
     const [daysUntilBirthday, setDaysUntilBirthday] = useState(calculateDaysUntilBirthday(birthdayDate));
     const [date, setDate] = useState(birthdayDate)
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const showDatePicker = () => {
-        setDatePickerVisibility(true);
-      };
+
+    const showDatePicker = () => setDatePickerVisibility(true);
+    const hideDatePicker = () => setDatePickerVisibility(false);
     
-      const hideDatePicker = () => {
-        setDatePickerVisibility(false);
-      };
-    
-      const handleConfirm = (date) => {
-        console.log("A date has been picked: ", date);
+    const handleConfirm = (date) => {
         setDaysUntilBirthday(calculateDaysUntilBirthday(date));
         setDate(date);
         hideDatePicker();
@@ -52,19 +47,13 @@ export default function ProfileScreen({ route, navigation }) {
       const [images, setImages] = useState([]);
 
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         });
-
-        console.log(result);
-
-        if (!result.canceled) {
-            setImages([...images, result.assets[0].uri]);
-        }
+        if (!result.canceled) setImages([...images, result.assets[0].uri]);
     };
     const [addressState, setAddressState] = useState(address);
     return (
@@ -85,23 +74,20 @@ export default function ProfileScreen({ route, navigation }) {
                     </SafeAreaView>
                     <View style={styles.tagsContainer}>
                         {
-                            tags.map(([tagName, color]) => {
-                                return (
-                                    <View key={tagName} style={[styles.tag, {backgroundColor: color}]}>
-                                        <Text style={styles.tagText}>{tagName}</Text>
-                                    </View>
-                                )
-                            })
+                            tags.map(([tagName, color]) => 
+                                <View key={tagName} style={[styles.tag, {backgroundColor: color}]}>
+                                    <Text style={styles.smallText}>{tagName}</Text>
+                                </View>
+                            )
                         }
-                        
                         <TouchableOpacity style={{justifyContent: 'center', opacity: .8}}>
-                            <Text style={styles.tagText}>+ Add Tag</Text>
+                            <Text style={styles.smallText}>+ Add Tag</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.birthdayContainer}>
-                        <Text style={[styles.birthdayText, styles.boldBirthday]}>Birthday: </Text>
+                        <Text style={[styles.mediumText, styles.boldBirthday]}>Birthday: </Text>
                         <View>
-                            <TouchableOpacity onPress={showDatePicker}><Text style={styles.birthdayText}>{date.getMonth() + 1}/{date.getDate()}</Text></TouchableOpacity>
+                            <TouchableOpacity onPress={showDatePicker}><Text style={styles.mediumText}>{date.getMonth() + 1}/{date.getDate()}</Text></TouchableOpacity>
                             <DateTimePickerModal
                                 isVisible={isDatePickerVisible}
                                 mode="date"
@@ -113,8 +99,8 @@ export default function ProfileScreen({ route, navigation }) {
                         <Text style={styles.birthdayTimingText}> {daysUntilBirthday == 0 ? "-Happy Birthday!-" : `(in ${daysUntilBirthday} day${daysUntilBirthday < 10 ? "" : "s"})`}</Text>
                     </View>
                     <View style={styles.addressContainer}>
-                        <Text style={[styles.birthdayText, styles.boldBirthday]}>Address: </Text>
-                        <TextInput style={styles.birthdayText} value={addressState} onChangeText={setAddressState}/>
+                        <Text style={[styles.mediumText, styles.boldBirthday]}>Address: </Text>
+                        <TextInput style={styles.mediumText} value={addressState} onChangeText={setAddressState}/>
                     </View>
                 </View>
 
@@ -122,7 +108,7 @@ export default function ProfileScreen({ route, navigation }) {
                     <ScrollView>
                         <Text style={styles.subTitle}>Notes</Text>
                         <TextInput 
-                            style={[styles.birthdayText, {maxHeight: 250}]}
+                            style={[styles.mediumText, {maxHeight: 250}]}
                             multiline={true}
                             value={noteState}
                             onChangeText={setNoteState}
@@ -185,7 +171,7 @@ styles = StyleSheet.create({
         paddingVertical: 4,
         paddingHorizontal: 13,
     },
-    tagText: {
+    smallText: {
         color: COLORS.white,
         fontFamily: 'Trebuc',
         fontWeight: 'bold',
@@ -204,7 +190,7 @@ styles = StyleSheet.create({
         fontFamily: 'Trebuc',
         fontSize: 14,
     },
-    birthdayText: {
+    mediumText: {
         color: COLORS.off_white,
         fontFamily: 'Trebuc',
         fontSize: 14,
