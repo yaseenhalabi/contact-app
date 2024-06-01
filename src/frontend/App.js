@@ -8,6 +8,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import TabBar from './components/navigation/TabBar';
 import StackNavigatorInPeopleScreen from './components/navigation/StackNavigatorInPeopleScreen';
+import store from './store';
+import { Provider } from 'react-redux';
 export default function App() {
 
   const [fontsLoaded] = useFonts({
@@ -21,13 +23,15 @@ export default function App() {
 
 
   return (
-    <NavigationContainer style={styles.container}>
-      <Tab.Navigator screenOptions={tabOptions} tabBar={props => <TabBar {...props} />}>
-        <Tab.Screen name="People" component={StackNavigatorInPeopleScreen} />
-        <Tab.Screen name="Tags" component={TagsScreen} />
-      </Tab.Navigator>
-      <StatusBar style="light" />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer style={styles.container}>
+        <Tab.Navigator screenOptions={tabOptions} tabBar={props => <TabBar {...props} />}>
+          <Tab.Screen name="People" component={StackNavigatorInPeopleScreen} />
+          <Tab.Screen name="Tags" component={TagsScreen} />
+        </Tab.Navigator>
+        <StatusBar style="light" />
+      </NavigationContainer>
+    </Provider>
   );
 }
 

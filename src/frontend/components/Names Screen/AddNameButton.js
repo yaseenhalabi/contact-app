@@ -1,9 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { COLORS } from '../../utils/colors';
 import plusIcon from '../../assets/icons/plusicon.png';
-export default function AddNameButton() {
+export default function AddNameButton({ onPress }) {
     return (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
             <Image source={plusIcon} style={styles.buttonIcon}/>
         </TouchableOpacity>
     );
