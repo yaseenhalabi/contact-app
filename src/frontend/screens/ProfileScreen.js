@@ -1,9 +1,11 @@
 import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, ScrollView, Image, TextInput } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import Linking from 'react-native/Libraries/Linking/Linking';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from 'expo-image-picker';
+import { useSelector, useDispatch } from 'react-redux';
+import { updatePersonsName } from '../peopleSlice'
 
 import instagramLogo from '../assets/icons/instagramlogowhite.png';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
@@ -11,6 +13,13 @@ import xLogo from '../assets/icons/xlogowhite.png';
 import { COLORS } from '../utils/colors';
 
 export default function ProfileScreen({ route, navigation }) {
+    
+    const { id, birthday, name, tags, notes, address, instagramLink, xLink } = route.params;
+    const dispatch = useDispatch();
+    const currentName = useSelector(state => state.people.find(person => person.id == id).name)
+    const changeName = (newName) => {
+        dispatch(updatePersonsName({id, newName}));
+    }
     const onSwipeRight = () => {
         navigation.pop();
     }
@@ -27,11 +36,8 @@ export default function ProfileScreen({ route, navigation }) {
         }  
         return daysUntilBirthday;
     }
-    const { id, birthday, name, tags, notes, address, instagramLink, xLink } = route.params;
     const birthdayDate = new Date(birthday.split('/')[2], parseInt(birthday.split('/')[0])-1, birthday.split('/')[1]);
-
     const [noteState, setNoteState] = useState(notes);
-    const [nameState, setNameState] = useState(name);
     const [daysUntilBirthday, setDaysUntilBirthday] = useState(calculateDaysUntilBirthday(birthdayDate));
     const [date, setDate] = useState(birthdayDate)
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -70,7 +76,7 @@ export default function ProfileScreen({ route, navigation }) {
             <View style={styles.container}>
                 <View style={styles.section}>
                     <SafeAreaView>
-                        <TextInput style={styles.titleText} value={nameState} onChangeText={setNameState}/>
+                        <TextInput style={styles.titleText} value={currentName} onChangeText={changeName}/>
                     </SafeAreaView>
                     <View style={styles.tagsContainer}>
                         {
