@@ -10,6 +10,7 @@ import instagramLogo from '../assets/icons/instagramlogowhite.png';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
 import xLogo from '../assets/icons/xlogowhite.png';
 import { COLORS } from '../utils/colors';
+import Birthday from '../components/profile screen/Birthday';
 
 export default function ProfileScreen({ route, navigation }) {
     
@@ -18,9 +19,6 @@ export default function ProfileScreen({ route, navigation }) {
     const nameState = useSelector(state => state.people.find(person => person.id == id).name)
     const noteState = useSelector(state => state.people.find(person => person.id == id).notes)
     const addressState = useSelector(state => state.people.find(person => person.id == id).address)
-    const birthdayState = useSelector(state => state.people.find(person => person.id == id).birthday)
-    // ^ must convert this to js date object every time it is used
-    const updateBirthday = (newBirthday) => dispatch(updatePersonsBirthday({id, newBirthday}));
     const updateAddress = (newAddress) => dispatch(updatePersonsAddress({id, newAddress}));
     const updateName = (newName) => dispatch(updatePersonsName({id, newName}));
     const updateNotes = (newNotes) => dispatch(updatePersonsNotes({id, newNotes})); 
@@ -28,24 +26,6 @@ export default function ProfileScreen({ route, navigation }) {
     const onSwipeRight = () => {
         navigation.pop();
     }
-    const calculateDaysUntilBirthday = (birthday) => {
-        today = new Date();
-        bday = new Date(birthday);
-        bday.setFullYear(today.getFullYear());
-        if( today.getTime() > bday.getTime()) {
-            bday.setFullYear(bday.getFullYear()+1);
-        }
-        diff = bday.getTime()-today.getTime();
-        days = Math.ceil(diff/(1000*60*60*24));
-        return days;
-    }
-    const daysUntilBirthday = calculateDaysUntilBirthday(new Date(birthdayState));
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    console.log(birthdayState)
-    const showDatePicker = () => setDatePickerVisibility(true);
-    const hideDatePicker = () => setDatePickerVisibility(false);
-    const handleConfirm = (date) => { updateBirthday(date.toISOString()); hideDatePicker(); };
-      
     const [images, setImages] = useState([]);
 
     const pickImage = async () => {
@@ -85,20 +65,7 @@ export default function ProfileScreen({ route, navigation }) {
                             <Text style={styles.smallText}>+ Add Tag</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.birthdayContainer}>
-                        <Text style={[styles.mediumText, styles.boldBirthday]}>Birthday: </Text>
-                        <View>
-                            <TouchableOpacity onPress={showDatePicker}><Text style={styles.mediumText}>{(new Date(birthdayState)).getMonth()+1}/{(new Date(birthdayState)).getDate()}</Text></TouchableOpacity>
-                            <DateTimePickerModal
-                                isVisible={isDatePickerVisible}
-                                mode="date"
-                                onConfirm={handleConfirm}
-                                onCancel={hideDatePicker}
-                                date={new Date(birthdayState)}
-                            />
-                        </View>
-                        <Text style={styles.birthdayTimingText}> {daysUntilBirthday == 365 ? "-Happy Birthday!-" : `(in ${daysUntilBirthday} day${daysUntilBirthday < 10 ? "" : "s"})`}</Text>
-                    </View>
+                    <Birthday id={id}/>
                     <View style={styles.addressContainer}>
                         <Text style={[styles.mediumText, styles.boldBirthday]}>Address: </Text>
                         <TextInput style={styles.mediumText} value={addressState} onChangeText={updateAddress}/>

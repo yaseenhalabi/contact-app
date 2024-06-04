@@ -21,7 +21,6 @@ export default function App() {
     tabBarShowLabel: false,
   }
 
-
   return (
     <Provider store={store}>
       <NavigationContainer style={styles.container}>
