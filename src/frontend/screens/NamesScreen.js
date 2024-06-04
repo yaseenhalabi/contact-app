@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { COLORS } from '../utils/colors';
 import searchIcon from '../assets/icons/searchicon.png';
 import filterIcon from '../assets/icons/filtericon.png';
-import Name from '../components/Names Screen/Name';
-import AddNameButton from '../components/Names Screen/AddNameButton';
+import Name from '../components/names screen/Name';
+import AddNameButton from '../components/names screen/AddNameButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPerson } from '../peopleSlice'
 export default function NamesScreen({ navigation }) {

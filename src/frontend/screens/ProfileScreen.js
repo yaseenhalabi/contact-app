@@ -5,8 +5,7 @@ import Linking from 'react-native/Libraries/Linking/Linking';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from 'expo-image-picker';
 import { useSelector, useDispatch } from 'react-redux';
-import { updatePersonsName } from '../peopleSlice'
-
+import { updatePersonsName, updatePersonsNotes, updatePersonsAddress, updatePersonsBirthday } from '../peopleSlice';
 import instagramLogo from '../assets/icons/instagramlogowhite.png';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
 import xLogo from '../assets/icons/xlogowhite.png';
@@ -16,41 +15,38 @@ export default function ProfileScreen({ route, navigation }) {
     
     const { id, birthday, name, tags, notes, address, instagramLink, xLink } = route.params;
     const dispatch = useDispatch();
-    const currentName = useSelector(state => state.people.find(person => person.id == id).name)
-    const changeName = (newName) => {
-        dispatch(updatePersonsName({id, newName}));
-    }
+    const nameState = useSelector(state => state.people.find(person => person.id == id).name)
+    const noteState = useSelector(state => state.people.find(person => person.id == id).notes)
+    const addressState = useSelector(state => state.people.find(person => person.id == id).address)
+    const birthdayState = useSelector(state => state.people.find(person => person.id == id).birthday)
+    // ^ must convert this to js date object every time it is used
+    const updateBirthday = (newBirthday) => dispatch(updatePersonsBirthday({id, newBirthday}));
+    const updateAddress = (newAddress) => dispatch(updatePersonsAddress({id, newAddress}));
+    const updateName = (newName) => dispatch(updatePersonsName({id, newName}));
+    const updateNotes = (newNotes) => dispatch(updatePersonsNotes({id, newNotes})); 
+
     const onSwipeRight = () => {
         navigation.pop();
     }
     const calculateDaysUntilBirthday = (birthday) => {
-        const today = new Date();
-        const nextBirthday = new Date(today.getFullYear(), birthday.getMonth(), birthday.getDate());
-        if (nextBirthday < today) {
-            nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
+        today = new Date();
+        bday = new Date(birthday);
+        bday.setFullYear(today.getFullYear());
+        if( today.getTime() > bday.getTime()) {
+            bday.setFullYear(bday.getFullYear()+1);
         }
-        const timeDifference = nextBirthday.getTime() - today.getTime();
-        const daysUntilBirthday = Math.ceil(timeDifference / (1000 * 3600 * 24));
-        if (daysUntilBirthday == 365) {
-            return 0;
-        }  
-        return daysUntilBirthday;
+        diff = bday.getTime()-today.getTime();
+        days = Math.ceil(diff/(1000*60*60*24));
+        return days;
     }
-    const birthdayDate = new Date(birthday.split('/')[2], parseInt(birthday.split('/')[0])-1, birthday.split('/')[1]);
-    const [noteState, setNoteState] = useState(notes);
-    const [daysUntilBirthday, setDaysUntilBirthday] = useState(calculateDaysUntilBirthday(birthdayDate));
-    const [date, setDate] = useState(birthdayDate)
+    const daysUntilBirthday = calculateDaysUntilBirthday(new Date(birthdayState));
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
+    console.log(birthdayState)
     const showDatePicker = () => setDatePickerVisibility(true);
     const hideDatePicker = () => setDatePickerVisibility(false);
-    
-    const handleConfirm = (date) => {
-        setDaysUntilBirthday(calculateDaysUntilBirthday(date));
-        setDate(date);
-        hideDatePicker();
-      };
-      const [images, setImages] = useState([]);
+    const handleConfirm = (date) => { updateBirthday(date.toISOString()); hideDatePicker(); };
+      
+    const [images, setImages] = useState([]);
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -61,7 +57,6 @@ export default function ProfileScreen({ route, navigation }) {
         });
         if (!result.canceled) setImages([...images, result.assets[0].uri]);
     };
-    const [addressState, setAddressState] = useState(address);
     return (
         <GestureRecognizer
             onSwipeRight={() => onSwipeRight()}
@@ -76,7 +71,7 @@ export default function ProfileScreen({ route, navigation }) {
             <View style={styles.container}>
                 <View style={styles.section}>
                     <SafeAreaView>
-                        <TextInput style={styles.titleText} value={currentName} onChangeText={changeName}/>
+                        <TextInput style={styles.titleText} value={nameState} onChangeText={updateName}/>
                     </SafeAreaView>
                     <View style={styles.tagsContainer}>
                         {
@@ -93,33 +88,31 @@ export default function ProfileScreen({ route, navigation }) {
                     <View style={styles.birthdayContainer}>
                         <Text style={[styles.mediumText, styles.boldBirthday]}>Birthday: </Text>
                         <View>
-                            <TouchableOpacity onPress={showDatePicker}><Text style={styles.mediumText}>{date.getMonth() + 1}/{date.getDate()}</Text></TouchableOpacity>
+                            <TouchableOpacity onPress={showDatePicker}><Text style={styles.mediumText}>{(new Date(birthdayState)).getMonth()+1}/{(new Date(birthdayState)).getDate()}</Text></TouchableOpacity>
                             <DateTimePickerModal
                                 isVisible={isDatePickerVisible}
                                 mode="date"
                                 onConfirm={handleConfirm}
                                 onCancel={hideDatePicker}
-                                date={date}
+                                date={new Date(birthdayState)}
                             />
                         </View>
-                        <Text style={styles.birthdayTimingText}> {daysUntilBirthday == 0 ? "-Happy Birthday!-" : `(in ${daysUntilBirthday} day${daysUntilBirthday < 10 ? "" : "s"})`}</Text>
+                        <Text style={styles.birthdayTimingText}> {daysUntilBirthday == 365 ? "-Happy Birthday!-" : `(in ${daysUntilBirthday} day${daysUntilBirthday < 10 ? "" : "s"})`}</Text>
                     </View>
                     <View style={styles.addressContainer}>
                         <Text style={[styles.mediumText, styles.boldBirthday]}>Address: </Text>
-                        <TextInput style={styles.mediumText} value={addressState} onChangeText={setAddressState}/>
+                        <TextInput style={styles.mediumText} value={addressState} onChangeText={updateAddress}/>
                     </View>
                 </View>
 
                 <View style={styles.notesContainer}>
-                    <ScrollView>
                         <Text style={styles.subTitle}>Notes</Text>
                         <TextInput 
                             style={[styles.mediumText, {maxHeight: 250}]}
                             multiline={true}
                             value={noteState}
-                            onChangeText={setNoteState}
+                            onChangeText={updateNotes}
                         />
-                    </ScrollView>
                 </View>
 
                 <View style={styles.section}>
@@ -214,7 +207,7 @@ styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 15,
         backgroundColor: COLORS.secondary, 
-        maxHeight: 250
+        maxHeight: 'auto',
     },
     subTitle: {
         color: COLORS.off_white,
