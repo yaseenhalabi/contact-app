@@ -22,10 +22,22 @@ export const peopleSlice = createSlice({
         updatePersonsBirthday: (state, action) => {
             state.find(person => person.id === action.payload.id).birthday = action.payload.newBirthday
         },
+        updatePersonsTags: (state, action) => {
+            state.find(person => person.id === action.payload.id).tags = action.payload.newTags
+        }
         
     },
 });
 
-export const { addPerson, removePerson, updatePersonsName, updatePersonsNotes, updatePersonsAddress, updatePersonsBirthday } = peopleSlice.actions
+export const {
+    addPerson,
+    removePerson,
+    updatePersonsName,
+    updatePersonsNotes,
+    updatePersonsAddress,
+    updatePersonsBirthday,
+    updatePersonsTags,
+} = peopleSlice.actions;
+
 export default peopleSlice.reducer
 

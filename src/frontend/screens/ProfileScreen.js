@@ -5,7 +5,7 @@ import Linking from 'react-native/Libraries/Linking/Linking';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from 'expo-image-picker';
 import { useSelector, useDispatch } from 'react-redux';
-import { updatePersonsName, updatePersonsNotes, updatePersonsAddress, updatePersonsBirthday } from '../peopleSlice';
+import { updatePersonsName, updatePersonsNotes, updatePersonsAddress, updatePersonsTags } from '../peopleSlice';
 import instagramLogo from '../assets/icons/instagramlogowhite.png';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
 import xLogo from '../assets/icons/xlogowhite.png';
@@ -14,14 +14,18 @@ import Birthday from '../components/profile screen/Birthday';
 
 export default function ProfileScreen({ route, navigation }) {
     
-    const { id, birthday, name, tags, notes, address, instagramLink, xLink } = route.params;
+    const id = route.params.id;
     const dispatch = useDispatch();
     const nameState = useSelector(state => state.people.find(person => person.id == id).name)
     const noteState = useSelector(state => state.people.find(person => person.id == id).notes)
     const addressState = useSelector(state => state.people.find(person => person.id == id).address)
+    const tagsState = useSelector(state => state.people.find(person => person.id == id).tags)
+    const instagramLinkState = useSelector(state => state.people.find(person => person.id == id).instagramLink)
+    const xLinkState = useSelector(state => state.people.find(person => person.id == id).xLink)
     const updateAddress = (newAddress) => dispatch(updatePersonsAddress({id, newAddress}));
     const updateName = (newName) => dispatch(updatePersonsName({id, newName}));
     const updateNotes = (newNotes) => dispatch(updatePersonsNotes({id, newNotes})); 
+    const updateTags = (newTags) => dispatch(updatePersonsTags({id, newTags}));
 
     const onSwipeRight = () => {
         navigation.pop();
@@ -55,7 +59,7 @@ export default function ProfileScreen({ route, navigation }) {
                     </SafeAreaView>
                     <View style={styles.tagsContainer}>
                         {
-                            tags.map(([tagName, color]) => 
+                            tagsState.map(([tagName, color]) => 
                                 <View key={tagName} style={[styles.tag, {backgroundColor: color}]}>
                                     <Text style={styles.smallText}>{tagName}</Text>
                                 </View>
@@ -96,10 +100,10 @@ export default function ProfileScreen({ route, navigation }) {
                 </TouchableOpacity>
 
                 <View style={styles.socialsContainer}>
-                    <TouchableOpacity onPress={() => Linking.openURL(instagramLink)}>
+                    <TouchableOpacity onPress={() => Linking.openURL(instagramLinkState)}>
                         <Image source={instagramLogo} style={{width: 40, height: 40}}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => Linking.openURL(xLink)}>
+                    <TouchableOpacity onPress={() => Linking.openURL(xLinkState)}>
                         <Image source={xLogo} style={{width: 40, height: 40}}/>
                     </TouchableOpacity>
                 </View>

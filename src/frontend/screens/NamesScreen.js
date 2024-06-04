@@ -33,7 +33,7 @@ export default function NamesScreen({ navigation }) {
             {/* List of Names */}
             <ScrollView>
             {people.map((data) => (
-                <TouchableOpacity key={data.id} onPress={() => navigation.push('Profile', data)}>
+                <TouchableOpacity key={data.id} onPress={() => navigation.push('Profile', {id: data.id})}>
                     <Name name={data.name} />
                 </TouchableOpacity>
             ))}
