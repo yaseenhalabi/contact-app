@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Trebuc',
         fontSize: 20,
         opacity: .7,
-        width: width - 93, // Adjust the width based on your requirements
+        width: width - 93,
     },
     searchImage: {
         width: 20,

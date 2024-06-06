@@ -56,8 +56,11 @@ export default function ProfileScreen({ route, navigation }) {
                     <SafeAreaView>
                         <TextInput style={styles.titleText} value={nameState} onChangeText={updateName}/>
                     </SafeAreaView>
+
                     <Tags id={id}/>
+
                     <Birthday id={id}/>
+                    
                     <View style={styles.addressContainer}>
                         <Text style={[styles.mediumText, styles.boldBirthday]}>Address: </Text>
                         <TextInput style={styles.mediumText} value={addressState} onChangeText={updateAddress}/>

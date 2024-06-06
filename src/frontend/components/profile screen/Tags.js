@@ -1,12 +1,25 @@
-import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, ScrollView, Image, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updatePersonsName, updatePersonsNotes, updatePersonsAddress, updatePersonsTags } from '../../peopleSlice';
-import { COLORS } from '../../utils/colors';
+import { updatePersonsTags } from '../../peopleSlice';
+import { COLORS, TAG_COLORS } from '../../utils/colors';
+
 
 export default function Tags({ id }) {
     const dispatch = useDispatch();
     const tagsState = useSelector(state => state.people.find(person => person.id == id).tags)
     const updateTags = (newTags) => dispatch(updatePersonsTags({id, newTags}));
+    const [addingTag, setAddingTag] = useState(false);
+    const [newTag, setNewTag] = useState('');
+    const [newTagColor, setNewTagColor] = useState(TAG_COLORS[0]);
+    const confirmNewTag = () => {
+        if (newTag.length > 0) {
+            updateTags([...tagsState, [newTag, newTagColor]]);
+            setAddingTag(false);
+            setNewTag('');
+            setNewTagColor(TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)]);
+        }
+    }
 
     return (
         <View style={styles.tagsContainer}>
@@ -17,9 +30,22 @@ export default function Tags({ id }) {
                     </View>
                 )
             }
-            <TouchableOpacity style={{justifyContent: 'center', opacity: .8}}>
-                <Text style={styles.smallText}>+ Add Tag</Text>
-            </TouchableOpacity>
+            {
+                !addingTag ?
+                <TouchableOpacity const onPress={() => setAddingTag(true)} style={{justifyContent: 'center', opacity: .8}}>
+                    <Text style={styles.smallText}>+ Add Tag</Text>
+                </TouchableOpacity> 
+                :
+
+                <View style={[styles.tag, {backgroundColor: newTagColor}]}>
+                    <TextInput 
+                        style={styles.textInput}
+                        onChangeText={setNewTag}
+                        autoFocus={true}
+                        onBlur={() => confirmNewTag()}
+                    />
+                </View>
+            }
         </View>
     )
 }
@@ -35,6 +61,7 @@ const styles = StyleSheet.create({
         borderRadius: 360,
         paddingVertical: 4,
         paddingHorizontal: 13,
+        width: 'auto',
     },
     smallText: {
         color: COLORS.white,
@@ -42,4 +69,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 10,
     },
+    textInput: {
+        color: COLORS.white,
+        fontFamily: 'Trebuc',
+        fontWeight: 'bold',
+        fontSize: 10,
+    }
 })
