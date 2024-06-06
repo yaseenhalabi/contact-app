@@ -25,7 +25,6 @@ export const peopleSlice = createSlice({
         updatePersonsTags: (state, action) => {
             state.find(person => person.id === action.payload.id).tags = action.payload.newTags
         }
-        
     },
 });
 

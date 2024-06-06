@@ -7,7 +7,7 @@ import Name from '../components/names screen/Name';
 import AddNameButton from '../components/names screen/AddNameButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPerson } from '../peopleSlice'
-export default function NamesScreen({ navigation }) {
+export default function PeoplScreen({ navigation }) {
     const people = useSelector(state => state.people);
     const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState('');

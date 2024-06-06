@@ -45,7 +45,7 @@ export default function Birthday({ id }) {
     )
 }
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
     birthdayContainer: {
         flexDirection: 'row',
         marginTop: 15,

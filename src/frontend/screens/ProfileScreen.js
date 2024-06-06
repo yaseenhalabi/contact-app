@@ -11,6 +11,7 @@ import backArrowIcon from '../assets/icons/backarrowicon.png';
 import xLogo from '../assets/icons/xlogowhite.png';
 import { COLORS } from '../utils/colors';
 import Birthday from '../components/profile screen/Birthday';
+import Tags from '../components/profile screen/Tags';
 
 export default function ProfileScreen({ route, navigation }) {
     
@@ -19,13 +20,11 @@ export default function ProfileScreen({ route, navigation }) {
     const nameState = useSelector(state => state.people.find(person => person.id == id).name)
     const noteState = useSelector(state => state.people.find(person => person.id == id).notes)
     const addressState = useSelector(state => state.people.find(person => person.id == id).address)
-    const tagsState = useSelector(state => state.people.find(person => person.id == id).tags)
     const instagramLinkState = useSelector(state => state.people.find(person => person.id == id).instagramLink)
     const xLinkState = useSelector(state => state.people.find(person => person.id == id).xLink)
     const updateAddress = (newAddress) => dispatch(updatePersonsAddress({id, newAddress}));
     const updateName = (newName) => dispatch(updatePersonsName({id, newName}));
     const updateNotes = (newNotes) => dispatch(updatePersonsNotes({id, newNotes})); 
-    const updateTags = (newTags) => dispatch(updatePersonsTags({id, newTags}));
 
     const onSwipeRight = () => {
         navigation.pop();
@@ -57,18 +56,7 @@ export default function ProfileScreen({ route, navigation }) {
                     <SafeAreaView>
                         <TextInput style={styles.titleText} value={nameState} onChangeText={updateName}/>
                     </SafeAreaView>
-                    <View style={styles.tagsContainer}>
-                        {
-                            tagsState.map(([tagName, color]) => 
-                                <View key={tagName} style={[styles.tag, {backgroundColor: color}]}>
-                                    <Text style={styles.smallText}>{tagName}</Text>
-                                </View>
-                            )
-                        }
-                        <TouchableOpacity style={{justifyContent: 'center', opacity: .8}}>
-                            <Text style={styles.smallText}>+ Add Tag</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Tags id={id}/>
                     <Birthday id={id}/>
                     <View style={styles.addressContainer}>
                         <Text style={[styles.mediumText, styles.boldBirthday]}>Address: </Text>
@@ -130,26 +118,11 @@ styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 5,
     }, 
-    tagsContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 6,
-    },
-    tag: {
-        backgroundColor: "#FF6B85",
-        borderRadius: 360,
-        paddingVertical: 4,
-        paddingHorizontal: 13,
-    },
     smallText: {
         color: COLORS.white,
         fontFamily: 'Trebuc',
         fontWeight: 'bold',
         fontSize: 10,
-    },
-    birthdayContainer: {
-        flexDirection: 'row',
-        marginTop: 15,
     },
     addressContainer: {
         flexDirection: 'row',

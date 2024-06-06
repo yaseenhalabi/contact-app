@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from 'expo-font';
-import HomeScreen from './screens/NamesScreen';
 import TagsScreen from './screens/TagsScreen';
 import { COLORS } from './utils/colors';
 import { NavigationContainer } from '@react-navigation/native';
