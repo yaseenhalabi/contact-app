@@ -36,13 +36,14 @@ export default function Tags({ id }) {
                     <Text style={styles.smallText}>+ Add Tag</Text>
                 </TouchableOpacity> 
                 :
-
                 <View style={[styles.tag, {backgroundColor: newTagColor}]}>
                     <TextInput 
-                        style={styles.textInput}
+                        style={styles.smallText}
                         onChangeText={setNewTag}
                         autoFocus={true}
                         onBlur={() => confirmNewTag()}
+                        maxLength={30}
+                        width={50}
                     />
                 </View>
             }
@@ -69,10 +70,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 10,
     },
-    textInput: {
-        color: COLORS.white,
-        fontFamily: 'Trebuc',
-        fontWeight: 'bold',
-        fontSize: 10,
-    }
 })
