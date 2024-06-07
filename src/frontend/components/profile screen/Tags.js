@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updatePersonsTags } from '../../peopleSlice';
+import { updatePersonsTags } from '../../redux/peopleSlice';
 import { COLORS, TAG_COLORS } from '../../utils/colors';
 
 

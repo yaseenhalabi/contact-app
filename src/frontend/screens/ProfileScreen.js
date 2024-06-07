@@ -5,7 +5,7 @@ import Linking from 'react-native/Libraries/Linking/Linking';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from 'expo-image-picker';
 import { useSelector, useDispatch } from 'react-redux';
-import { updatePersonsName, updatePersonsNotes, updatePersonsAddress, updatePersonsTags } from '../peopleSlice';
+import { updatePersonsName, updatePersonsNotes, updatePersonsAddress, updatePersonsTags } from '../redux/peopleSlice';
 import instagramLogo from '../assets/icons/instagramlogowhite.png';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
 import xLogo from '../assets/icons/xlogowhite.png';
@@ -60,7 +60,7 @@ export default function ProfileScreen({ route, navigation }) {
                     <Tags id={id}/>
 
                     <Birthday id={id}/>
-                    
+
                     <View style={styles.addressContainer}>
                         <Text style={[styles.mediumText, styles.boldBirthday]}>Address: </Text>
                         <TextInput style={styles.mediumText} value={addressState} onChangeText={updateAddress}/>

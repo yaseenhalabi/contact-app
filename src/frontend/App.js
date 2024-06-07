@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import TabBar from './components/navigation/TabBar';
 import StackNavigatorInPeopleScreen from './components/navigation/StackNavigatorInPeopleScreen';
-import store from './store';
+import store from './redux/store';
 import { Provider } from 'react-redux';
 export default function App() {
 

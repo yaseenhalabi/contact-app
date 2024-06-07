@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
-import { updatePersonsBirthday } from '../../peopleSlice';
+import { updatePersonsBirthday } from '../../redux/peopleSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { COLORS } from '../../utils/colors';
 import DateTimePickerModal from "react-native-modal-datetime-picker";

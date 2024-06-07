@@ -6,7 +6,7 @@ import filterIcon from '../assets/icons/filtericon.png';
 import Name from '../components/names screen/Name';
 import AddNameButton from '../components/names screen/AddNameButton';
 import { useSelector, useDispatch } from 'react-redux';
-import { addPerson } from '../peopleSlice'
+import { addPerson } from '../redux/peopleSlice'
 export default function PeoplScreen({ navigation }) {
     const people = useSelector(state => state.people);
     const dispatch = useDispatch();
