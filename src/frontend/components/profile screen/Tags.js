@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updatePersonsTags } from '../../redux/peopleSlice';
@@ -43,11 +43,18 @@ export default function Tags({ id }) {
         }
     }
 
+    const addTagToProfile = (tagId) => {
+        console.log(tagId)
+        updateCurrentTagIds([...profileTagIds, tagId]);
+        setAddingTag(false);
+    }
+
+
     // console.log(newTagId)
     // console.log(profileTagIds)
     // console.log(allTags)
 
-    const tagSearchData = allTags.filter(tag => tag.name.includes(newTag.name) && newTag.name.length > 0);
+    const tagSearchData = allTags.filter(tag => tag.name.includes(newTag.name) && !profileTagIds.includes(tag.id));
     return (
         <View style={styles.tagsContainer}>
             {
@@ -77,17 +84,13 @@ export default function Tags({ id }) {
                     {
                     tagSearchData.length > 0 &&
                     <View>
-                        <View>
-                            <FlatList
-                                style={{paddingBottom: 10}}
-                                data={tagSearchData}
-                                renderItem={({item}) => 
-                                    <View style={[styles.tag, {backgroundColor: COLORS.primary, marginTop: 5}]} onPress={() => setNewTag({...newTag, name: item})}>
+                            {
+                                tagSearchData.map(item =>
+                                    <TouchableOpacity key={item.id} style={[styles.tag, {backgroundColor: COLORS.primary, marginTop: 5}]} onPress={() => addTagToProfile(item.id)}>
                                         <Text style={styles.smallText}>{item.name}</Text>
-                                    </View>
-                                }
-                            />
-                        </View>
+                                    </TouchableOpacity>
+                                )
+                            }
                     </View>
                     }
 
