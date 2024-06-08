@@ -47,7 +47,7 @@ export default function Tags({ id }) {
     // console.log(profileTagIds)
     // console.log(allTags)
 
-    const tagSearchData = allTags.map(tag => tag.name).filter(tag => tag.includes(newTag.name) && newTag.name.length > 0);
+    const tagSearchData = allTags.filter(tag => tag.name.includes(newTag.name) && newTag.name.length > 0);
     return (
         <View style={styles.tagsContainer}>
             {
@@ -63,14 +63,15 @@ export default function Tags({ id }) {
                     <Text style={styles.smallText}>+ Add Tag</Text>
                 </TouchableOpacity> 
                 :
-                <View style={[{backgroundColor: 'blue', flexDirection: 'column'}]}>
-                    <View style={[styles.tag, {backgroundColor: newTag.color, borderRadius: 0}]}>
+                <View style={{flexDirection: 'column'}}>
+                    <View style={[styles.tag, {backgroundColor: newTag.color}]}>
                         <TextInput 
                             style={styles.smallText} // Set the width to 100%
                             onChangeText={(value) => setNewTag({...newTag, name: value})}
                             autoFocus={true}
                             onBlur={() => confirmNewTag()}
                             maxLength={30}
+                            minWidth={30}
                         />
                     </View>
                     {
@@ -79,12 +80,10 @@ export default function Tags({ id }) {
                         <View>
                             <FlatList
                                 style={{paddingBottom: 10}}
-                                width={100}
-                                backgroundColor={newTag.color}
                                 data={tagSearchData}
                                 renderItem={({item}) => 
-                                    <View style={{paddingHorizontal: 13}} onPress={() => setNewTag({...newTag, name: item})}>
-                                        <Text style={styles.smallText}>{item}</Text>
+                                    <View style={[styles.tag, {backgroundColor: COLORS.primary, marginTop: 5}]} onPress={() => setNewTag({...newTag, name: item})}>
+                                        <Text style={styles.smallText}>{item.name}</Text>
                                     </View>
                                 }
                             />
