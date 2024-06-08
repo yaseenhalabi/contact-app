@@ -22,15 +22,24 @@ export default function Tags({ id }) {
         }
     );
     const confirmNewTag = () => {
-        if (newTag.name.length > 0) {
-            console.log("CONFIRMING NEW TAG")
-            try {
-                dispatch(addTag({id: newTag.id, name: newTag.name, color: newTag.color}))
-            } catch (error) { console.log(error) }
+        if (allTags.map(tag => tag.name).includes(newTag.name)) {
+            alert("Tag already exists")
+            setAddingTag(false);
+        }
+        else if (newTag.name.length > 0) {
+            dispatch(addTag({id: newTag.id, name: newTag.name, color: newTag.color}))
             updateCurrentTagIds([...profileTagIds, newTag.id]);
             setAddingTag(false);
-            setNewTag({...newTag, name: ''});
-            setNewTag({...newTag, color: TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)]});
+            setNewTag(
+                {
+                    name: "",
+                    color: TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)],
+                    id: (Math.max(...allTags.map(tag => parseInt(tag.id))) + 2).toString()
+                }
+            );
+        }
+        else {
+            setAddingTag(false);
         }
     }
 
@@ -42,8 +51,8 @@ export default function Tags({ id }) {
     return (
         <View style={styles.tagsContainer}>
             {
-                currentTags.map(({color, name}) => 
-                    <View key={name} style={[styles.tag, {backgroundColor: color}]}>
+                currentTags.map(({id, color, name}) => 
+                    <View key={id} style={[styles.tag, {backgroundColor: color}]}>
                         <Text style={styles.smallText}>{name}</Text>
                     </View>
                 )
@@ -54,7 +63,7 @@ export default function Tags({ id }) {
                     <Text style={styles.smallText}>+ Add Tag</Text>
                 </TouchableOpacity> 
                 :
-                <View style={[styles.tag, {backgroundColor: newTag.color}]}>
+                <View style={[styles.tag, {backgroundColor: newTag.color, opacity: .9}]}>
                     <TextInput 
                         style={styles.smallText}
                         onChangeText={(value) => setNewTag({...newTag, name: value})}

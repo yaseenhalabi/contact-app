@@ -1,18 +1,17 @@
-import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, ScrollView, Image, TextInput } from 'react-native';
-import { useEffect, useState } from 'react';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, TextInput } from 'react-native';
+import { useState } from 'react';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import Linking from 'react-native/Libraries/Linking/Linking';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from 'expo-image-picker';
 import { useSelector, useDispatch } from 'react-redux';
-import { updatePersonsName, updatePersonsNotes, updatePersonsAddress, updatePersonsTags } from '../redux/peopleSlice';
+import { updatePersonsName, updatePersonsNotes, updatePersonsAddress } from '../redux/peopleSlice';
 import instagramLogo from '../assets/icons/instagramlogowhite.png';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
 import xLogo from '../assets/icons/xlogowhite.png';
 import { COLORS } from '../utils/colors';
 import Birthday from '../components/profile screen/Birthday';
 import Tags from '../components/profile screen/Tags';
-
+import Autocomplete from 'react-native-autocomplete-input';
 export default function ProfileScreen({ route, navigation }) {
     
     const id = route.params.id;
@@ -40,6 +39,7 @@ export default function ProfileScreen({ route, navigation }) {
         });
         if (!result.canceled) setImages([...images, result.assets[0].uri]);
     };
+
     return (
         <GestureRecognizer
             onSwipeRight={() => onSwipeRight()}
@@ -58,7 +58,6 @@ export default function ProfileScreen({ route, navigation }) {
                     </SafeAreaView>
 
                     <Tags id={id}/>
-
                     <Birthday id={id}/>
 
                     <View style={styles.addressContainer}>
