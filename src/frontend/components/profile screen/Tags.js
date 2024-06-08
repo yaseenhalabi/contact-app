@@ -4,13 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updatePersonsTags } from '../../redux/peopleSlice';
 import { addTag, removeTag } from '../../redux/tagsSlice';
 import { COLORS, TAG_COLORS } from '../../utils/colors';
+import { FlatList } from 'react-native-gesture-handler';
 
 
 export default function Tags({ id }) {
     const dispatch = useDispatch();
     const allTags = useSelector(state => state.tags);
-    const profileTags = useSelector(state => state.people.find(person => person.id == id)).tags
-    const profileTagIds = profileTags ? profileTags : [];
+    const profileTagIds = useSelector(state => state.people.find(person => person.id == id)).tags
     const currentTags = allTags.filter(tag => profileTagIds.includes(tag.id));
     const updateCurrentTagIds = (newIds) => dispatch(updatePersonsTags({id, newIds}));
     const [addingTag, setAddingTag] = useState(false);
@@ -47,7 +47,7 @@ export default function Tags({ id }) {
     // console.log(profileTagIds)
     // console.log(allTags)
 
-
+    const tagSearchData = allTags.map(tag => tag.name).filter(tag => tag.includes(newTag.name) && newTag.name.length > 0);
     return (
         <View style={styles.tagsContainer}>
             {
@@ -63,15 +63,35 @@ export default function Tags({ id }) {
                     <Text style={styles.smallText}>+ Add Tag</Text>
                 </TouchableOpacity> 
                 :
-                <View style={[styles.tag, {backgroundColor: newTag.color, opacity: .9}]}>
-                    <TextInput 
-                        style={styles.smallText}
-                        onChangeText={(value) => setNewTag({...newTag, name: value})}
-                        autoFocus={true}
-                        onBlur={() => confirmNewTag()}
-                        maxLength={30}
-                        width={50}
-                    />
+                <View style={[{backgroundColor: 'blue', flexDirection: 'column'}]}>
+                    <View style={[styles.tag, {backgroundColor: newTag.color, borderRadius: 0}]}>
+                        <TextInput 
+                            style={styles.smallText} // Set the width to 100%
+                            onChangeText={(value) => setNewTag({...newTag, name: value})}
+                            autoFocus={true}
+                            onBlur={() => confirmNewTag()}
+                            maxLength={30}
+                        />
+                    </View>
+                    {
+                    tagSearchData.length > 0 &&
+                    <View>
+                        <View>
+                            <FlatList
+                                style={{paddingBottom: 10}}
+                                width={100}
+                                backgroundColor={newTag.color}
+                                data={tagSearchData}
+                                renderItem={({item}) => 
+                                    <View style={{paddingHorizontal: 13}} onPress={() => setNewTag({...newTag, name: item})}>
+                                        <Text style={styles.smallText}>{item}</Text>
+                                    </View>
+                                }
+                            />
+                        </View>
+                    </View>
+                    }
+
                 </View>
             }
         </View>
@@ -90,6 +110,8 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
         paddingHorizontal: 13,
         width: 'auto',
+        maxHeight: 20,
+        alignItems: 'flex-start',
     },
     smallText: {
         color: COLORS.white,

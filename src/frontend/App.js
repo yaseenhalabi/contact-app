@@ -9,6 +9,7 @@ import TabBar from './components/navigation/TabBar';
 import StackNavigatorInPeopleScreen from './components/navigation/StackNavigatorInPeopleScreen';
 import store from './redux/store';
 import { Provider } from 'react-redux';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 export default function App() {
 
   const [fontsLoaded] = useFonts({
@@ -22,13 +23,15 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer style={styles.container}>
-        <Tab.Navigator screenOptions={tabOptions} tabBar={props => <TabBar {...props} />}>
-          <Tab.Screen name="People" component={StackNavigatorInPeopleScreen} />
-          <Tab.Screen name="Tags" component={TagsScreen} />
-        </Tab.Navigator>
-        <StatusBar style="light" />
-      </NavigationContainer>
+      <GestureHandlerRootView>
+        <NavigationContainer style={styles.container}>
+          <Tab.Navigator screenOptions={tabOptions} tabBar={props => <TabBar {...props} />}>
+            <Tab.Screen name="People" component={StackNavigatorInPeopleScreen} />
+            <Tab.Screen name="Tags" component={TagsScreen} />
+          </Tab.Navigator>
+          <StatusBar style="light" />
+        </NavigationContainer>
+      </GestureHandlerRootView>
     </Provider>
   );
 }

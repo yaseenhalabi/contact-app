@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     birthdayContainer: {
         flexDirection: 'row',
         marginTop: 15,
+        zIndex: -1,
     },
     birthdayTimingText: {
         color: COLORS.off_white,

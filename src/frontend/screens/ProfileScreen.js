@@ -11,7 +11,6 @@ import xLogo from '../assets/icons/xlogowhite.png';
 import { COLORS } from '../utils/colors';
 import Birthday from '../components/profile screen/Birthday';
 import Tags from '../components/profile screen/Tags';
-import Autocomplete from 'react-native-autocomplete-input';
 export default function ProfileScreen({ route, navigation }) {
     
     const id = route.params.id;
@@ -129,6 +128,7 @@ styles = StyleSheet.create({
     addressContainer: {
         flexDirection: 'row',
         marginVertical: 15,
+        zIndex: -1,
     },
     birthdayPicker: {
         color: COLORS.off_white,
@@ -154,6 +154,7 @@ styles = StyleSheet.create({
         paddingVertical: 15,
         backgroundColor: COLORS.secondary, 
         maxHeight: 'auto',
+        zIndex: -1,
     },
     subTitle: {
         color: COLORS.off_white,
