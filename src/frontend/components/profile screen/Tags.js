@@ -22,11 +22,22 @@ export default function Tags({ id }) {
         }
     );
     const confirmNewTag = () => {
+        // if the tag already exists, add it to the profile
         if (allTags.map(tag => tag.name).includes(newTag.name)) {
-            alert("Tag already exists")
+            tagId = allTags.find(tag => tag.name.toLowerCase() == newTag.name.toLowerCase()).id;
+            updateCurrentTagIds([...profileTagIds, tagId]);
             setAddingTag(false);
+            setNewTag(
+                {
+                    name: "",
+                    color: TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)],
+                    id: (Math.max(...allTags.map(tag => parseInt(tag.id))) + 2).toString()
+                }
+            );
         }
-        else if (newTag.name.length > 0) {
+
+        // if the tag doesn't exist, add it to the tags and then add it to the profile
+        else if (!allTags.map(tag => tag.name).includes(newTag.name) && newTag.name.length > 0) {
             dispatch(addTag({id: newTag.id, name: newTag.name, color: newTag.color}))
             updateCurrentTagIds([...profileTagIds, newTag.id]);
             setAddingTag(false);
@@ -38,6 +49,7 @@ export default function Tags({ id }) {
                 }
             );
         }
+        // if the tag is empty or already exists, don't add it
         else {
             setAddingTag(false);
         }
