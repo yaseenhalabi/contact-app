@@ -1,10 +1,15 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput } from 'react-native';
 import { COLORS } from '../../utils/colors';
 import ThreeLines from '../../assets/icons/ThreeLinesSVG';
-export default function Name({ name }) {
+export default function Name({ name, isInput, handleNameChange, onSubmit }) {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>{name}</Text>
+            {
+                isInput ?
+                <TextInput style={styles.text} value={name} placeholder='Enter name...' onChangeText={handleNameChange} onSubmitEditing={onSubmit} autoFocus width={300}/>
+                :
+                <Text style={styles.text}>{name}</Text>
+            }
             <ThreeLines />
         </View>
     )

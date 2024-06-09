@@ -11,12 +11,27 @@ export default function PeoplScreen({ navigation }) {
     const people = useSelector(state => state.people);
     const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState('');
-    const handleAddNameButtonPress = () => {
-        dispatch(addPerson({name: 'New Name'}));
+    const [newName, setNewName] = useState('');
+    const [addingPerson, setAddingPerson] = useState(false);
+    const handleAddPerson = () => {
+        const newPerson = {
+            name: newName,
+            id: Math.floor(Math.random() * 100000).toString(),
+            tags: [],
+            birthday: null,
+            address: '',
+            notes: '',
+            xLink: '',
+            instagramLink: '',
+        }
+        dispatch(addPerson(newPerson));
+        setAddingPerson(false);
+        setNewName('');
+    
     }
     return (
         <SafeAreaView style={styles.container}>  
-            <AddNameButton onPress={handleAddNameButtonPress}/>
+            <AddNameButton onPress={() => setAddingPerson(true)}/>
             {/* Search Bar + filters */}
             <View style={styles.searchContainer}>
                 <Image source={searchIcon} style={styles.searchImage}/>
@@ -28,15 +43,18 @@ export default function PeoplScreen({ navigation }) {
                     onChangeText={setSearchContent} 
                 />
                 <Image source={filterIcon} style={styles.searchImage}/>
-
             </View> 
             {/* List of Names */}
             <ScrollView>
-            {people.map((data) => (
-                <TouchableOpacity key={data.id} onPress={() => navigation.push('Profile', {id: data.id})}>
-                    <Name name={data.name} />
-                </TouchableOpacity>
-            ))}
+                {people.map((data) => (
+                    <TouchableOpacity key={data.id} onPress={() => navigation.push('Profile', {id: data.id})}>
+                        <Name name={data.name} />
+                    </TouchableOpacity>
+                ))}
+                {
+                    addingPerson &&
+                    <Name name={newName} isInput handleNameChange={setNewName} onSubmit={() => handleAddPerson()}/>
+                }
             </ScrollView> 
         </SafeAreaView>
     )   
