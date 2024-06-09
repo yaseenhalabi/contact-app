@@ -56,17 +56,11 @@ export default function Tags({ id }) {
     }
 
     const addTagToProfile = (tagId) => {
-        console.log(tagId)
         updateCurrentTagIds([...profileTagIds, tagId]);
         setAddingTag(false);
     }
 
-
-    // console.log(newTagId)
-    // console.log(profileTagIds)
-    // console.log(allTags)
-
-    const tagSearchData = allTags.filter(tag => tag.name.includes(newTag.name) && !profileTagIds.includes(tag.id));
+    const tagSearchData = allTags.filter(tag => tag.name.toLowerCase().includes(newTag.name.toLowerCase()) && !profileTagIds.includes(tag.id));
     return (
         <View style={styles.tagsContainer}>
             {
@@ -83,7 +77,7 @@ export default function Tags({ id }) {
                 </TouchableOpacity> 
                 :
                 <View style={{flexDirection: 'column'}}>
-                    <View style={[styles.tag, {backgroundColor: newTag.color}]}>
+                    <View style={[styles.tag, {backgroundColor: '#0000003b'}]}>
                         <TextInput 
                             style={styles.smallText} // Set the width to 100%
                             onChangeText={(value) => setNewTag({...newTag, name: value})}
@@ -97,7 +91,7 @@ export default function Tags({ id }) {
                     tagSearchData.length > 0 &&
                     <View>
                             {
-                                tagSearchData.map(item =>
+                                tagSearchData.slice(0, 3).map(item =>
                                     <TouchableOpacity key={item.id} style={[styles.tag, {backgroundColor: COLORS.primary, marginTop: 5}]} onPress={() => addTagToProfile(item.id)}>
                                         <Text style={styles.smallText}>{item.name}</Text>
                                     </TouchableOpacity>
