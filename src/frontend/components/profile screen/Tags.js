@@ -88,10 +88,10 @@ export default function Tags({ id }) {
                         />
                     </View>
                     {
-                    tagSearchData.length > 0 &&
+                    tagSearchData &&
                     <View>
                             {
-                                tagSearchData.slice(0, 3).map(item =>
+                            tagSearchData.slice(0, 3).map(item =>
                                     <TouchableOpacity key={item.id} style={[styles.tag, {backgroundColor: COLORS.primary, marginTop: 5}]} onPress={() => addTagToProfile(item.id)}>
                                         <Text style={styles.smallText}>{item.name}</Text>
                                     </TouchableOpacity>
