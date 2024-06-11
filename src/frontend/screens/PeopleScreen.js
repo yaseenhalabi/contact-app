@@ -8,9 +8,10 @@ import AddNameButton from '../components/names screen/AddNameButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPerson } from '../redux/peopleSlice'
 export default function PeoplScreen({ navigation }) {
-    const people = useSelector(state => state.people);
     const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState('');
+    const peopleState = useSelector(state => state.people);
+    const people = searchContent.length == 0 ? peopleState : peopleState.filter(person => person.name.toLowerCase().includes(searchContent.toLowerCase()));
     const [newName, setNewName] = useState('');
     const [addingPerson, setAddingPerson] = useState(false);
     const handleAddPerson = () => {
@@ -31,7 +32,7 @@ export default function PeoplScreen({ navigation }) {
     }
     return (
         <SafeAreaView style={styles.container}>  
-            <AddNameButton onPress={() => setAddingPerson(true)}/>
+            <AddNameButton isDisabled={searchContent.length > 0} onPress={() => setAddingPerson(true)}/>
             {/* Search Bar + filters */}
             <View style={styles.searchContainer}>
                 <Image source={searchIcon} style={styles.searchImage}/>

@@ -1,9 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { COLORS } from '../../utils/colors';
 import plusIcon from '../../assets/icons/plusicon.png';
-export default function AddNameButton({ onPress }) {
+export default function AddNameButton({ onPress, isDisabled }) {
     return (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
+        <TouchableOpacity style={{...styles.button, opacity: isDisabled ? .5 : 1}} onPress={onPress} disabled={isDisabled}>
             <Image source={plusIcon} style={styles.buttonIcon}/>
         </TouchableOpacity>
     );

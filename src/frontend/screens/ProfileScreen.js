@@ -20,6 +20,7 @@ export default function ProfileScreen({ route, navigation }) {
     const addressState = useSelector(state => state.people.find(person => person.id == id).address)
     const instagramLinkState = useSelector(state => state.people.find(person => person.id == id).instagramLink)
     const xLinkState = useSelector(state => state.people.find(person => person.id == id).xLink)
+    
     const updateAddress = (newAddress) => dispatch(updatePersonsAddress({id, newAddress}));
     const updateName = (newName) => dispatch(updatePersonsName({id, newName}));
     const updateNotes = (newNotes) => dispatch(updatePersonsNotes({id, newNotes})); 
