@@ -3,10 +3,15 @@ import { useState } from 'react';
 import { COLORS } from '../utils/colors.js';
 import searchIcon from '../assets/icons/searchicon.png';
 import Tag from '../components/tags screen/Tag';
-
+import { FlatList } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
+const NUM_COLUMNS = 2;
+const GAP_IN_BETWEEN = 10;
+const TAG_BOX_WIDTH = Dimensions.get('window').width / NUM_COLUMNS - GAP_IN_BETWEEN*1.5;
+const TAG_BOX_HEIGHT = 70;
 export default function TagsScreen() {
 
-    mock_data = [ ]
+    const data = useSelector(state => state.tags);
     const [searchContent, setSearchContent] = useState('');
     
     return (
@@ -23,12 +28,21 @@ export default function TagsScreen() {
                     />
                 </View>
             </SafeAreaView> 
-            <View style={styles.tagContainer}>
-                <ScrollView>
-                    <Tag tagName="Hinsdale Central" color="#5151d6" relativeSize={.9}/>
-                    <Tag tagName="Long piece of text long piece of text" color="#F51C43" relativeSize={.2}/>
-                    <Tag tagName="Asbahi Family" color="#c4438a" relativeSize={.4}/>
-                </ScrollView> 
+            <View style={styles.container}>
+            <FlatList
+                data={data}
+                renderItem={({item}) => (
+                    <Tag tagName={item.name} 
+                        color={item.color} 
+                        width={TAG_BOX_WIDTH} 
+                        gap={GAP_IN_BETWEEN}
+                        height={TAG_BOX_HEIGHT}/>
+                )}
+                keyExtractor={(item) => item.id}
+                numColumns={NUM_COLUMNS}
+                columnWrapperStyle={styles.columnWrapperStyle}
+                contentContainerStyle={styles.tagContainer}
+            />
             </View>
         </View>
     )   
@@ -72,15 +86,7 @@ const styles = StyleSheet.create({
         opacity: .7,
     },
     tagContainer: {
-        backgroundColor: COLORS.secondary,
-        flex: 1,
-    },
-    tag: {
-        padding: 10,
-        backgroundColor: '#F51C43',
-        width: '50%',
-        borderTopEndRadius: 360,
-        borderBottomEndRadius: 360,
+
     },
     tagText: {
         color: COLORS.white,
