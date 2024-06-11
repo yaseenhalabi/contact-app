@@ -20,7 +20,7 @@ export default function Tag({ tagName, color, width, height, gap, noGradient, is
                         value={tagName}
                         onChangeText={handleChangeText}
                         autoFocus
-                        onEndEditing={() => onEnter}
+                        onEndEditing={onEnter}
                     />
                     :
                     <Text style={styles.tagText}>{tagName}</Text>

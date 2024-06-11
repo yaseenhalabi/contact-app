@@ -27,6 +27,7 @@ export default function TagsScreen() {
     const [addingTag, setAddingTag] = useState(false);
 
     const confirmNewTag = () => {
+        console.log("confirming new tag")
         // add a new tag
         if (newTag.name && !allTags.map(tag => tag.name).includes(newTag.name)) {
             dispatch(addTag({id: newTag.id, name: newTag.name, color: newTag.color}))

@@ -14,7 +14,7 @@ export const tagsSlice = createSlice({
     ],
     reducers: {
         addTag: (state, action) => {
-            state.push(action.payload);
+            state.unshift(action.payload);
         },
         removeTag: (state, action) => {
             state = state.filter(tag => tag.id !== action.payload);
