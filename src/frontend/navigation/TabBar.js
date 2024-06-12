@@ -1,5 +1,6 @@
 import { View, SafeAreaView, Text, TouchableOpacity } from 'react-native';
-import { COLORS } from '../../utils/colors';
+import { COLORS } from '../utils/colors';
+
 export default function TabBar({ state, descriptors, navigation }) {
   return (
     <View style={{backgroundColor: COLORS.primary}}>

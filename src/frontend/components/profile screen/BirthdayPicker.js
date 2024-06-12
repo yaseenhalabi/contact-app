@@ -5,7 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { COLORS } from '../../utils/colors';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-export default function Birthday({ id }) {
+export default function BirthdayPicker({ id }) {
+
     const dispatch = useDispatch();
     const birthdayState = useSelector(state => state.people.find(person => person.id == id).birthday)
     const updateBirthday = (newBirthday) => dispatch(updatePersonsBirthday({id, newBirthday}));
@@ -29,7 +30,7 @@ export default function Birthday({ id }) {
 
     return (
         <View style={styles.birthdayContainer}>
-            <Text style={[styles.mediumText, styles.boldBirthday]}>Birthday: </Text>
+            <Text style={[styles.mediumText, styles.bold]}>Birthday: </Text>
             <View>
                 <TouchableOpacity onPress={showDatePicker}><Text style={styles.mediumText}>{(birthdayDateObject).getMonth()+1}/{(birthdayDateObject).getDate()}</Text></TouchableOpacity>
                 <DateTimePickerModal
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         opacity: .7,
     },
-    boldBirthday: {
+    bold: {
         fontWeight: 'bold',
     },
     mediumText: {

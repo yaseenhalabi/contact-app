@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { COLORS } from '../../utils/colors';
 import tagIcon from '../../assets/icons/tagicon.png';
+
 export default function NavigateToTagsButton() {
     return (
         <TouchableOpacity style={styles.button}>

@@ -1,9 +1,8 @@
-import { SafeAreaView, TouchableOpacity, View, StyleSheet, Text, ScrollView, Image, TextInput, Dimensions } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, TextInput } from 'react-native';
 import { COLORS } from '../../utils/colors';
-import personIcon from '../../assets/icons/personicon.png';
 import { LinearGradient } from 'expo-linear-gradient';
 export default function Tag({ tagName, color, width, height, gap, noGradient, isTextInput, handleChangeText, isDisabled, onEnter}) {
-    // relativeSize is float showing proportion of people relative to tag with highest people
+    // A lot of those props are for the new tag input stuff
     return (
         <TouchableOpacity onPress={() => console.log("hi")} disabled={isDisabled}>
             <LinearGradient 

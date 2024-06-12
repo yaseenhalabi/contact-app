@@ -6,7 +6,14 @@ export default function Name({ name, isInput, handleNameChange, onSubmit }) {
         <View style={styles.container}>
             {
                 isInput ?
-                <TextInput style={styles.text} value={name} placeholder='Enter name...' onChangeText={handleNameChange} onSubmitEditing={onSubmit} autoFocus width={300}/>
+                <TextInput
+                    style={styles.text}
+                    value={name}
+                    placeholder='Enter name...'
+                    onChangeText={handleNameChange}
+                    onSubmitEditing={onSubmit}
+                    autoFocus width={300}
+                />
                 :
                 <Text style={styles.text}>{name}</Text>
             }

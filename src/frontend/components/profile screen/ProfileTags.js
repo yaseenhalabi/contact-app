@@ -1,19 +1,19 @@
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updatePersonsTags } from '../../redux/peopleSlice';
 import { addTag, removeTag } from '../../redux/tagsSlice';
 import { COLORS, TAG_COLORS } from '../../utils/colors';
-import { FlatList } from 'react-native-gesture-handler';
 
 
-export default function Tags({ id }) {
+export default function ProfileTags({ id }) {
     const dispatch = useDispatch();
     const allTags = useSelector(state => state.tags);
     const profileTagIds = useSelector(state => state.people.find(person => person.id == id)).tags
     const currentTags = allTags.filter(tag => profileTagIds.includes(tag.id));
     const updateCurrentTagIds = (newIds) => dispatch(updatePersonsTags({id, newIds}));
     const [addingTag, setAddingTag] = useState(false);
+
     const [newTag, setNewTag] = useState(
         {
             name: "",

@@ -1,33 +1,27 @@
 import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, TextInput } from 'react-native';
-import { useState } from 'react';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Linking from 'react-native/Libraries/Linking/Linking';
 import * as ImagePicker from 'expo-image-picker';
-import { useSelector, useDispatch } from 'react-redux';
-import { updatePersonsName, updatePersonsNotes, updatePersonsAddress } from '../redux/peopleSlice';
 import instagramLogo from '../assets/icons/instagramlogowhite.png';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
 import xLogo from '../assets/icons/xlogowhite.png';
 import { COLORS } from '../utils/colors';
-import Birthday from '../components/profile screen/Birthday';
-import Tags from '../components/profile screen/Tags';
-export default function ProfileScreen({ route, navigation }) {
-    
-    const id = route.params.id;
-    const dispatch = useDispatch();
-    const nameState = useSelector(state => state.people.find(person => person.id == id).name)
-    const noteState = useSelector(state => state.people.find(person => person.id == id).notes)
-    const addressState = useSelector(state => state.people.find(person => person.id == id).address)
-    const instagramLinkState = useSelector(state => state.people.find(person => person.id == id).instagramLink)
-    const xLinkState = useSelector(state => state.people.find(person => person.id == id).xLink)
-    
-    const updateAddress = (newAddress) => dispatch(updatePersonsAddress({id, newAddress}));
-    const updateName = (newName) => dispatch(updatePersonsName({id, newName}));
-    const updateNotes = (newNotes) => dispatch(updatePersonsNotes({id, newNotes})); 
 
-    const onSwipeRight = () => {
-        navigation.pop();
-    }
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { updatePersonsName, updatePersonsNotes, updatePersonsAddress } from '../redux/peopleSlice';
+import BirthdayPicker from '../components/profile screen/BirthdayPicker';
+import ProfileTags from '../components/profile screen/ProfileTags';
+
+export default function ProfileScreen({ route, navigation }) {
+    const ID = route.params.id;
+    const dispatch = useDispatch();
+    const personData = useSelector(state => state.people.find(person => person.id == ID));
+    const { name, address, notes, xLink, instagramLink } = personData;
+    
+    const updateAddress = (newAddress) => dispatch(updatePersonsAddress({ID, newAddress}));
+    const updateName = (newName) => dispatch(updatePersonsName({ID, newName}));
+    const updateNotes = (newNotes) => dispatch(updatePersonsNotes({ID, newNotes})); 
     const [images, setImages] = useState([]);
 
     const pickImage = async () => {
@@ -40,29 +34,29 @@ export default function ProfileScreen({ route, navigation }) {
         if (!result.canceled) setImages([...images, result.assets[0].uri]);
     };
 
+    const gestureRecognizerConfig = {
+        velocityThreshold: 0.1,
+        directionalOffsetThreshold: 30,
+    }
+
     return (
         <GestureRecognizer
-            onSwipeRight={() => onSwipeRight()}
+            onSwipeRight={() => navigation.pop()}
             style={styles.container}
-            config={
-                {
-                    velocityThreshold: 0.1,
-                    directionalOffsetThreshold: 30,
-                }
-            }
+            config={gestureRecognizerConfig}
         >
             <View style={styles.container}>
                 <View style={styles.section}>
                     <SafeAreaView>
-                        <TextInput style={styles.titleText} value={nameState} onChangeText={updateName}/>
+                        <TextInput style={styles.titleText} value={name} onChangeText={updateName}/>
                     </SafeAreaView>
 
-                    <Tags id={id}/>
-                    <Birthday id={id}/>
+                    <ProfileTags id={ID}/>
+                    <BirthdayPicker id={ID}/>
 
                     <View style={styles.addressContainer}>
                         <Text style={[styles.mediumText, styles.boldBirthday]}>Address: </Text>
-                        <TextInput style={styles.mediumText} value={addressState} onChangeText={updateAddress}/>
+                        <TextInput style={styles.mediumText} value={address} onChangeText={updateAddress}/>
                     </View>
                 </View>
 
@@ -71,7 +65,7 @@ export default function ProfileScreen({ route, navigation }) {
                         <TextInput 
                             style={[styles.mediumText, {maxHeight: 250}]}
                             multiline={true}
-                            value={noteState}
+                            value={notes}
                             onChangeText={updateNotes}
                         />
                 </View>
@@ -90,10 +84,10 @@ export default function ProfileScreen({ route, navigation }) {
                 </TouchableOpacity>
 
                 <View style={styles.socialsContainer}>
-                    <TouchableOpacity onPress={() => Linking.openURL(instagramLinkState)}>
+                    <TouchableOpacity onPress={() => Linking.openURL(instagramLink)}>
                         <Image source={instagramLogo} style={{width: 40, height: 40}}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => Linking.openURL(xLinkState)}>
+                    <TouchableOpacity onPress={() => Linking.openURL(xLink)}>
                         <Image source={xLogo} style={{width: 40, height: 40}}/>
                     </TouchableOpacity>
                 </View>
@@ -131,11 +125,6 @@ styles = StyleSheet.create({
         marginVertical: 15,
         zIndex: -1,
     },
-    birthdayPicker: {
-        color: COLORS.off_white,
-        fontFamily: 'Trebuc',
-        fontSize: 14,
-    },
     mediumText: {
         color: COLORS.off_white,
         fontFamily: 'Trebuc',
@@ -143,12 +132,6 @@ styles = StyleSheet.create({
     },
     boldBirthday: {
         fontWeight: 'bold',
-    },
-    birthdayTimingText: {
-        color: COLORS.off_white,
-        fontFamily: 'Trebuc',
-        fontSize: 14,
-        opacity: .7,
     },
     notesContainer: {
         paddingHorizontal: 20,

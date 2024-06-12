@@ -1,10 +1,10 @@
-import { SafeAreaView, View, StyleSheet, Text, ScrollView, Image, TextInput, Dimensions, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, StyleSheet, ScrollView, Image, TextInput, Dimensions, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { COLORS } from '../utils/colors';
 import searchIcon from '../assets/icons/searchicon.png';
 import filterIcon from '../assets/icons/filtericon.png';
-import Name from '../components/names screen/Name';
-import AddNameButton from '../components/names screen/AddNameButton';
+import Name from '../components/people screen/Name';
+import AddNameButton from '../components/people screen/AddNameButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPerson } from '../redux/peopleSlice'
 
@@ -15,8 +15,9 @@ export default function PeoplScreen({ navigation }) {
     const people = searchContent.length == 0 ? peopleState : peopleState.filter(person => person.name.toLowerCase().includes(searchContent.toLowerCase()));
     const [newName, setNewName] = useState('');
     const [addingPerson, setAddingPerson] = useState(false);
+
     const handleAddPerson = () => {
-        const newPerson = {
+        const newBlankPerson = {
             name: newName,
             id: Math.floor(Math.random() * 100000).toString(),
             tags: [],
@@ -26,15 +27,14 @@ export default function PeoplScreen({ navigation }) {
             xLink: '',
             instagramLink: '',
         }
-        dispatch(addPerson(newPerson));
+        dispatch(addPerson(newBlankPerson));
         setAddingPerson(false);
         setNewName('');
     
     }
     return (
         <SafeAreaView style={styles.container}>  
-            <AddNameButton isDisabled={searchContent.length > 0} onPress={() => setAddingPerson(true)}/>
-            {/* Search Bar + filters */}
+            <AddNameButton isDisabled={searchContent} onPress={() => setAddingPerson(true)}/>
             <View style={styles.searchContainer}>
                 <Image source={searchIcon} style={styles.searchImage}/>
                 <TextInput 
@@ -46,7 +46,6 @@ export default function PeoplScreen({ navigation }) {
                 />
                 <Image source={filterIcon} style={styles.searchImage}/>
             </View> 
-            {/* List of Names */}
             <ScrollView>
                 {people.map((data) => (
                     <TouchableOpacity key={data.id} onPress={() => navigation.push('Profile', {id: data.id})}>
