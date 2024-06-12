@@ -5,16 +5,17 @@ import TagsScreen from './screens/TagsScreen';
 import { COLORS } from './utils/colors';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import TabBar from './components/navigation/TabBar';
-import StackNavigatorInPeopleScreen from './components/navigation/StackNavigatorInPeopleScreen';
+import TabBar from './navigation/TabBar';
+import StackNavigatorInPeopleScreen from './navigation/StackNavigatorInPeopleScreen';
 import store from './redux/store';
 import { Provider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 export default function App() {
 
-  const [fontsLoaded] = useFonts({
+  useFonts({
     'Trebuc': require('./assets/fonts/trebuc.ttf'),
   });
+
   const Tab = createMaterialTopTabNavigator();
   tabOptions = {
     headerShown: false,
