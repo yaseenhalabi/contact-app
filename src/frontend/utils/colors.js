@@ -6,6 +6,7 @@ export const COLORS = {
     button2: '#B56BFF',
     off_white: '#F1F0E8',
     white: '#FFFFFF',
+    placeholder: '#ffffff55',
 };
 
 export const TAG_COLORS = [

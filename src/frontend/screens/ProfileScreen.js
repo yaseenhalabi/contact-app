@@ -18,6 +18,7 @@ export default function ProfileScreen({ route, navigation }) {
     const dispatch = useDispatch();
     const personData = useSelector(state => state.people.find(person => person.id == ID));
     const { name, address, notes, xLink, instagramLink } = personData;
+    console.log(notes)
     
     const updateAddress = (newAddress) => dispatch(updatePersonsAddress({ID, newAddress}));
     const updateName = (newName) => dispatch(updatePersonsName({ID, newName}));
@@ -56,7 +57,13 @@ export default function ProfileScreen({ route, navigation }) {
 
                     <View style={styles.addressContainer}>
                         <Text style={[styles.mediumText, styles.boldBirthday]}>Address: </Text>
-                        <TextInput style={styles.mediumText} value={address} onChangeText={updateAddress}/>
+                        <TextInput 
+                            style={styles.mediumText}
+                            value={address}
+                            onChangeText={updateAddress}
+                            placeholder="Add address here..."
+                            placeholderTextColor={COLORS.placeholder}
+                        />
                     </View>
                 </View>
 
@@ -64,6 +71,8 @@ export default function ProfileScreen({ route, navigation }) {
                         <Text style={styles.subTitle}>Notes</Text>
                         <TextInput 
                             style={[styles.mediumText, {maxHeight: 250}]}
+                            placeholder='Add notes here...'
+                            placeholderTextColor={COLORS.placeholder}
                             multiline={true}
                             value={notes}
                             onChangeText={updateNotes}

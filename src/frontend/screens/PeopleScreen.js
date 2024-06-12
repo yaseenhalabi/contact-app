@@ -17,6 +17,10 @@ export default function PeoplScreen({ navigation }) {
     const [addingPerson, setAddingPerson] = useState(false);
 
     const handleAddPerson = () => {
+        if (!newName) {
+            setAddingPerson(false);
+            return;
+        }
         const newBlankPerson = {
             name: newName,
             id: Math.floor(Math.random() * 100000).toString(),

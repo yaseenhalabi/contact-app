@@ -32,7 +32,11 @@ export default function BirthdayPicker({ id }) {
         <View style={styles.birthdayContainer}>
             <Text style={[styles.mediumText, styles.bold]}>Birthday: </Text>
             <View>
+                {birthdayState ? 
                 <TouchableOpacity onPress={showDatePicker}><Text style={styles.mediumText}>{(birthdayDateObject).getMonth()+1}/{(birthdayDateObject).getDate()}</Text></TouchableOpacity>
+                :
+                <TouchableOpacity onPress={showDatePicker}><Text style={{...styles.mediumText, color: COLORS.placeholder}}>Add Birthday</Text></TouchableOpacity>
+                }
                 <DateTimePickerModal
                     isVisible={isDatePickerVisible}
                     mode="date"
@@ -41,7 +45,7 @@ export default function BirthdayPicker({ id }) {
                     date={birthdayDateObject}
                 />
             </View>
-            <Text style={styles.birthdayTimingText}> {daysUntilBirthday == 365 ? "-Happy Birthday!-" : `(in ${daysUntilBirthday} day${daysUntilBirthday < 10 ? "" : "s"})`}</Text>
+            {birthdayState && <Text style={styles.birthdayTimingText}> {daysUntilBirthday == 365 ? "-Happy Birthday!-" : `(in ${daysUntilBirthday} day${daysUntilBirthday < 10 ? "" : "s"})`}</Text>}
         </View>
     )
 }

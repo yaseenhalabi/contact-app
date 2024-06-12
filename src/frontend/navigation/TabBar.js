@@ -44,9 +44,9 @@ export default function TabBar({ state, descriptors, navigation }) {
                 testID={options.tabBarTestID}
                 onPress={onPress}
                 onLongPress={onLongPress}
-                style={{ flex: 1, backgroundColor: isFocused ? '#ffffff20' : 'transparent', alignItems: 'center', justifyContent: 'center', padding: 10}}
+                style={{...styles.tab, backgroundColor: isFocused ? '#ffffff20' : 'transparent'}}
             >
-                <Text style={{ color: isFocused ? COLORS.off_white : '#fdfdfd71', fontFamily: 'Trebuc' }}>
+                <Text style={{ ...styles.tabText, color: isFocused ? COLORS.off_white : '#fdfdfd71'}}>
                 {label}
                 </Text>
             </TouchableOpacity>
@@ -56,4 +56,18 @@ export default function TabBar({ state, descriptors, navigation }) {
     </View>
     
   );
+}
+
+const styles = {
+    tab: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+    },
+    tabText: {
+        color: COLORS.off_white,
+        fontFamily: 'Trebuc',
+        fontWeight: 'bold',
+    }
 }
