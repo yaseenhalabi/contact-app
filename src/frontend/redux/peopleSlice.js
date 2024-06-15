@@ -10,17 +10,17 @@ export const peopleSlice = createSlice({
         removePerson: (state, action) => {
             state.people = state.people.filter(person => person.id !== action.payload);
         },
-        updatePersonsName: (state, action) => {
+        updatePersonsName: (state, acion) => {
             state.find(person => person.id === action.payload.ID).name = action.payload.newName
         },
         updatePersonsNotes: (state, action) => {
             state.find(person => person.id === action.payload.ID).notes = action.payload.newNotes
         },
         updatePersonsAddress: (state, action) => {
-            state.find(person => person.id === action.payload.ID).address = action.payload.newAddress
+            state.find(person => person.id === action.payload.id).address = action.payload.newAddress
         },
         updatePersonsBirthday: (state, action) => {
-            state.find(person => person.id === action.payload.id).birthday = action.payload.newBirthday
+            state.find(person => person.id === action.payload.id).birthday = action.payload.newBirthda
         },
         updatePersonsTags: (state, action) => {
             state.find(person => person.id === action.payload.id).tags = action.payload.newIds

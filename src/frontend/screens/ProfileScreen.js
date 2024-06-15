@@ -12,15 +12,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updatePersonsName, updatePersonsNotes, updatePersonsAddress } from '../redux/peopleSlice';
 import BirthdayPicker from '../components/profile screen/BirthdayPicker';
 import ProfileTags from '../components/profile screen/ProfileTags';
+import AddressInput from '../components/profile screen/AddressInput';
 
 export default function ProfileScreen({ route, navigation }) {
     const ID = route.params.id;
     const dispatch = useDispatch();
     const personData = useSelector(state => state.people.find(person => person.id == ID));
-    const { name, address, notes, xLink, instagramLink } = personData;
-    console.log(notes)
+    const { name, notes, xLink, instagramLink } = personData;
     
-    const updateAddress = (newAddress) => dispatch(updatePersonsAddress({ID, newAddress}));
     const updateName = (newName) => dispatch(updatePersonsName({ID, newName}));
     const updateNotes = (newNotes) => dispatch(updatePersonsNotes({ID, newNotes})); 
     const [images, setImages] = useState([]);
@@ -45,26 +44,16 @@ export default function ProfileScreen({ route, navigation }) {
             onSwipeRight={() => navigation.pop()}
             style={styles.container}
             config={gestureRecognizerConfig}
+            testID="ProfileScreen"
         >
             <View style={styles.container}>
                 <View style={styles.section}>
                     <SafeAreaView>
                         <TextInput style={styles.titleText} value={name} onChangeText={updateName}/>
                     </SafeAreaView>
-
                     <ProfileTags id={ID}/>
                     <BirthdayPicker id={ID}/>
-
-                    <View style={styles.addressContainer}>
-                        <Text style={[styles.mediumText, styles.boldBirthday]}>Address: </Text>
-                        <TextInput 
-                            style={styles.mediumText}
-                            value={address}
-                            onChangeText={updateAddress}
-                            placeholder="Add address here..."
-                            placeholderTextColor={COLORS.placeholder}
-                        />
-                    </View>
+                    <AddressInput id={ID}/>
                 </View>
 
                 <View style={styles.notesContainer}>

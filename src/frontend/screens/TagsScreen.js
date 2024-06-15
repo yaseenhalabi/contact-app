@@ -21,6 +21,7 @@ export default function TagsScreen() {
     const filteredTags = searchContent ? allTags.filter(tag => tag.name.toLowerCase().includes(searchContent.toLowerCase())) : allTags;    
     
     const [addingTag, setAddingTag] = useState(false);
+    const toggleAddingTag = () => setAddingTag(!addingTag);
     const [newTag, setNewTag] = useState(
         {
             name: "",
@@ -82,7 +83,12 @@ export default function TagsScreen() {
                 </View>
             </ScrollView>
             <SafeAreaView style={{width: '100%', position: 'absolute', bottom: 0, alignItems: 'center', justifyContent: 'center'}}>
-                <TouchableOpacity style={styles.addTagButton} onPress={() => setAddingTag(true)} disabled={searchContent || addingTag}>
+                <TouchableOpacity 
+                    style={styles.addTagButton} 
+                    onPress={() => setAddingTag(true)} 
+                    disabled={searchContent || addingTag}
+                    accessibilityRole='button'
+                >
                     <Text style={styles.addTagButtonText}>+ New Tag</Text>
                 </TouchableOpacity>
             </SafeAreaView>

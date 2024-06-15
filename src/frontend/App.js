@@ -23,14 +23,14 @@ export default function App() {
   }
 
   return (
-    <Provider store={store}>
+    <Provider store={store} testID="app-component">
       <GestureHandlerRootView>
         <NavigationContainer style={styles.container}>
-          <Tab.Navigator screenOptions={tabOptions} tabBar={props => <TabBar {...props} />}>
-            <Tab.Screen name="People" component={StackNavigatorInPeopleScreen} />
-            <Tab.Screen name="Tags" component={TagsScreen} />
+          <Tab.Navigator screenOptions={tabOptions} tabBar={props => <TabBar {...props} testID="tab-bar"/>}>
+            <Tab.Screen name="People" component={StackNavigatorInPeopleScreen} testID="people-screen"/>
+            <Tab.Screen name="Tags" component={TagsScreen} testID="tags-screen"/>
           </Tab.Navigator>
-          <StatusBar style="light" />
+          <StatusBar style="light" testID="status-bar"/>
         </NavigationContainer>
       </GestureHandlerRootView>
     </Provider>
