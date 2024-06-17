@@ -10,9 +10,9 @@ export default function AddressInput({ id }) {
 
     return (
         <View style={styles.addressContainer}>
-            <Text style={{...styles.mediumText, fontWeight: 'bold'}}>Address: </Text>
+            <Text style={styles.mediumText}>Address: </Text>
             <TextInput 
-                style={styles.mediumText}
+                style={styles.textInput}
                 value={address}
                 onChangeText={updateAddress}
                 placeholder="Add address here..."
@@ -28,12 +28,16 @@ const styles = StyleSheet.create({
         marginVertical: 15,
         zIndex: -1,
     },
+    textInput: {
+        color: COLORS.off_white,
+        fontFamily: 'Trebuc',
+        fontSize: 14,
+        width: '70%',
+    },
     mediumText: {
         color: COLORS.off_white,
         fontFamily: 'Trebuc',
         fontSize: 14,
-    },
-    boldBirthday: {
         fontWeight: 'bold',
     },
 });

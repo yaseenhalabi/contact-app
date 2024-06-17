@@ -20,7 +20,7 @@ export const peopleSlice = createSlice({
             state.find(person => person.id === action.payload.id).address = action.payload.newAddress
         },
         updatePersonsBirthday: (state, action) => {
-            state.find(person => person.id === action.payload.id).birthday = action.payload.newBirthda
+            state.find(person => person.id === action.payload.id).birthday = action.payload.newBirthday
         },
         updatePersonsTags: (state, action) => {
             state.find(person => person.id === action.payload.id).tags = action.payload.newIds

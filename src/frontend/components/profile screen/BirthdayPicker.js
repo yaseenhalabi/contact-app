@@ -21,12 +21,16 @@ export default function BirthdayPicker({ id }) {
         days = Math.ceil(time_diff/(1000*60*60*24));
         return days;
     }
-    const daysUntilBirthday = calculateDaysUntilBirthday(birthdayDateObject);
 
+    const daysUntilBirthday = calculateDaysUntilBirthday(birthdayDateObject);
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const showDatePicker = () => setDatePickerVisibility(true);
     const hideDatePicker = () => setDatePickerVisibility(false);
-    const handleConfirm = (date) => { updateBirthday(date.toISOString()); hideDatePicker(); };
+    const handleConfirm = (date) => { 
+        const stringDate = date.toISOString()
+        updateBirthday(stringDate); 
+        hideDatePicker(); 
+    };
 
     return (
         <View style={styles.birthdayContainer}>
