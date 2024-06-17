@@ -9,7 +9,7 @@ import { COLORS, TAG_COLORS } from '../../utils/colors';
 export default function ProfileTags({ id }) {
     const dispatch = useDispatch();
     const allTags = useSelector(state => state.tags);
-    const profileTagIds = useSelector(state => state.people.find(person => person.id == id)).tags
+    profileTagIds = useSelector(state => state.people.find(person => person.id == id))?.tags || [];
     const currentTags = allTags.filter(tag => profileTagIds.includes(tag.id));
     const updateCurrentTagIds = (newIds) => dispatch(updatePersonsTags({id, newIds}));
     const [addingTag, setAddingTag] = useState(false);

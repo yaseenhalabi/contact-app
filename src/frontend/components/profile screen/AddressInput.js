@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 export default function AddressInput({ id }) {
     const dispatch = useDispatch();
-    const address = useSelector(state => state.people.find(person => person.id == id).address);
+    const address = useSelector(state => state.people.find(person => person.id == id)?.address);
     const updateAddress = (newAddress) => dispatch(updatePersonsAddress({id, newAddress}));
 
     return (

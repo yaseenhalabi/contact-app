@@ -1,8 +1,8 @@
 import React from 'react';
-import TagScreen from './TagsScreen';
+import TagScreen from '../../screens/TagsScreen';
 import { render, screen, fireEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
-import store from '../redux/store';
+import store from '../../redux/store';
 
 // Test if the search input is rendered
 test('renders search input', () => {

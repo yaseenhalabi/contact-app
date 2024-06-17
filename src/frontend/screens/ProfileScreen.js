@@ -17,7 +17,7 @@ import AddressInput from '../components/profile screen/AddressInput';
 export default function ProfileScreen({ route, navigation }) {
     const ID = route.params.id;
     const dispatch = useDispatch();
-    const personData = useSelector(state => state.people.find(person => person.id == ID));
+    const personData = useSelector(state => state.people.find(person => person.id == ID)) || {name : '', notes: '', xLink: '', instagramLink: ''};
     const { name, notes, xLink, instagramLink } = personData;
     
     const updateName = (newName) => dispatch(updatePersonsName({ID, newName}));
