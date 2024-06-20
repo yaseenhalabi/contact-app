@@ -14,7 +14,9 @@
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-redux)"
     ],
-    "setupFiles": ["./node_modules/react-native-gesture-handler/jestSetup.js"]
+    "setupFiles": [
+      "./node_modules/react-native-gesture-handler/jestSetup.js"
+    ]
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.1",
@@ -25,8 +27,8 @@
     "@reduxjs/toolkit": "^2.2.5",
     "@testing-library/react-native": "^12.5.1",
     "browserslist": "^4.23.0",
-    "expo": "~51.0.7",
-    "expo-font": "^12.0.4",
+    "expo": "^51.0.14",
+    "expo-font": "^12.0.7",
     "expo-image-picker": "~15.0.5",
     "expo-linear-gradient": "~13.0.2",
     "expo-status-bar": "~1.12.1",
