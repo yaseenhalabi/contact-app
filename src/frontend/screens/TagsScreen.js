@@ -1,7 +1,7 @@
 import { SafeAreaView, View, StyleSheet, Text, ScrollView, Image, TextInput, Dimensions, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { COLORS, TAG_COLORS } from '../utils/colors.js';
-import searchIcon from '../assets/icons/searchicon.png';
+import SearchBar from '../components/SearchBar.js';
 import Tag from '../components/tags screen/Tag';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTag } from '../redux/tagsSlice.js';
@@ -48,16 +48,7 @@ export default function TagsScreen() {
     return (
         <View style={styles.container}>  
             <SafeAreaView>
-                <View style={styles.searchContainer}>
-                    <Image source={searchIcon} style={styles.searchImage}/>
-                    <TextInput 
-                        style={styles.searchInput} 
-                        placeholder="Search..." 
-                        placeholderTextColor={styles.searchInput.color} 
-                        value={searchContent} 
-                        onChangeText={setSearchContent} 
-                    />
-                </View>
+                <SearchBar searchContent={searchContent} setSearchContent={setSearchContent}/>
             </SafeAreaView> 
             <ScrollView>
                 <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>

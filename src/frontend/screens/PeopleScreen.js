@@ -1,12 +1,11 @@
 import { SafeAreaView, View, StyleSheet, ScrollView, Image, TextInput, Dimensions, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { COLORS } from '../utils/colors';
-import searchIcon from '../assets/icons/searchicon.png';
-import filterIcon from '../assets/icons/filtericon.png';
 import Name from '../components/people screen/Name';
 import AddNameButton from '../components/people screen/AddNameButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPerson } from '../redux/peopleSlice'
+import SearchBar from '../components/SearchBar';
 
 export default function PeoplScreen({ navigation }) {
     const dispatch = useDispatch();
@@ -39,17 +38,7 @@ export default function PeoplScreen({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>  
             <AddNameButton isDisabled={searchContent} onPress={() => setAddingPerson(true)}/>
-            <View style={styles.searchContainer}>
-                <Image source={searchIcon} style={styles.searchImage}/>
-                <TextInput 
-                    style={styles.searchInput} 
-                    placeholder="Search..." 
-                    placeholderTextColor={styles.searchInput.color} 
-                    value={searchContent} 
-                    onChangeText={setSearchContent} 
-                />
-                <Image source={filterIcon} style={styles.searchImage}/>
-            </View> 
+            <SearchBar searchContent={searchContent} setSearchContent={setSearchContent}/>
             <ScrollView>
                 {people.map((data) => (
                     <TouchableOpacity key={data.id} onPress={() => navigation.push('Profile', {id: data.id})}>

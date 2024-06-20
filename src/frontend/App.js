@@ -26,7 +26,8 @@ export default function App() {
     <Provider store={store} testID="app-component">
       <GestureHandlerRootView>
         <NavigationContainer style={styles.container}>
-          <Tab.Navigator screenOptions={tabOptions} tabBar={props => <TabBar {...props} testID="tab-bar"/>}>
+          {/* <Tab.Navigator screenOptions={tabOptions} tabBar={props => <TabBar {...props} testID="tab-bar"/>}> */}
+          <Tab.Navigator screenOptions={tabOptions} tabBar={props => <View></View>}>
             <Tab.Screen name="People" component={StackNavigatorInPeopleScreen} testID="people-screen"/>
             <Tab.Screen name="Tags" component={TagsScreen} testID="tags-screen"/>
           </Tab.Navigator>
