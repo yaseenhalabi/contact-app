@@ -164,7 +164,7 @@ styles = StyleSheet.create({
     },
     backArrowIconContainer: {
         position: 'absolute',
-        top: 26,
+        top: 85,
         right: 20,
         opacity: .5,
     },

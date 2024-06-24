@@ -4,7 +4,7 @@ import { useFonts } from 'expo-font';
 import TagsScreen from './screens/TagsScreen';
 import { COLORS } from './utils/colors';
 import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createMaterialBo } from '@react-navigation/material-top-tabs';
 import TabBar from './navigation/TabBar';
 import StackNavigatorInPeopleScreen from './navigation/StackNavigatorInPeopleScreen';
 import store from './redux/store';

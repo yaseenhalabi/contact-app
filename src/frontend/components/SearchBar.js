@@ -25,8 +25,6 @@ const styles = StyleSheet.create({
     searchContainer: {
         backgroundColor: COLORS.secondary,
         flexDirection: 'row',
-        borderColor: '#ffffff51',
-        borderBottomWidth: .2,
         paddingHorizontal: 15,
         paddingVertical: 7,
         columnGap: 10,
