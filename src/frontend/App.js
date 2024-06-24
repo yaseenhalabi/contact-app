@@ -4,9 +4,8 @@ import { useFonts } from 'expo-font';
 import TagsScreen from './screens/TagsScreen';
 import { COLORS } from './utils/colors';
 import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialBo } from '@react-navigation/material-top-tabs';
-import TabBar from './navigation/TabBar';
 import StackNavigatorInPeopleScreen from './navigation/StackNavigatorInPeopleScreen';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import store from './redux/store';
 import { Provider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -16,18 +15,14 @@ export default function App() {
     'Trebuc': require('./assets/fonts/trebuc.ttf'),
   });
 
-  const Tab = createMaterialTopTabNavigator();
-  tabOptions = {
-    headerShown: false,
-    tabBarShowLabel: false,
-  }
+  const Tab = createMaterialBottomTabNavigator();
 
   return (
-    <Provider store={store} testID="app-component">
+    <Provider store={store} testID="app-components">
       <GestureHandlerRootView>
         <NavigationContainer style={styles.container}>
           {/* <Tab.Navigator screenOptions={tabOptions} tabBar={props => <TabBar {...props} testID="tab-bar"/>}> */}
-          <Tab.Navigator screenOptions={tabOptions} tabBar={props => <View></View>}>
+          <Tab.Navigator>
             <Tab.Screen name="People" component={StackNavigatorInPeopleScreen} testID="people-screen"/>
             <Tab.Screen name="Tags" component={TagsScreen} testID="tags-screen"/>
           </Tab.Navigator>
