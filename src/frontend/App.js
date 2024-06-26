@@ -1,34 +1,70 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { useFonts } from 'expo-font';
 import TagsScreen from './screens/TagsScreen';
 import { COLORS } from './utils/colors';
 import { NavigationContainer } from '@react-navigation/native';
 import StackNavigatorInPeopleScreen from './navigation/StackNavigatorInPeopleScreen';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import store from './redux/store';
 import { Provider } from 'react-redux';
+import { PaperProvider } from 'react-native-paper';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
+import addPersonIcon from './assets/icons/add_person_icon.png'
+import addTagIcon from './assets/icons/add_tag_icon.png'
+import peopleIcon from './assets/icons/people_icon.png'
+import tagIcon from './assets/icons/tag_icon.png'
+import peopleIconFilled from './assets/icons/people_icon_filled.png'
+import tagIconFilled from './assets/icons/tag_icon_filled.png'
+const Tab = createMaterialBottomTabNavigator();
+
 export default function App() {
 
   useFonts({
     'Trebuc': require('./assets/fonts/trebuc.ttf'),
   });
 
-  const Tab = createMaterialBottomTabNavigator();
+ 
 
   return (
     <Provider store={store} testID="app-components">
-      <GestureHandlerRootView>
-        <NavigationContainer style={styles.container}>
-          {/* <Tab.Navigator screenOptions={tabOptions} tabBar={props => <TabBar {...props} testID="tab-bar"/>}> */}
-          <Tab.Navigator>
-            <Tab.Screen name="People" component={StackNavigatorInPeopleScreen} testID="people-screen"/>
-            <Tab.Screen name="Tags" component={TagsScreen} testID="tags-screen"/>
-          </Tab.Navigator>
-          <StatusBar style="light" testID="status-bar"/>
-        </NavigationContainer>
-      </GestureHandlerRootView>
+      <PaperProvider >
+        <GestureHandlerRootView>
+          <NavigationContainer style={styles.container}>
+            <Tab.Navigator 
+              labeled={false}
+              barStyle={{ backgroundColor: COLORS.primary }}
+              activeColor='white'
+              inactiveColor='white'
+              screenOptions={{
+                tabBarActiveTintColor: 'tomato',
+                tabBarInactiveTintColor: 'gray',
+              }}
+              theme={{colors: {secondaryContainer: 'transparent'}}}
+            >
+              <Tab.Screen 
+                name="People" 
+                component={StackNavigatorInPeopleScreen} 
+                testID="people-screen"
+                options={{
+                  tabBarIcon: ({focused}) => <Image source={focused ? peopleIconFilled : peopleIcon} style={{width: 35, height: 35}}/>,
+
+                }}
+                
+              />
+              <Tab.Screen 
+                name="Tags" 
+                component={TagsScreen} 
+                testID="tags-screen"
+                options={{
+                  tabBarIcon: ({focused}) => <Image source={focused ? tagIconFilled : tagIcon} style={{width: 25, height: 25}}/>
+                }}
+              />
+            </Tab.Navigator>
+            <StatusBar style="light" testID="status-bar"/>
+          </NavigationContainer>
+        </GestureHandlerRootView>
+      </PaperProvider>
     </Provider>
   );
 }
