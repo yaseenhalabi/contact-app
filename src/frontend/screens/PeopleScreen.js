@@ -6,8 +6,16 @@ import AddNameButton from '../components/people screen/AddNameButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPerson } from '../redux/peopleSlice'
 import SearchBar from '../components/SearchBar';
+import { useEffect } from 'react'
 
-export default function PeoplScreen({ navigation }) {
+export default function PeopleScreen({ route, navigation}) {
+    useEffect(() => navigation.addListener('state', () => {
+        if (route.params?.addPerson) {
+            setAddingPerson(true)
+            navigation.setParams({addPerson: false})
+        }
+    }, [navigation]))
+
     const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState('');
     const peopleState = useSelector(state => state.people);
@@ -40,15 +48,15 @@ export default function PeoplScreen({ navigation }) {
             <AddNameButton isDisabled={searchContent} onPress={() => setAddingPerson(true)}/>
             <SearchBar searchContent={searchContent} setSearchContent={setSearchContent}/>
             <ScrollView>
+                {
+                    addingPerson &&
+                    <Name name={newName} isInput handleNameChange={setNewName} onSubmit={() => handleAddPerson()}/>
+                }
                 {people.map((data) => (
                     <TouchableOpacity key={data.id} onPress={() => navigation.push('Profile', {id: data.id})}>
                         <Name name={data.name} />
                     </TouchableOpacity>
                 ))}
-                {
-                    addingPerson &&
-                    <Name name={newName} isInput handleNameChange={setNewName} onSubmit={() => handleAddPerson()}/>
-                }
             </ScrollView> 
         </SafeAreaView>
     )   

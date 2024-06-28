@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 import App from '../App';
+import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 
 jest.mock('expo-font', () => ({
   useFonts: () => [true, false],
@@ -12,9 +13,9 @@ jest.mock('../redux/store', () => ({
   dispatch: jest.fn(),
 }));
 
-jest.mock('@react-navigation/material-top-tabs', () => {
+jest.mock('react-native-paper/react-navigation', () => {
   return {
-    createMaterialTopTabNavigator: jest.fn().mockReturnValue({
+    createMaterialBottomTabNavigator: jest.fn().mockReturnValue({
       Navigator: ({ children }) => <>{children}</>,
       Screen: ({ children }) => <>{children}</>,
     }),

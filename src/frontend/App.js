@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import { PaperProvider } from 'react-native-paper';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
+import { useEffect } from 'react'
 import addPersonIcon from './assets/icons/add_person_icon.png'
 import addTagIcon from './assets/icons/add_tag_icon.png'
 import peopleIcon from './assets/icons/people_icon.png'
@@ -24,8 +25,6 @@ export default function App() {
     'Trebuc': require('./assets/fonts/trebuc.ttf'),
   });
 
- 
-
   return (
     <Provider store={store} testID="app-components">
       <PaperProvider >
@@ -33,7 +32,7 @@ export default function App() {
           <NavigationContainer style={styles.container}>
             <Tab.Navigator 
               labeled={false}
-              barStyle={{ backgroundColor: COLORS.primary }}
+              barStyle={{ backgroundColor: COLORS.primary, height: 110 }}
               activeColor='white'
               inactiveColor='white'
               screenOptions={{
@@ -47,11 +46,39 @@ export default function App() {
                 component={StackNavigatorInPeopleScreen} 
                 testID="people-screen"
                 options={{
-                  tabBarIcon: ({focused}) => <Image source={focused ? peopleIconFilled : peopleIcon} style={{width: 35, height: 35}}/>,
+                  tabBarIcon: ({focused}) => <Image source={focused ? peopleIconFilled : peopleIcon} style={{width: 35, height: 35, bottom: 2}}/>,
 
-                }}
-                
+              }}
               />
+              <Tab.Screen 
+                name="Add Person" 
+                component={StackNavigatorInPeopleScreen} 
+                options={{
+                  tabBarIcon: ({focused}) => <Image source={addPersonIcon} style={{width: 20, height: 25}}/>,
+                }} 
+                listeners={({ navigation, route }) => ({
+                  tabPress: (e) => {
+                    e.preventDefault();
+                    navigation.jumpTo('People', {screen: 'ListOfNames', params: {addPerson: true}})
+                  },
+                })}
+              />                
+
+              <Tab.Screen 
+                name="Add Tag" 
+                component={TagsScreen} 
+                testID="tags-screen"
+                options={{
+                  tabBarIcon: ({focused}) => <Image source={addTagIcon} style={{width: 25, height: 25}}/>
+                }}
+                listeners={{
+                  tabPress: (e) => {
+                    e.preventDefault();
+                    console.log("add tag pressed")
+                  },
+                }}
+              />
+
               <Tab.Screen 
                 name="Tags" 
                 component={TagsScreen} 
