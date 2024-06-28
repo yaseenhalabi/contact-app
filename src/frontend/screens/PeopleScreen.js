@@ -10,9 +10,9 @@ import { useEffect } from 'react'
 
 export default function PeopleScreen({ route, navigation}) {
     useEffect(() => navigation.addListener('state', () => {
-        if (route.params?.addPerson) {
+        if (route.params?.addingPerson) {
             setAddingPerson(true)
-            navigation.setParams({addPerson: false})
+            navigation.setParams({addingPerson: false})
         }
     }, [navigation]))
 
@@ -28,9 +28,10 @@ export default function PeopleScreen({ route, navigation}) {
             setAddingPerson(false);
             return;
         }
+        const newID = Math.floor(Math.random() * 100000).toString()
         const newBlankPerson = {
             name: newName,
-            id: Math.floor(Math.random() * 100000).toString(),
+            id: newID,
             tags: [],
             birthday: null,
             address: '',
@@ -41,11 +42,12 @@ export default function PeopleScreen({ route, navigation}) {
         dispatch(addPerson(newBlankPerson));
         setAddingPerson(false);
         setNewName('');
+        navigation.push('Profile', {id: newID})
     
     }
     return (
         <SafeAreaView style={styles.container}>  
-            <AddNameButton isDisabled={searchContent} onPress={() => setAddingPerson(true)}/>
+            {/* <AddNameButton isDisabled={searchContent} onPress={() => setAddingPerson(true)}/> */}
             <SearchBar searchContent={searchContent} setSearchContent={setSearchContent}/>
             <ScrollView>
                 {

@@ -1,5 +1,5 @@
 import { SafeAreaView, View, StyleSheet, Text, ScrollView, Image, TextInput, Dimensions, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { COLORS, TAG_COLORS } from '../utils/colors.js';
 import SearchBar from '../components/SearchBar.js';
 import Tag from '../components/tags screen/Tag';
@@ -12,8 +12,14 @@ const GAP_IN_BETWEEN = 10;
 const TAG_BOX_WIDTH = Dimensions.get('window').width / NUM_COLUMNS - GAP_IN_BETWEEN*1.5;
 const TAG_BOX_HEIGHT = 70;
 
-export default function TagsScreen() {
+export default function TagsScreen({ navigation, route}) {
 
+    useEffect(() => navigation.addListener('state', () => {
+        if (route.params?.addingTag) {
+            toggleAddingTag()
+            navigation.setParams({addingTag: false})
+        }
+    }, [navigation]))
     const dispatch = useDispatch();
 
     const [searchContent, setSearchContent] = useState('');

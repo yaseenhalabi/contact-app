@@ -41,9 +41,9 @@ export default function ProfileScreen({ route, navigation }) {
 
     return (
         <GestureRecognizer
-            onSwipeRight={() => navigation.pop({addPerson: false})}
+            onSwipeRight={() => navigation.pop()}
             style={styles.container}
-            config={gestureRecognizerConfig}
+            config={gestureRecognizerConfig}    
             testID="ProfileScreen"
         >
             <View style={styles.container}>

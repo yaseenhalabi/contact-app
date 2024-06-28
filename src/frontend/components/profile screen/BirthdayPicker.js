@@ -10,7 +10,7 @@ export default function BirthdayPicker({ id }) {
     const dispatch = useDispatch();
     const birthdayState = useSelector(state => state.people.find(person => person.id == id)?.birthday) || "";
     const updateBirthday = (newBirthday) => dispatch(updatePersonsBirthday({id, newBirthday}));
-    birthdayDateObject = new Date(birthdayState);
+    var birthdayDateObject = new Date(birthdayState || null);
 
     const calculateDaysUntilBirthday = (birthday) => {
         today = new Date();

@@ -59,7 +59,7 @@ export default function App() {
                 listeners={({ navigation, route }) => ({
                   tabPress: (e) => {
                     e.preventDefault();
-                    navigation.jumpTo('People', {screen: 'ListOfNames', params: {addPerson: true}})
+                    navigation.jumpTo('People', {screen: 'ListOfNames', params: {addingPerson: true}})
                   },
                 })}
               />                
@@ -71,12 +71,12 @@ export default function App() {
                 options={{
                   tabBarIcon: ({focused}) => <Image source={addTagIcon} style={{width: 25, height: 25}}/>
                 }}
-                listeners={{
+                listeners={({ navigation }) => ({
                   tabPress: (e) => {
                     e.preventDefault();
-                    console.log("add tag pressed")
+                    navigation.jumpTo('Tags', {addingTag: true})
                   },
-                }}
+                })}
               />
 
               <Tab.Screen 
