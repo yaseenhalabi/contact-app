@@ -79,7 +79,7 @@ export default function TagsScreen({ navigation, route}) {
                     ))}
                 </View>
             </ScrollView>
-            <SafeAreaView style={{width: '100%', position: 'absolute', bottom: 0, alignItems: 'center', justifyContent: 'center'}}>
+            {/* <SafeAreaView style={{width: '100%', position: 'absolute', bottom: 0, alignItems: 'center', justifyContent: 'center'}}>
                 <TouchableOpacity 
                     style={styles.addTagButton} 
                     onPress={() => setAddingTag(true)} 
@@ -88,7 +88,7 @@ export default function TagsScreen({ navigation, route}) {
                 >
                     <Text style={styles.addTagButtonText}>+ New Tag</Text>
                 </TouchableOpacity>
-            </SafeAreaView>
+            </SafeAreaView> */}
         </View>
     )   
 }
