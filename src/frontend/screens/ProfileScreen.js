@@ -1,5 +1,4 @@
 import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, TextInput } from 'react-native';
-import GestureRecognizer from 'react-native-swipe-gestures';
 import Linking from 'react-native/Libraries/Linking/Linking';
 import * as ImagePicker from 'expo-image-picker';
 import instagramLogo from '../assets/icons/instagramlogowhite.png';
@@ -9,7 +8,7 @@ import { COLORS } from '../utils/colors';
 
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updatePersonsName, updatePersonsNotes, updatePersonsAddress } from '../redux/peopleSlice';
+import { updatePersonsName, updatePersonsNotes } from '../redux/peopleSlice';
 import BirthdayPicker from '../components/profile screen/BirthdayPicker';
 import ProfileTags from '../components/profile screen/ProfileTags';
 import AddressInput from '../components/profile screen/AddressInput';
@@ -34,23 +33,16 @@ export default function ProfileScreen({ route, navigation }) {
         if (!result.canceled) setImages([...images, result.assets[0].uri]);
     };
 
-    const gestureRecognizerConfig = {
-        velocityThreshold: 0.1,
-        directionalOffsetThreshold: 30,
-    }
-
     return (
-        <GestureRecognizer
-            onSwipeRight={() => navigation.pop()}
-            style={styles.container}
-            config={gestureRecognizerConfig}    
-            testID="ProfileScreen"
-        >
+        <SafeAreaView style={styles.container} testID="ProfileScreen" >
             <View style={styles.container}>
                 <View style={styles.section}>
-                    <SafeAreaView>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, marginBottom: 5}}>
                         <TextInput style={styles.titleText} value={name} onChangeText={updateName}/>
-                    </SafeAreaView>
+                        <TouchableOpacity onPress={() => navigation.pop()} style={{opacity: .5, justifyContent: 'center', position: 'static'}}>
+                            <Image source={backArrowIcon} style={{width: 25, height: 25}}/>
+                        </TouchableOpacity>
+                    </View>
                     <ProfileTags id={ID}/>
                     <BirthdayPicker id={ID}/>
                     <AddressInput id={ID}/>
@@ -77,20 +69,23 @@ export default function ProfileScreen({ route, navigation }) {
                     </View>
                 </View>
                 
-                <TouchableOpacity onPress={() => navigation.pop()} style={styles.backArrowIconContainer}>
-                    <Image source={backArrowIcon} style={{width: 25, height: 25}}/>
-                </TouchableOpacity>
 
                 <View style={styles.socialsContainer}>
+                    {
+                    instagramLink &&
                     <TouchableOpacity onPress={() => Linking.openURL(instagramLink)}>
                         <Image source={instagramLogo} style={{width: 40, height: 40}}/>
                     </TouchableOpacity>
+                    }
+                    {
+                    xLink &&
                     <TouchableOpacity onPress={() => Linking.openURL(xLink)}>
                         <Image source={xLogo} style={{width: 40, height: 40}}/>
                     </TouchableOpacity>
+                    }
                 </View>
             </View>
-        </GestureRecognizer>
+        </SafeAreaView>
     )  
 }
 
@@ -103,14 +98,14 @@ styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     titleText: {
+        textOverflow: 'ellipsis',
         fontSize: 30,
         color: COLORS.off_white,
         fontWeight: 'bold',
+        width: '80%',
         textShadowColor: 'rgba(0, 0, 0, 0.444)',
         textShadowOffset: { width: 2, height: 4 },
         textShadowRadius: 5,
-        marginTop: 20,
-        marginBottom: 5,
     }, 
     smallText: {
         color: COLORS.white,
@@ -135,7 +130,7 @@ styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 15,
         backgroundColor: COLORS.secondary, 
-        maxHeight: 'auto',
+        height: 200,
         zIndex: -1,
     },
     subTitle: {
@@ -161,12 +156,6 @@ styles = StyleSheet.create({
         position: 'absolute',
         bottom: 30,
         right: 20,
-    },
-    backArrowIconContainer: {
-        position: 'absolute',
-        top: 85,
-        right: 20,
-        opacity: .5,
     },
     addPhotosButton: {
         backgroundColor: COLORS.tertiary,
