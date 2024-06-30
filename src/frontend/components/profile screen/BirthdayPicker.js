@@ -8,10 +8,14 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 export default function BirthdayPicker({ id }) {
 
     const dispatch = useDispatch();
-    const birthdayState = useSelector(state => state.people.find(person => person.id == id)?.birthday) || "";
     const updateBirthday = (newBirthday) => dispatch(updatePersonsBirthday({id, newBirthday}));
-    var birthdayDateObject = new Date(birthdayState || null);
 
+    // get birthday string from redux store
+    // If it is null, a simple "Add Birthday" button will be displayed
+    const birthdayState = useSelector(state => state.people.find(person => person.id == id)?.birthday);
+
+    // turn it into a date object
+    const birthdayDateObject = new Date(birthdayState || null);
     const calculateDaysUntilBirthday = (birthday) => {
         today = new Date();
         bday = new Date(birthday);
@@ -21,31 +25,37 @@ export default function BirthdayPicker({ id }) {
         days = Math.ceil(time_diff/(1000*60*60*24));
         return days;
     }
-
+    // get days until birthday from date object
     const daysUntilBirthday = calculateDaysUntilBirthday(birthdayDateObject);
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const showDatePicker = () => setDatePickerVisibility(true);
-    const hideDatePicker = () => setDatePickerVisibility(false);
-    const handleConfirm = (date) => { 
+    const [datePickerVisible, setDatePickerVisible] = useState(false);
+    const handleConfirmDate = (date) => { 
         const stringDate = date.toISOString()
         updateBirthday(stringDate); 
-        hideDatePicker(); 
+        setDatePickerVisible(false);
     };
 
     return (
         <View style={styles.birthdayContainer}>
-            <Text style={[styles.mediumText, styles.bold]}>Birthday: </Text>
+            <Text style={styles.mediumText}>Birthday: </Text>
             <View>
                 {birthdayState ? 
-                <TouchableOpacity onPress={showDatePicker}><Text style={styles.mediumText}>{(birthdayDateObject).getMonth()+1}/{(birthdayDateObject).getDate()}</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => setDatePickerVisible(true)}>
+                    <Text style={styles.mediumText}>
+                        {(birthdayDateObject).getMonth()+1}/{(birthdayDateObject).getDate()}
+                    </Text>
+                </TouchableOpacity>
                 :
-                <TouchableOpacity onPress={showDatePicker}><Text style={{...styles.mediumText, color: COLORS.placeholder}}>Add Birthday</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => setDatePickerVisible(true)}>
+                    <Text style={{...styles.mediumText, color: COLORS.placeholder}}>
+                        + Add Birthday
+                    </Text>
+                </TouchableOpacity>
                 }
                 <DateTimePickerModal
-                    isVisible={isDatePickerVisible}
+                    isVisible={datePickerVisible}
                     mode="date"
-                    onConfirm={handleConfirm}
-                    onCancel={hideDatePicker}
+                    onConfirm={handleConfirmDate}
+                    onCancel={() => setDatePickerVisible(false)}
                     date={birthdayDateObject}
                 />
             </View>
@@ -62,16 +72,13 @@ const styles = StyleSheet.create({
     },
     birthdayTimingText: {
         color: COLORS.off_white,
-        fontFamily: 'Trebuc',
+        fontFamily: 'trebuc',
         fontSize: 14,
         opacity: .7,
     },
-    bold: {
-        fontWeight: 'bold',
-    },
     mediumText: {
         color: COLORS.off_white,
-        fontFamily: 'Trebuc',
+        fontFamily: 'trebuc',
         fontSize: 14,
     },
 });

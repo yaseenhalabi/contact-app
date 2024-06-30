@@ -4,12 +4,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default function Tag({ tagName, color, width, height, gap, noGradient, isTextInput, handleChangeText, isDisabled, onEnter}) {
     // A lot of those props are for the new tag input stuff
     return (
+
         <TouchableOpacity onPress={() => console.log("hi")} disabled={isDisabled} testID='tag-container'>
             <LinearGradient 
-                colors={[color, noGradient ? color : COLORS.white]} 
+                colors={[color, noGradient ? color : 'black']} 
                 style={{...styles.tagContainer, width: width, marginLeft: gap, marginTop: gap, height: height}}
                 end={{x: .5, y: 5}}
-            > 
+            >   
                 {
                     isTextInput ?
                     <TextInput 

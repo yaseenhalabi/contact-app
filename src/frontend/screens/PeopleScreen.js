@@ -2,7 +2,6 @@ import { SafeAreaView, View, StyleSheet, ScrollView, Image, TextInput, Dimension
 import { useState } from 'react';
 import { COLORS } from '../utils/colors';
 import Name from '../components/people screen/Name';
-import AddNameButton from '../components/people screen/AddNameButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPerson } from '../redux/peopleSlice'
 import SearchBar from '../components/SearchBar';

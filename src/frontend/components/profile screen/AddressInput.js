@@ -30,14 +30,13 @@ const styles = StyleSheet.create({
     },
     textInput: {
         color: COLORS.off_white,
-        fontFamily: 'Trebuc',
+        fontFamily: 'trebuc',
         fontSize: 14,
         width: '70%',
     },
     mediumText: {
         color: COLORS.off_white,
-        fontFamily: 'Trebuc',
+        fontFamily: 'trebuc',
         fontSize: 14,
-        fontWeight: 'bold',
     },
 });

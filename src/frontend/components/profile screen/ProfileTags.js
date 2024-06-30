@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updatePersonsTags } from '../../redux/peopleSlice';
 import { addTag, removeTag } from '../../redux/tagsSlice';
 import { COLORS, TAG_COLORS } from '../../utils/colors';
-
+import 'react-native-get-random-values';
+import { v6 as uuidv6 } from 'uuid';
 
 export default function ProfileTags({ id }) {
     const dispatch = useDispatch();
@@ -13,12 +14,11 @@ export default function ProfileTags({ id }) {
     const currentTags = allTags.filter(tag => profileTagIds.includes(tag.id));
     const updateCurrentTagIds = (newIds) => dispatch(updatePersonsTags({id, newIds}));
     const [addingTag, setAddingTag] = useState(false);
-
     const [newTag, setNewTag] = useState(
         {
             name: "",
             color: TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)],
-            id: (Math.max(...allTags.map(tag => tag.id)) + 1).toString()
+            id: uuidv6()
         }
     );
     const confirmNewTag = () => {
@@ -31,7 +31,7 @@ export default function ProfileTags({ id }) {
                 {
                     name: "",
                     color: TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)],
-                    id: (Math.max(...allTags.map(tag => parseInt(tag.id))) + 2).toString()
+                    id: uuidv6()
                 }
             );
         }
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
     },
     smallText: {
         color: COLORS.white,
-        fontFamily: 'Trebuc',
+        fontFamily: 'trebuc',
         fontWeight: 'bold',
-        fontSize: 10,
+        fontSize: 9,
     },
 })

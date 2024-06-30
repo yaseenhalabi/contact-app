@@ -1,10 +1,11 @@
-import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, TextInput } from 'react-native';
+import { View, TouchableWithoutFeedback, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, TextInput } from 'react-native';
 import Linking from 'react-native/Libraries/Linking/Linking';
 import * as ImagePicker from 'expo-image-picker';
 import instagramLogo from '../assets/icons/instagramlogowhite.png';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
 import xLogo from '../assets/icons/xlogowhite.png';
 import { COLORS } from '../utils/colors';
+import { Keyboard } from 'react-native'
 
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -35,56 +36,58 @@ export default function ProfileScreen({ route, navigation }) {
 
     return (
         <SafeAreaView style={styles.container} testID="ProfileScreen" >
-            <View style={styles.container}>
-                <View style={styles.section}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, marginBottom: 5}}>
-                        <TextInput style={styles.titleText} value={name} onChangeText={updateName}/>
-                        <TouchableOpacity onPress={() => navigation.pop()} style={{opacity: .5, justifyContent: 'center', position: 'static'}}>
-                            <Image source={backArrowIcon} style={{width: 25, height: 25}}/>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={styles.container}>
+                    <View style={styles.section}>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, marginBottom: 5}}>
+                            <TextInput style={styles.titleText} value={name} onChangeText={updateName}/>
+                            <TouchableOpacity onPress={() => navigation.pop()} style={{opacity: .5, justifyContent: 'center', position: 'static'}}>
+                                <Image source={backArrowIcon} style={{width: 25, height: 25}}/>
+                            </TouchableOpacity>
+                        </View>
+                        <ProfileTags id={ID}/>
+                        <BirthdayPicker id={ID}/>
+                        <AddressInput id={ID}/>
+                    </View>
+
+                    <View style={styles.notesContainer}>
+                            <Text style={styles.subTitle}>Notes</Text>
+                            <TextInput 
+                                style={[styles.mediumText, {maxHeight: 250}]}
+                                placeholder='Add notes here...'
+                                placeholderTextColor={COLORS.placeholder}
+                                multiline={true}
+                                value={notes}
+                                onChangeText={updateNotes}
+                            />
+                    </View>
+
+                    <View style={styles.section}>
+                        <TouchableOpacity style={styles.addPhotosButton} onPress={pickImage}>
+                            <Text style={styles.addPhotosText}>Add Photo(s)</Text>
                         </TouchableOpacity>
+                        <View style={styles.images}>
+                            {images.map((image, index) => <Image key={index} style={styles.image} source={{uri: image}}/>)}
+                        </View>
                     </View>
-                    <ProfileTags id={ID}/>
-                    <BirthdayPicker id={ID}/>
-                    <AddressInput id={ID}/>
-                </View>
+                    
 
-                <View style={styles.notesContainer}>
-                        <Text style={styles.subTitle}>Notes</Text>
-                        <TextInput 
-                            style={[styles.mediumText, {maxHeight: 250}]}
-                            placeholder='Add notes here...'
-                            placeholderTextColor={COLORS.placeholder}
-                            multiline={true}
-                            value={notes}
-                            onChangeText={updateNotes}
-                        />
-                </View>
-
-                <View style={styles.section}>
-                    <TouchableOpacity style={styles.addPhotosButton} onPress={pickImage}>
-                        <Text style={styles.addPhotosText}>Add Photo(s)</Text>
-                    </TouchableOpacity>
-                    <View style={styles.images}>
-                        {images.map((image, index) => <Image key={index} style={styles.image} source={{uri: image}}/>)}
+                    <View style={styles.socialsContainer}>
+                        {
+                        instagramLink &&
+                        <TouchableOpacity onPress={() => Linking.openURL(instagramLink)}>
+                            <Image source={instagramLogo} style={{width: 40, height: 40}}/>
+                        </TouchableOpacity>
+                        }
+                        {
+                        xLink &&
+                        <TouchableOpacity onPress={() => Linking.openURL(xLink)}>
+                            <Image source={xLogo} style={{width: 40, height: 40}}/>
+                        </TouchableOpacity>
+                        }
                     </View>
                 </View>
-                
-
-                <View style={styles.socialsContainer}>
-                    {
-                    instagramLink &&
-                    <TouchableOpacity onPress={() => Linking.openURL(instagramLink)}>
-                        <Image source={instagramLogo} style={{width: 40, height: 40}}/>
-                    </TouchableOpacity>
-                    }
-                    {
-                    xLink &&
-                    <TouchableOpacity onPress={() => Linking.openURL(xLink)}>
-                        <Image source={xLogo} style={{width: 40, height: 40}}/>
-                    </TouchableOpacity>
-                    }
-                </View>
-            </View>
+            </TouchableWithoutFeedback>
         </SafeAreaView>
     )  
 }
