@@ -42,7 +42,12 @@ export default function PeopleScreen({ route, navigation}) {
         setAddingPerson(false);
         setNewName('');
         navigation.push('Profile', {id: newID})
-    
+    }
+
+    const openProfile = (id) => {
+        setAddingPerson(false);
+        setNewName('');
+        navigation.push('Profile', {id})
     }
     return (
         <SafeAreaView style={styles.container}>  
@@ -54,7 +59,7 @@ export default function PeopleScreen({ route, navigation}) {
                     <Name name={newName} isInput handleNameChange={setNewName} onSubmit={() => handleAddPerson()}/>
                 }
                 {people.map((data) => (
-                    <TouchableOpacity key={data.id} onPress={() => navigation.push('Profile', {id: data.id})}>
+                    <TouchableOpacity key={data.id} onPress={() => openProfile(data.id)}>
                         <Name name={data.name} />
                     </TouchableOpacity>
                 ))}

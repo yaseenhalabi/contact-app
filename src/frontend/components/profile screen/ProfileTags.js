@@ -45,7 +45,7 @@ export default function ProfileTags({ id }) {
                 {
                     name: "",
                     color: TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)],
-                    id: (Math.max(...allTags.map(tag => parseInt(tag.id))) + 2).toString()
+                    id: uuidv6()
                 }
             );
         }
@@ -87,9 +87,9 @@ export default function ProfileTags({ id }) {
                             minWidth={30}
                         />
                     </View>
-                    {
+                    { /* 
                     tagSearchData &&
-                    <View>
+                    <View style={styles.tagOptionsContainer}>
                             {
                             tagSearchData.slice(0, 3).map(item =>
                                     <TouchableOpacity key={item.id} style={[styles.tag, {backgroundColor: COLORS.primary, marginTop: 5}]} onPress={() => addTagToProfile(item.id)}>
@@ -98,6 +98,7 @@ export default function ProfileTags({ id }) {
                                 )
                             }
                     </View>
+                    */
                     }
 
                 </View>
@@ -127,4 +128,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 9,
     },
+    tagOptionsContainer: {
+        position: 'absolute',
+        width: '200%',
+    }
 })
