@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addPerson } from '../redux/peopleSlice'
 import SearchBar from '../components/SearchBar';
 import { useEffect } from 'react'
+import 'react-native-get-random-values';
+import { v6 as uuidv6 } from 'uuid';
 
 export default function PeopleScreen({ route, navigation}) {
     useEffect(() => navigation.addListener('state', () => {
@@ -27,7 +29,7 @@ export default function PeopleScreen({ route, navigation}) {
             setAddingPerson(false);
             return;
         }
-        const newID = Math.floor(Math.random() * 100000).toString()
+        const newID = uuidv6();
         const newBlankPerson = {
             name: newName,
             id: newID,

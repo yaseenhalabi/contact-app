@@ -71,7 +71,6 @@ export default function TagsScreen({ navigation, route}) {
                         onEnter={() => confirmNewTag()}
                         isTextInput
                         isDisabled
-                        noGradient
                         handleChangeText={(text) => setNewTag({...newTag, name: text})}
                     />
                     }
