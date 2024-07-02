@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, TextInput } from 'react-native';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updatePersonsTags } from '../../redux/peopleSlice';
@@ -54,7 +54,6 @@ export default function ProfileTags({ id }) {
             setAddingTag(false);
         }
     }
-
     const addTagToProfile = (tagId) => {
         updateCurrentTagIds([...profileTagIds, tagId]);
         setAddingTag(false);
@@ -72,12 +71,12 @@ export default function ProfileTags({ id }) {
             }
             {
                 !addingTag ?
-                <TouchableOpacity const onPress={() => setAddingTag(true)} style={{justifyContent: 'center', opacity: .8}}>
+                <TouchableOpacity const onPress={() => setAddingTag(true)} style={{justifyContent: 'center'}}>
                     <Text style={styles.smallText}>+ Add Tag</Text>
                 </TouchableOpacity> 
                 :
-                <View style={{flexDirection: 'column'}}>
-                    <View style={[styles.tag, {backgroundColor: '#0000003b'}]}>
+                <View style={{flexDirection: 'column', width: '100%'}}>
+                    <View style={[styles.tag, {backgroundColor: '#0000003b', borderRadius: 0}]}>
                         <TextInput 
                             style={styles.smallText} // Set the width to 100%
                             onChangeText={(value) => setNewTag({...newTag, name: value})}
@@ -87,18 +86,21 @@ export default function ProfileTags({ id }) {
                             minWidth={30}
                         />
                     </View>
-                    { /* 
+                    {
                     tagSearchData &&
-                    <View style={styles.tagOptionsContainer}>
+                    <ScrollView style={styles.tagOptionsContainer}>
                             {
-                            tagSearchData.slice(0, 3).map(item =>
-                                    <TouchableOpacity key={item.id} style={[styles.tag, {backgroundColor: COLORS.primary, marginTop: 5}]} onPress={() => addTagToProfile(item.id)}>
+                            tagSearchData.map(item =>
+                                    <TouchableOpacity 
+                                        key={item.id}
+                                        style={{...styles.tag, backgroundColor: `${item.color}a1`, borderRadius: 0}}
+                                        onPress={() => addTagToProfile(item.id)}
+                                    >
                                         <Text style={styles.smallText}>{item.name}</Text>
                                     </TouchableOpacity>
                                 )
                             }
-                    </View>
-                    */
+                    </ScrollView>
                     }
 
                 </View>
@@ -127,9 +129,16 @@ const styles = StyleSheet.create({
         fontFamily: 'trebuc',
         fontWeight: 'bold',
         fontSize: 9,
+        width: '100%'
     },
     tagOptionsContainer: {
+        backgroundColor: COLORS.primary,
         position: 'absolute',
-        width: '200%',
+        width: '100%',
+        top: 20,
+        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
     }
 })
