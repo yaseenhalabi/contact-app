@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     tagOptionsContainer: {
+        zIndex: 3,
         backgroundColor: COLORS.primary,
         position: 'absolute',
         width: '100%',

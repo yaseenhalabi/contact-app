@@ -62,7 +62,7 @@ export default function ProfileScreen({ route, navigation }) {
                             />
                     </View>
 
-                    <View style={styles.section}>
+                    <View style={{...styles.section, zIndex: -1}}>
                         <TouchableOpacity style={styles.addPhotosButton} onPress={pickImage}>
                             <Text style={styles.addPhotosText}>Add Photo(s)</Text>
                         </TouchableOpacity>
