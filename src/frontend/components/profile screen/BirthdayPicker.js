@@ -9,7 +9,7 @@ export default function BirthdayPicker({ id }) {
 
     const dispatch = useDispatch();
     const updateBirthday = (newBirthday) => dispatch(updatePersonsBirthday({id, newBirthday}));
-
+    const deleteBirthday = () => dispatch(updatePersonsBirthday({id, newBirthday: null}));
     // get birthday string from redux store
     // If it is null, a simple "Add Birthday" button will be displayed
     const birthdayState = useSelector(state => state.people.find(person => person.id == id)?.birthday);
@@ -61,9 +61,11 @@ export default function BirthdayPicker({ id }) {
             </View>
             {
             birthdayState && 
-            <View style={}>
+            <View style={{flexDirection: 'row', columnGap: 4, justifyContent: 'center', alignItems: 'center'}}>
             <Text style={styles.birthdayTimingText}> {daysUntilBirthday == 365 ? "-Happy Birthday!-" : `(in ${daysUntilBirthday} day${daysUntilBirthday < 10 ? "" : "s"})`}</Text>
-            <Text>X</Text>
+            <TouchableOpacity onPress={deleteBirthday} style={styles.xButton}>
+                <Text style={{...styles.mediumText, color: COLORS.placeholder}}>remove</Text>
+            </TouchableOpacity>
             </View>
             }
         </View>
@@ -95,5 +97,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginVertical: 5,
         paddingHorizontal: 10,
+    },
+    xButton: {
+        justifyContent: 'center',
+        borderRadius: 360,
+        alignItems: 'center',
     }
 });

@@ -20,13 +20,13 @@ export default function NotesInput({ id }) {
                 <TextInput 
                     ref={notesInput}
                     style={[styles.mediumText, { maxHeight: 150}]}
-                    placeholder='Add Notes Here...'
+                    placeholder='Enter Notes Here...'
                     placeholderTextColor={COLORS.placeholder}
                     multiline={true}
                     value={notes}
                     onChangeText={updateNotes}
                 />
-            </View>
+            </View> 
         </TouchableWithoutFeedback>
     )
 }
