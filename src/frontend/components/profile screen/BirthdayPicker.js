@@ -47,7 +47,7 @@ export default function BirthdayPicker({ id }) {
                 :
                 <TouchableOpacity style={styles.pickButton} onPress={() => setDatePickerVisible(true)}>
                     <Text style={{...styles.mediumText, color: COLORS.placeholder}}>
-                        + Add Birthday
+                        Add Birthday
                     </Text>
                 </TouchableOpacity>
                 }
@@ -59,7 +59,13 @@ export default function BirthdayPicker({ id }) {
                     date={birthdayDateObject}
                 />
             </View>
-            {birthdayState && <Text style={styles.birthdayTimingText}> {daysUntilBirthday == 365 ? "-Happy Birthday!-" : `(in ${daysUntilBirthday} day${daysUntilBirthday < 10 ? "" : "s"})`}</Text>}
+            {
+            birthdayState && 
+            <View style={}>
+            <Text style={styles.birthdayTimingText}> {daysUntilBirthday == 365 ? "-Happy Birthday!-" : `(in ${daysUntilBirthday} day${daysUntilBirthday < 10 ? "" : "s"})`}</Text>
+            <Text>X</Text>
+            </View>
+            }
         </View>
     )
 }

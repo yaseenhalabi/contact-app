@@ -30,7 +30,7 @@ export default function AddressInput({ id }) {
                 }}
                 textInputProps={
                     {
-                        placeholder: '+ Add Address',
+                        placeholder: 'Enter Address...',
                         placeholderTextColor: COLORS.placeholder,
                     }
                 }

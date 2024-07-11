@@ -13,6 +13,7 @@ import ProfileTags from '../components/profile screen/ProfileTags';
 import AddressInput from '../components/profile screen/AddressInput';
 import TitleInput from '../components/profile screen/TitleInput';
 import PhotoPicker from '../components/profile screen/PhotoPicker';
+import NotesInput from '../components/profile screen/NotesInput';
 
 export default function ProfileScreen({ route, navigation }) {
     const ID = route.params.id;
@@ -37,18 +38,8 @@ export default function ProfileScreen({ route, navigation }) {
                         <BirthdayPicker id={ID}/>
                         <AddressInput id={ID}/>
                     </View>
+                    <NotesInput id={ID}/>
 
-                    <View style={styles.notesContainer}>
-                            <Text style={styles.subTitle}>Notes</Text>
-                            <TextInput 
-                                style={[styles.mediumText, {maxHeight: 250}]}
-                                placeholder='Add notes here...'
-                                placeholderTextColor={COLORS.placeholder}
-                                multiline={true}
-                                value={notes}
-                                onChangeText={updateNotes}
-                            />
-                    </View>
                     <PhotoPicker id={ID}/>
                     <View style={styles.socialsContainer}>
                         {
@@ -70,7 +61,7 @@ export default function ProfileScreen({ route, navigation }) {
     )  
 }
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.primary,
@@ -102,20 +93,7 @@ styles = StyleSheet.create({
     boldBirthday: {
         fontWeight: 'bold',
     },
-    notesContainer: {
-        paddingHorizontal: 20,
-        paddingVertical: 15,
-        backgroundColor: COLORS.secondary, 
-        height: 200,
-        zIndex: -1,
-    },
-    subTitle: {
-        color: COLORS.off_white,
-        fontFamily: 'Trebuc',
-        fontSize: 14,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
+   
     image: {
         width: 100,
         height: 100,

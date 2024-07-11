@@ -11,11 +11,15 @@ export default function TitleInput({ id }) {
     )
 }
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
     titleText: {
+        textOverflow: 'ellipsis',
         fontSize: 30,
+        color: COLORS.off_white,
         fontWeight: 'bold',
-        color: COLORS.white,
-        margin: 20,
-    },
+        width: '80%',
+        textShadowColor: 'rgba(0, 0, 0, 0.444)',
+        textShadowOffset: { width: 2, height: 4 },
+        textShadowRadius: 5,
+    }, 
 })

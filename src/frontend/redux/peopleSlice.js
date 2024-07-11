@@ -14,7 +14,7 @@ export const peopleSlice = createSlice({
             state.find(person => person.id === action.payload.id).name = action.payload.newName
         },
         updatePersonsNotes: (state, action) => {
-            state.find(person => person.id === action.payload.ID).notes = action.payload.newNotes
+            state.find(person => person.id === action.payload.id).notes = action.payload.newNotes
         },
         updatePersonsAddress: (state, action) => {
             state.find(person => person.id === action.payload.id).address = action.payload.newAddress
@@ -28,6 +28,7 @@ export const peopleSlice = createSlice({
         updatePersonsImages: (state, action) => {
             state.find(person => person.id === action.payload.id).images = action.payload.newImages
         }
+
     },
 });
 
