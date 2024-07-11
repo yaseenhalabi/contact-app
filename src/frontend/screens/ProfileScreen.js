@@ -1,38 +1,26 @@
 import { View, TouchableWithoutFeedback, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, TextInput } from 'react-native';
 import Linking from 'react-native/Libraries/Linking/Linking';
-import * as ImagePicker from 'expo-image-picker';
 import instagramLogo from '../assets/icons/instagramlogowhite.png';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
 import xLogo from '../assets/icons/xlogowhite.png';
 import { COLORS } from '../utils/colors';
 import { Keyboard } from 'react-native'
-
-import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updatePersonsName, updatePersonsNotes } from '../redux/peopleSlice';
+import { updatePersonsNotes } from '../redux/peopleSlice';
+
 import BirthdayPicker from '../components/profile screen/BirthdayPicker';
 import ProfileTags from '../components/profile screen/ProfileTags';
 import AddressInput from '../components/profile screen/AddressInput';
+import TitleInput from '../components/profile screen/TitleInput';
+import PhotoPicker from '../components/profile screen/PhotoPicker';
 
 export default function ProfileScreen({ route, navigation }) {
     const ID = route.params.id;
     const dispatch = useDispatch();
     const personData = useSelector(state => state.people.find(person => person.id == ID)) || {name : '', notes: '', xLink: '', instagramLink: ''};
-    const { name, notes, xLink, instagramLink } = personData;
+    const { notes, xLink, instagramLink } = personData;
     
-    const updateName = (newName) => dispatch(updatePersonsName({ID, newName}));
     const updateNotes = (newNotes) => dispatch(updatePersonsNotes({ID, newNotes})); 
-    const [images, setImages] = useState([]);
-
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-        if (!result.canceled) setImages([...images, result.assets[0].uri]);
-    };
 
     return (
         <SafeAreaView style={styles.container} testID="ProfileScreen" >
@@ -40,7 +28,7 @@ export default function ProfileScreen({ route, navigation }) {
                 <View style={styles.container}>
                     <View style={styles.section}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, marginBottom: 5}}>
-                            <TextInput style={styles.titleText} value={name} onChangeText={updateName}/>
+                            <TitleInput id={ID}/>
                             <TouchableOpacity onPress={() => navigation.pop()} style={{opacity: .5, justifyContent: 'center', position: 'static'}}>
                                 <Image source={backArrowIcon} style={{width: 25, height: 25}}/>
                             </TouchableOpacity>
@@ -61,17 +49,7 @@ export default function ProfileScreen({ route, navigation }) {
                                 onChangeText={updateNotes}
                             />
                     </View>
-
-                    <View style={{...styles.section, zIndex: -1}}>
-                        <TouchableOpacity style={styles.addPhotosButton} onPress={pickImage}>
-                            <Text style={styles.addPhotosText}>Add Photo(s)</Text>
-                        </TouchableOpacity>
-                        <View style={styles.images}>
-                            {images.map((image, index) => <Image key={index} style={styles.image} source={{uri: image}}/>)}
-                        </View>
-                    </View>
-                    
-
+                    <PhotoPicker id={ID}/>
                     <View style={styles.socialsContainer}>
                         {
                         instagramLink &&
@@ -115,11 +93,6 @@ styles = StyleSheet.create({
         fontFamily: 'Trebuc',
         fontWeight: 'bold',
         fontSize: 10,
-    },
-    addressContainer: {
-        flexDirection: 'row',
-        marginVertical: 15,
-        zIndex: -1,
     },
     mediumText: {
         color: COLORS.off_white,

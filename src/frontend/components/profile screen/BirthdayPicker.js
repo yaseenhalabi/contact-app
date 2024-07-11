@@ -39,13 +39,13 @@ export default function BirthdayPicker({ id }) {
             <Text style={styles.mediumText}>Birthday: </Text>
             <View>
                 {birthdayState ? 
-                <TouchableOpacity onPress={() => setDatePickerVisible(true)}>
+                <TouchableOpacity style={styles.pickButton} onPress={() => setDatePickerVisible(true)}>
                     <Text style={styles.mediumText}>
                         {(birthdayDateObject).getMonth()+1}/{(birthdayDateObject).getDate()}
                     </Text>
                 </TouchableOpacity>
                 :
-                <TouchableOpacity onPress={() => setDatePickerVisible(true)}>
+                <TouchableOpacity style={styles.pickButton} onPress={() => setDatePickerVisible(true)}>
                     <Text style={{...styles.mediumText, color: COLORS.placeholder}}>
                         + Add Birthday
                     </Text>
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 15,
         zIndex: -1,
+        alignItems: 'center'
     },
     birthdayTimingText: {
         color: COLORS.off_white,
@@ -81,4 +82,12 @@ const styles = StyleSheet.create({
         fontFamily: 'trebuc',
         fontSize: 14,
     },
+    pickButton: {
+        backgroundColor: COLORS.secondary,
+        padding: 5,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginVertical: 5,
+        paddingHorizontal: 10,
+    }
 });

@@ -11,7 +11,7 @@ export const peopleSlice = createSlice({
             state.people = state.people.filter(person => person.id !== action.payload);
         },
         updatePersonsName: (state, action) => {
-            state.find(person => person.id === action.payload.ID).name = action.payload.newName
+            state.find(person => person.id === action.payload.id).name = action.payload.newName
         },
         updatePersonsNotes: (state, action) => {
             state.find(person => person.id === action.payload.ID).notes = action.payload.newNotes

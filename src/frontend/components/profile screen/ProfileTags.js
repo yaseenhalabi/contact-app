@@ -123,6 +123,7 @@ const styles = StyleSheet.create({
         width: 'auto',
         maxHeight: 20,
         alignItems: 'flex-start',
+        zIndex: 9,
     },
     smallText: {
         color: COLORS.white,

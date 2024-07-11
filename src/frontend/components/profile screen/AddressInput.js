@@ -2,6 +2,7 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { COLORS } from '../../utils/colors';
 import { updatePersonsAddress } from '../../redux/peopleSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default function AddressInput({ id }) {
     const dispatch = useDispatch();
@@ -10,13 +11,29 @@ export default function AddressInput({ id }) {
 
     return (
         <View style={styles.addressContainer}>
-            <Text style={styles.mediumText}>Address: </Text>
-            <TextInput 
-                style={styles.textInput}
-                value={address}
-                onChangeText={updateAddress}
-                placeholder="Add address here..."
-                placeholderTextColor={COLORS.placeholder}
+            <Text style={{...styles.mediumText, marginBottom: 5}}>Address: </Text>
+            <GooglePlacesAutocomplete
+                onPress={(data) => {
+                    // 'details' is provided when fetchDetails = true
+                    updateAddress(data.description);
+                }}
+                query={{
+                    key: 'AIzaSyBcPU3eN5wQGSMQbCaS8ax_a-sR0UQDhZA',
+                    language: 'en',
+                }}
+                styles={{
+                    textInput: styles.textInput,
+                    listView: {
+                        position: 'absolute',
+                        top: 40,
+                    },
+                }}
+                textInputProps={
+                    {
+                        placeholder: '+ Add Address',
+                        placeholderTextColor: COLORS.placeholder,
+                    }
+                }
             />
         </View>
     );
@@ -27,12 +44,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginVertical: 15,
         zIndex: -1,
+        alignItems: 'center',
+        position: 'relative'
     },
+
     textInput: {
         color: COLORS.off_white,
         fontFamily: 'trebuc',
         fontSize: 14,
-        width: '70%',
+        backgroundColor: COLORS.secondary,
+        padding: 5,
+        height: 'auto',
+        paddingHorizontal: 10,
     },
     mediumText: {
         color: COLORS.off_white,
