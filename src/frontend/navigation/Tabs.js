@@ -17,13 +17,9 @@ export default function Tabs() {
   return (
     <Tab.Navigator 
         labeled={false}
-        barStyle={{ backgroundColor: COLORS.primary, height: 90 }}
+        barStyle={{ backgroundColor: COLORS.primary, height: 80 }}
         activeColor='white'
         inactiveColor='white'
-        screenOptions={{
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
-        }}
         theme={{colors: {secondaryContainer: 'transparent'}}}
     >
         <Tab.Screen 
