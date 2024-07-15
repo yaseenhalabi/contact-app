@@ -91,13 +91,14 @@ export default function ProfileTags({ id }) {
                     <ScrollView style={styles.tagOptionsContainer}>
                             {
                             tagSearchData.map(item =>
-                                    <TouchableOpacity 
-                                        key={item.id}
-                                        style={{...styles.tag, backgroundColor: `${item.color}a1`, borderRadius: 0}}
-                                        onPress={() => addTagToProfile(item.id)}
-                                    >
-                                        <Text style={styles.smallText}>{item.name}</Text>
-                                    </TouchableOpacity>
+                                    <View key={item.id} style={styles.tagListItemContainer}>
+                                        <TouchableOpacity 
+                                            style={{...styles.tagListItem, backgroundColor: `${item.color}a1`}}
+                                            onPress={() => addTagToProfile(item.id)}
+                                        >
+                                            <Text style={styles.smallText}>{item.name}</Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 )
                             }
                     </ScrollView>
@@ -138,9 +139,24 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         top: 20,
+        maxHeight: 200,
         borderBottomRightRadius: 10,
         borderBottomLeftRadius: 10,
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
+    },
+    tagListItemContainer: {
+        paddingHorizontal: 10,
+        paddingVertical: 3,
+    },
+    tagListItem: {
+        backgroundColor: "#FF6B85",
+        borderRadius: 360,
+        paddingVertical: 4,
+        paddingHorizontal: 13,
+        width: 'auto',
+        maxHeight: 20,
+        alignItems: 'flex-start',
+        zIndex: 9,
     }
 })

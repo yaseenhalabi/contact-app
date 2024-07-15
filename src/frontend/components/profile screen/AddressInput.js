@@ -13,7 +13,6 @@ export default function AddressInput({ id }) {
             <Text style={{...styles.mediumText, marginBottom: 5, fontWeight: '600'}}>Address: </Text>
             <GooglePlacesAutocomplete
                 onPress={(data) => {
-                    // 'details' is provided when fetchDetails = true
                     updateAddress(data.description);
                 }}
                 query={{
