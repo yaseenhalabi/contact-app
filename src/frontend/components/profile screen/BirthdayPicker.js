@@ -36,7 +36,7 @@ export default function BirthdayPicker({ id }) {
 
     return (
         <View style={styles.birthdayContainer}>
-            <Text style={styles.mediumText}>Birthday: </Text>
+            <Text style={{...styles.mediumText, fontWeight: '600'}}>Birthday: </Text>
             <View>
                 {birthdayState ? 
                 <TouchableOpacity style={styles.pickButton} onPress={() => setDatePickerVisible(true)}>

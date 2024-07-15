@@ -1,7 +1,7 @@
 import { View, StyleSheet, Image, TextInput, Dimensions } from 'react-native';
-import { COLORS } from '../utils/colors';
-import searchIcon from '../assets/icons/searchicon.png';
-import filterIcon from '../assets/icons/filtericon.png';
+import { COLORS } from '../../utils/colors';
+import searchIcon from '../../assets/icons/searchicon.png';
+import filterIcon from '../../assets/icons/filtericon.png';
 
 export default function SearchBar({ searchContent, setSearchContent }){
     return (

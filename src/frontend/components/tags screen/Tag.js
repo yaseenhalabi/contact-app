@@ -7,7 +7,7 @@ export default function Tag({ tagName, color, width, height, gap, isTextInput, h
         <View elevation={5} style={styles.container}>
         <TouchableOpacity onPress={() => console.log("hi")} disabled={isDisabled} testID='tag-container'>
             <View 
-                style={{...styles.tagContainer, backgroundColor: `${color}a1`, width: width, marginLeft: gap, marginTop: gap, height: height}}
+                style={{...styles.tagContainer, backgroundColor: color, width: width, marginLeft: gap, marginTop: gap, height: height}}
                 end={{x: .5, y: 5}}
                 elevation={5}
             >   

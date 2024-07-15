@@ -4,7 +4,7 @@ import { COLORS } from '../utils/colors';
 import Name from '../components/people screen/Name';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPerson } from '../redux/peopleSlice'
-import SearchBar from '../components/SearchBar';
+import SearchBar from '../components/global/SearchBar';
 import { useEffect } from 'react'
 import 'react-native-get-random-values';
 import { v6 as uuidv6 } from 'uuid';

@@ -8,17 +8,16 @@ export default function AddressInput({ id }) {
     const dispatch = useDispatch();
     const address = useSelector(state => state.people.find(person => person.id == id)?.address);
     const updateAddress = (newAddress) => dispatch(updatePersonsAddress({id, newAddress}));
-
     return (
         <View style={styles.addressContainer}>
-            <Text style={{...styles.mediumText, marginBottom: 5}}>Address: </Text>
+            <Text style={{...styles.mediumText, marginBottom: 5, fontWeight: '600'}}>Address: </Text>
             <GooglePlacesAutocomplete
                 onPress={(data) => {
                     // 'details' is provided when fetchDetails = true
                     updateAddress(data.description);
                 }}
                 query={{
-                    key: 'AIzaSyBcPU3eN5wQGSMQbCaS8ax_a-sR0UQDhZA',
+                    key: process.env.GMAPS_API_KEY,
                     language: 'en',
                 }}
                 styles={{

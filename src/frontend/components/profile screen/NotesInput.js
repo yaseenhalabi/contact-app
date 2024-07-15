@@ -34,7 +34,7 @@ export default function NotesInput({ id }) {
 const styles = StyleSheet.create({
     mediumText: {
         color: COLORS.off_white,
-        fontFamily: 'Trebuc',
+        fontFamily: 'trebuc',
         fontSize: 14,
     },
     notesContainer: {
@@ -46,9 +46,8 @@ const styles = StyleSheet.create({
     },
     subTitle: {
         color: COLORS.off_white,
-        fontFamily: 'Trebuc',
         fontSize: 14,
-        fontWeight: 'bold',
         marginBottom: 10,
+        fontWeight: '600',
     },
 })

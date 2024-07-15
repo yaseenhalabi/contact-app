@@ -1,7 +1,7 @@
 import { SafeAreaView, View, StyleSheet, Text, ScrollView, Image, TextInput, Dimensions, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { COLORS, TAG_COLORS } from '../utils/colors.js';
-import SearchBar from '../components/SearchBar.js';
+import SearchBar from '../components/global/SearchBar.js';
 import Tag from '../components/tags screen/Tag';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTag } from '../redux/tagsSlice.js';
