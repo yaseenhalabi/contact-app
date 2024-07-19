@@ -76,6 +76,7 @@ export default function TagsScreen({ navigation, route}) {
                     }
                     {filteredTags.map(tag => (
                         <Tag 
+                            onPress={() => navigation.push('TaggedPeople', {tagId: tag.id, tagName: tag.name})}
                             key={tag.id}
                             tagName={tag.name} 
                             color={tag.color} 

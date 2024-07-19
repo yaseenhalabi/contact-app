@@ -1,11 +1,11 @@
 import { TouchableOpacity, View, StyleSheet, Text, TextInput } from 'react-native';
 import { COLORS } from '../../utils/colors';
 import { LinearGradient } from 'expo-linear-gradient';
-export default function Tag({ tagName, color, width, height, gap, isTextInput, handleChangeText, isDisabled, onEnter}) {
+export default function Tag({ onPress, tagName, color, width, height, gap, isTextInput, handleChangeText, isDisabled, onEnter}) {
     // A lot of those props are for the new tag input stuff
     return (
         <View elevation={5} style={styles.container}>
-        <TouchableOpacity onPress={() => console.log("hi")} disabled={isDisabled} testID='tag-container'>
+        <TouchableOpacity onPress={onPress} disabled={isDisabled} testID='tag-container'>
             <View 
                 style={{...styles.tagContainer, backgroundColor: color, width: width, marginLeft: gap, marginTop: gap, height: height}}
                 end={{x: .5, y: 5}}
