@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ProfileScreen from '../screens/ProfileScreen'; 
-import PeopleScreen from '../screens/PeopleScreen';
+import TaggedPeopleScreen from '../screens/TaggedPeopleScreen';
+import TagsScreen from '../screens/TagsScreen';
 const Stack = createNativeStackNavigator();
 export default function TagsStackNavigator({navigation, route}) {
     return (
@@ -11,7 +11,7 @@ export default function TagsStackNavigator({navigation, route}) {
             }}
         >
             <Stack.Screen name="ListOfTags" component={TagsScreen} params={route.params}/>
-            <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen name="TaggedPeople" component={TaggedPeopleScreen} />
         </Stack.Navigator>
     )
 }

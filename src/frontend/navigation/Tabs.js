@@ -1,5 +1,5 @@
 import { Image } from 'react-native';
-import TagsScreen from '../screens/TagsScreen';
+import TagsStackNavigator from './TagsStackNavigator';
 import { COLORS } from '../utils/colors';
 import PeopleStackNavigator from './PeopleStackNavigator';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
@@ -27,7 +27,7 @@ export default function Tabs() {
         component={PeopleStackNavigator} 
         testID="people-screen"
         options={{
-            tabBarIcon: ({focused}) => <Image source={focused ? peopleIconFilled : peopleIcon} style={{width: 35, height: 35, bottom: 2}}/>,
+            tabBarIcon: ({focused}) => <Image source={focused ? peopleIconFilled : peopleIcon} style={{width: 35, height: 35, bottom: 3}}/>,
 
         }}
         />
@@ -35,7 +35,7 @@ export default function Tabs() {
         name="Add Person" 
         component={PeopleStackNavigator} 
         options={{
-            tabBarIcon: ({focused}) => <Image source={addPersonIcon} style={{width: 20, height: 25}}/>,
+            tabBarIcon: () => <Image source={addPersonIcon} style={{width: 20, height: 25}}/>,
         }} 
         listeners={({ navigation, route }) => ({
             tabPress: (e) => {
@@ -47,22 +47,22 @@ export default function Tabs() {
 
         <Tab.Screen 
         name="Add Tag" 
-        component={TagsScreen} 
+        component={TagsStackNavigator} 
         testID="tags-screen"
         options={{
-            tabBarIcon: ({focused}) => <Image source={addTagIcon} style={{width: 25, height: 25}}/>
+            tabBarIcon: () => <Image source={addTagIcon} style={{width: 25, height: 25}}/>
         }}
         listeners={({ navigation }) => ({
             tabPress: (e) => {
             e.preventDefault();
-            navigation.jumpTo('Tags', {addingTag: true})
+            navigation.jumpTo('Tags', {screen: 'ListOfTags', params: {addingTag: true}})
             },
         })}
         />
 
         <Tab.Screen 
         name="Tags" 
-        component={TagsScreen} 
+        component={TagsStackNavigator} 
         testID="tags-screen"
         options={{
             tabBarIcon: ({focused}) => <Image source={focused ? tagIconFilled : tagIcon} style={{width: 25, height: 25}}/>
