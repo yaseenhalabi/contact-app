@@ -1,4 +1,5 @@
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView       , StyleSheet, TextInput } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updatePersonsTags } from '../../redux/peopleSlice';
@@ -22,92 +23,73 @@ export default function ProfileTags({ id }) {
         }
     );
     const confirmNewTag = () => {
-        // if the tag already exists, add it to the profile
         if (allTags.map(tag => tag.name).includes(newTag.name)) {
-            tagId = allTags.find(tag => tag.name.toLowerCase() == newTag.name.toLowerCase()).id;
+            const tagId = allTags.find(tag => tag.name.toLowerCase() == newTag.name.toLowerCase()).id;
             updateCurrentTagIds([...profileTagIds, tagId]);
-            setAddingTag(false);
-            setNewTag(
-                {
-                    name: "",
-                    color: TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)],
-                    id: uuidv6()
-                }
-            );
-        }
-
-        // if the tag doesn't exist, add it to the tags and then add it to the profile
-        else if (!allTags.map(tag => tag.name).includes(newTag.name) && newTag.name.length > 0) {
+            resetNewTag();
+        } else if (newTag.name.length > 0) {
             dispatch(addTag({id: newTag.id, name: newTag.name, color: newTag.color}))
             updateCurrentTagIds([...profileTagIds, newTag.id]);
-            setAddingTag(false);
-            setNewTag(
-                {
-                    name: "",
-                    color: TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)],
-                    id: uuidv6()
-                }
-            );
-        }
-        // if the tag is empty or already exists, don't add it
-        else {
+            resetNewTag();
+        } else {
             setAddingTag(false);
         }
-    }
+    };
+
+    const resetNewTag = () => {
+        setAddingTag(false);
+        setNewTag({
+            name: "",
+            color: TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)],
+            id: uuidv6()
+        });
+    };
+
     const addTagToProfile = (tagId) => {
         updateCurrentTagIds([...profileTagIds, tagId]);
         setAddingTag(false);
-    }
+    };
 
     const tagSearchData = allTags.filter(tag => tag.name.toLowerCase().includes(newTag.name.toLowerCase()) && !profileTagIds.includes(tag.id));
+
     return (
         <View style={styles.tagsContainer}>
-            {
-                currentTags.map(({id, color, name}) => 
-                    <View key={id} style={[styles.tag, {backgroundColor: color}]}>
-                        <Text style={styles.smallText}>{name}</Text>
-                    </View>
-                )
-            }
-            {
-                !addingTag ?
-                <TouchableOpacity const onPress={() => setAddingTag(true)} style={{justifyContent: 'center'}}>
+            {currentTags.map(({ id, color, name }) => 
+                <View key={id} style={[styles.tag, { backgroundColor: color }]}>
+                    <Text style={styles.smallText}>{name}</Text>
+                </View>
+            )}
+            {!addingTag ? (
+                <TouchableOpacity onPress={() => setAddingTag(true)} style={{ justifyContent: 'center' }}>
                     <Text style={styles.smallText}>+ Add Tag</Text>
-                </TouchableOpacity> 
-                :
-                <View style={{flexDirection: 'column', width: '100%'}}>
-                    <View style={[styles.tag, {backgroundColor: '#0000003b', borderRadius: 0}]}>
+                </TouchableOpacity>
+            ) : (
+                <View style={{ flexDirection: 'column', width: '100%' }}>
+                    <View style={[styles.tag, { backgroundColor: '#0000003b', borderRadius: 0 }]}>
                         <TextInput 
-                            style={styles.smallText} // Set the width to 100%
+                            style={styles.smallText}
                             onChangeText={(value) => setNewTag({...newTag, name: value})}
                             autoFocus={true}
-                            onBlur={() => confirmNewTag()}
+                            onEndEditing={() => confirmNewTag()}
                             maxLength={30}
                             minWidth={30}
                         />
                     </View>
-                    {
-                    tagSearchData &&
-                    <ScrollView style={styles.tagOptionsContainer}>
-                            {
-                            tagSearchData.map(item =>
-                                    <View key={item.id} style={styles.tagListItemContainer}>
-                                        <TouchableOpacity 
-                                            style={{...styles.tagListItem, backgroundColor: `${item.color}a1`}}
-                                            onPress={() => addTagToProfile(item.id)}
-                                        >
-                                            <Text style={styles.smallText}>{item.name}</Text>
-                                        </TouchableOpacity>
+                    {tagSearchData.length > 0 && (
+                        <KeyboardAwareScrollView keyboardShouldPersistTaps='handled' style={styles.tagOptionsContainer}>
+                            {tagSearchData.map(item => (
+                                <TouchableOpacity key={item.id} onPress={() => addTagToProfile(item.id)} style={styles.tagListItemContainer}>
+                                    <View style={{...styles.tagListItem, backgroundColor: `${item.color}a1`}}>
+                                        <Text style={styles.smallText}>{item.name}</Text>
                                     </View>
-                                )
-                            }
-                    </ScrollView>
-                    }
-
+                                </TouchableOpacity>
+                            ))}
+                        </KeyboardAwareScrollView>
+                    )}
                 </View>
-            }
+            )}
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -131,7 +113,7 @@ const styles = StyleSheet.create({
         fontFamily: 'trebuc',
         fontWeight: 'bold',
         fontSize: 9,
-        width: '100%'
+        width: '100%',
     },
     tagOptionsContainer: {
         zIndex: 3,
@@ -142,8 +124,6 @@ const styles = StyleSheet.create({
         maxHeight: 200,
         borderBottomRightRadius: 10,
         borderBottomLeftRadius: 10,
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 0,
     },
     tagListItemContainer: {
         paddingHorizontal: 10,
@@ -158,5 +138,5 @@ const styles = StyleSheet.create({
         maxHeight: 20,
         alignItems: 'flex-start',
         zIndex: 9,
-    }
-})
+    },
+});

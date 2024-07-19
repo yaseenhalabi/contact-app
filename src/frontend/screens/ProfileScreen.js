@@ -1,10 +1,9 @@
-import { View, TouchableWithoutFeedback, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, TextInput } from 'react-native';
+import { View, TouchableWithoutFeedback, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, Keyboard } from 'react-native';
 import Linking from 'react-native/Libraries/Linking/Linking';
 import instagramLogo from '../assets/icons/instagramlogowhite.png';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
 import xLogo from '../assets/icons/xlogowhite.png';
 import { COLORS } from '../utils/colors';
-import { Keyboard } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux';
 import { updatePersonsNotes } from '../redux/peopleSlice';
 
@@ -18,47 +17,45 @@ import NotesInput from '../components/profile screen/NotesInput';
 export default function ProfileScreen({ route, navigation }) {
     const ID = route.params.id;
     const dispatch = useDispatch();
-    const personData = useSelector(state => state.people.find(person => person.id == ID)) || {name : '', notes: '', xLink: '', instagramLink: ''};
+    const personData = useSelector(state => state.people.find(person => person.id == ID)) || { name: '', notes: '', xLink: '', instagramLink: '' };
     const { notes, xLink, instagramLink } = personData;
     
     const updateNotes = (newNotes) => dispatch(updatePersonsNotes({ID, newNotes})); 
 
     return (
-        <SafeAreaView style={styles.container} testID="ProfileScreen" >
+        <SafeAreaView style={styles.container} testID="ProfileScreen">
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
                     <View style={styles.section}>
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, marginBottom: 5}}>
-                            <TitleInput id={ID}/>
-                            <TouchableOpacity onPress={() => navigation.pop()} style={{opacity: .5, justifyContent: 'center', position: 'static'}}>
-                                <Image source={backArrowIcon} style={{width: 25, height: 25}}/>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, marginBottom: 5 }}>
+                            <TitleInput id={ID} />
+                            <TouchableOpacity onPress={() => navigation.pop()} style={{ opacity: 0.5, justifyContent: 'center', position: 'static' }}>
+                                <Image source={backArrowIcon} style={{ width: 25, height: 25 }} />
                             </TouchableOpacity>
                         </View>
-                        <ProfileTags id={ID}/>
-                        <BirthdayPicker id={ID}/>
-                        <AddressInput id={ID}/>
+                        <ProfileTags id={ID} />
+                        <BirthdayPicker id={ID} />
+                        <AddressInput id={ID} />
                     </View>
-                    <NotesInput id={ID}/>
+                    <NotesInput id={ID} />
 
-                    <PhotoPicker id={ID}/>
+                    <PhotoPicker id={ID} />
                     <View style={styles.socialsContainer}>
-                        {
-                        instagramLink &&
-                        <TouchableOpacity onPress={() => Linking.openURL(instagramLink)}>
-                            <Image source={instagramLogo} style={{width: 40, height: 40}}/>
-                        </TouchableOpacity>
-                        }
-                        {
-                        xLink &&
-                        <TouchableOpacity onPress={() => Linking.openURL(xLink)}>
-                            <Image source={xLogo} style={{width: 40, height: 40}}/>
-                        </TouchableOpacity>
-                        }
+                        {instagramLink && (
+                            <TouchableOpacity onPress={() => Linking.openURL(instagramLink)}>
+                                <Image source={instagramLogo} style={{ width: 40, height: 40 }} />
+                            </TouchableOpacity>
+                        )}
+                        {xLink && (
+                            <TouchableOpacity onPress={() => Linking.openURL(xLink)}>
+                                <Image source={xLogo} style={{ width: 40, height: 40 }} />
+                            </TouchableOpacity>
+                        )}
                     </View>
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>
-    )  
+    );
 }
 
 const styles = StyleSheet.create({
@@ -93,7 +90,6 @@ const styles = StyleSheet.create({
     boldBirthday: {
         fontWeight: 'bold',
     },
-   
     image: {
         width: 100,
         height: 100,
@@ -125,4 +121,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 11,
     }
-}); 
+});
