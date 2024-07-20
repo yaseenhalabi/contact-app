@@ -17,7 +17,7 @@ export default function TagsScreen({ navigation, route}) {
 
     useEffect(() => navigation.addListener('state', () => {
         if (route.params?.addingTag) {
-            toggleAddingTag()
+            setAddingTag(true);
             navigation.setParams({addingTag: false})
         }
     }, [navigation]))
@@ -30,7 +30,6 @@ export default function TagsScreen({ navigation, route}) {
     
     // adding new tags
     const [addingTag, setAddingTag] = useState(false);
-    const toggleAddingTag = () => setAddingTag(!addingTag);
     const [newTag, setNewTag] = useState(
         {
             name: "",
@@ -86,6 +85,7 @@ export default function TagsScreen({ navigation, route}) {
                         />
                     ))}
                 </View>
+                {filteredTags.length == 0 && <Text style={styles.noResultsError}>No Results Found</Text>}
             </ScrollView>
         </SafeAreaView>
     )   
@@ -139,6 +139,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 15,
     },
+    noResultsError: {
+        color: COLORS.placeholder,
+        fontFamily: 'Trebuc',
+        fontSize: 20,
+        marginTop: 10,
+        textAlign: 'center',
+    }
 });
 
 

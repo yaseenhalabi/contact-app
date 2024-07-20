@@ -37,7 +37,7 @@ export default function Tabs() {
         options={{
             tabBarIcon: () => <Image source={addPersonIcon} style={{width: 20, height: 25}}/>,
         }} 
-        listeners={({ navigation, route }) => ({
+        listeners={({ navigation }) => ({
             tabPress: (e) => {
             e.preventDefault();
             navigation.jumpTo('People', {screen: 'ListOfNames', params: {addingPerson: true}})

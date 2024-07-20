@@ -31,6 +31,8 @@ export default function TaggedPeopleScreen({ route, navigation}) {
                         <Name name={data.name} />
                     </TouchableOpacity>
                 ))}
+            {people.length == 0 && <Text style={styles.noResultsError}>No Results Found</Text>}
+            
             </ScrollView> 
         </SafeAreaView>
     )   
@@ -73,6 +75,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginTop: 10,
+    },
+    noResultsError: {
+        color: COLORS.placeholder,
+        fontFamily: 'Trebuc',
+        fontSize: 20,
+        marginTop: 10,
+        textAlign: 'center',
     }
 });
 

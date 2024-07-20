@@ -1,4 +1,4 @@
-import { SafeAreaView, View, StyleSheet, ScrollView, Image, TextInput, Dimensions, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { COLORS } from '../utils/colors';
 import Name from '../components/people screen/Name';
@@ -65,6 +65,7 @@ export default function PeopleScreen({ route, navigation}) {
                         <Name name={data.name} />
                     </TouchableOpacity>
                 ))}
+            {people.length == 0 && <Text style={styles.noResultsError}>No Results Found</Text>}
             </ScrollView> 
         </SafeAreaView>
     )   
@@ -100,6 +101,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         opacity: .7,
     },
+    noResultsError: {
+        color: COLORS.placeholder,
+        fontFamily: 'Trebuc',
+        fontSize: 20,
+        marginTop: 10,
+        textAlign: 'center',
+    }
 });
 
 
