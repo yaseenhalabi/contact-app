@@ -1,9 +1,11 @@
-import { View, StyleSheet, Image, TextInput, Dimensions } from 'react-native';
+import { Modal, TouchableOpacity, View, StyleSheet, Text, Image, TextInput, Dimensions } from 'react-native';
+import { useState } from 'react';
 import { COLORS } from '../../utils/colors';
 import searchIcon from '../../assets/icons/searchicon.png';
 import filterIcon from '../../assets/icons/filtericon.png';
 
-export default function SearchBar({ searchContent, setSearchContent }){
+export default function SearchBar({ searchContent, setSearchContent, filterModalComponent }){
+    const [filterModalOn, setFilterModalOn] = useState(false);
     return (
         <View style={styles.searchContainer}>
             <Image source={searchIcon} style={styles.searchImage}/>
@@ -14,7 +16,13 @@ export default function SearchBar({ searchContent, setSearchContent }){
                 value={searchContent} 
                 onChangeText={setSearchContent} 
             />
-            <Image source={filterIcon} style={styles.searchImage}/>
+            <TouchableOpacity onPress={() => setFilterModalOn(true)}>
+                <Image source={filterIcon} style={styles.searchImage}/>
+            </TouchableOpacity>
+            <Modal animationType='slide' transparent={true} visible={filterModalOn}>
+                {filterModalComponent}
+                <Text>hii</Text>
+            </Modal>
         </View> 
     )
 }

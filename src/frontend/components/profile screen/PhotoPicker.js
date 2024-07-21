@@ -1,14 +1,14 @@
 import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { updatePersonsName } from '../../redux/peopleSlice';
 import { COLORS } from '../../utils/colors';
+import { updatePersonsImages } from '../../redux/peopleSlice';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function PhotoPicker({ id }) {
     const dispatch = useDispatch();
-    
-    const [images, setImages] = useState([]);
+    const images = useSelector(state => state.people.find(person => person.id === id).images); 
+    const updateImages = (newImages) => dispatch(updatePersonsImages({id, newImages}));
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -16,7 +16,7 @@ export default function PhotoPicker({ id }) {
             aspect: [4, 3],
             quality: 1,
         });
-        if (!result.canceled) setImages([...images, result.assets[0].uri]);
+        if (!result.canceled) updateImages([...images, result.assets[0].uri]);
     };
 
     return (

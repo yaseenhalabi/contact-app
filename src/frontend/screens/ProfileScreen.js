@@ -40,7 +40,7 @@ export default function ProfileScreen({ route, navigation }) {
                     <NotesInput id={ID} />
 
                     <PhotoPicker id={ID} />
-                    <View style={styles.socialsContainer}>
+                    {/* <View style={styles.socialsContainer}>
                         {instagramLink && (
                             <TouchableOpacity onPress={() => Linking.openURL(instagramLink)}>
                                 <Image source={instagramLogo} style={{ width: 40, height: 40 }} />
@@ -51,7 +51,7 @@ export default function ProfileScreen({ route, navigation }) {
                                 <Image source={xLogo} style={{ width: 40, height: 40 }} />
                             </TouchableOpacity>
                         )}
-                    </View>
+                    </View> */}
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>

@@ -1,4 +1,4 @@
-import { SafeAreaView, View, StyleSheet, Text, ScrollView, Image, TextInput, Dimensions, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, StyleSheet, Text, ScrollView, Dimensions } from 'react-native';
 import { useState, useEffect } from 'react';
 import { COLORS, TAG_COLORS } from '../utils/colors.js';
 import SearchBar from '../components/global/SearchBar.js';

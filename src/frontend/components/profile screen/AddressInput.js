@@ -3,20 +3,30 @@ import { COLORS } from '../../utils/colors';
 import { updatePersonsAddress } from '../../redux/peopleSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { API_KEY } from '../../secret'
+import { useEffect, useRef } from 'react';
 
 export default function AddressInput({ id }) {
     const dispatch = useDispatch();
     const address = useSelector(state => state.people.find(person => person.id == id)?.address);
     const updateAddress = (newAddress) => dispatch(updatePersonsAddress({id, newAddress}));
+    const ref = useRef();
+
+    useEffect(() => {
+        ref.current?.setAddressText(address);
+    }, []);
     return (
         <View style={styles.addressContainer}>
             <Text style={{...styles.mediumText, marginBottom: 5, fontWeight: '600'}}>Address: </Text>
             <GooglePlacesAutocomplete
+                ref={ref}
+
                 onPress={(data) => {
                     updateAddress(data.description);
                 }}
+                enablePoweredByContainer={false}
                 query={{
-                    key: process.env.GMAPS_API_KEY,
+                    key: API_KEY,
                     language: 'en',
                 }}
                 styles={{
@@ -28,6 +38,7 @@ export default function AddressInput({ id }) {
                 }}
                 textInputProps={
                     {
+                        defaultValue: address,
                         placeholder: 'Enter Address...',
                         placeholderTextColor: COLORS.placeholder,
                     }
