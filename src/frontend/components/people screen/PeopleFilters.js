@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image, Modal, Tou
 import { COLORS } from '../../utils/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePeoplePreferences } from '../../redux/preferencesSlice';
+import { useState } from 'react';
 
 export default function PeopleFilters() {
     const dispatch = useDispatch();
@@ -13,17 +14,30 @@ export default function PeopleFilters() {
         {name: 'Z-A', value: 'alphabetical-reverse'},
         {name: 'Birthday', value: 'birthday'},
     ] 
+    const [selectedSortBy, setSelectedSortBy] = useState(preferences.sortMethod);
+    const updateSortBy = (newSortBy) => {
+        setSelectedSortBy(newSortBy);
+        updatePreferences({...preferences, sortMethod: newSortBy});
+    }
     return (
         <View style={styles.container}>
             <View style={styles.sortByContainer}>
                 <Text style={styles.text}>Sort By:</Text>
                 { sortByOptions.map(option => (
-                    <TouchableOpacity onPress={() => updatePreferences({...preferences, sortMethod: option.value})} key={option.value} style={styles.sortByItemContainer}>
+                    <TouchableOpacity 
+                        onPress={() => updateSortBy(option.value)} 
+                        key={option.value} 
+                        style={{...styles.sortByItemContainer, opacity: selectedSortBy == option.value ? 1 : .5}}
+                    >
                         <Text style={styles.text}>{option.name}</Text>
                     </TouchableOpacity>
                 ))
                 }
             </View>
+            <View style={styles.tagFilterContainer}>
+                <Text style={styles.text}>Has Tag: </Text>
+            </View>
+
         </View>
     )
 }
