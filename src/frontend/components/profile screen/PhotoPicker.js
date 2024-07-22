@@ -7,7 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 export default function PhotoPicker({ id }) {
     const dispatch = useDispatch();
-    const images = useSelector(state => state.people.find(person => person.id === id).images); 
+    const images = useSelector(state => state.people.find(person => person.id === id).images) || []; 
     const updateImages = (newImages) => dispatch(updatePersonsImages({id, newImages}));
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({

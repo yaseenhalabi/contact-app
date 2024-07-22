@@ -1,4 +1,4 @@
-import { Modal, TouchableOpacity, View, StyleSheet, Text, Image, TextInput, Dimensions } from 'react-native';
+import { Modal, TouchableOpacity, ScrollView, TouchableWithoutFeedback, View, StyleSheet, Text, Image, TextInput, Dimensions } from 'react-native';
 import { useState } from 'react';
 import { COLORS } from '../../utils/colors';
 import searchIcon from '../../assets/icons/searchicon.png';
@@ -19,9 +19,15 @@ export default function SearchBar({ searchContent, setSearchContent, filterModal
             <TouchableOpacity onPress={() => setFilterModalOn(true)}>
                 <Image source={filterIcon} style={styles.searchImage}/>
             </TouchableOpacity>
-            <Modal animationType='slide' transparent={true} visible={filterModalOn}>
-                {filterModalComponent}
-                <Text>hii</Text>
+            <Modal transparent={true} visible={filterModalOn} >
+                <View style={styles.filterModalContainer}>
+                    <View style={styles.filterModal}>
+                        <TouchableOpacity style={styles.modalCloseButton} onPress={() => setFilterModalOn(false)}>
+                            <Text style={styles.modalCloseButtonText}>x</Text>
+                        </TouchableOpacity>
+                        {filterModalComponent}
+                    </View>
+                </View>          
             </Modal>
         </View> 
     )
@@ -30,6 +36,13 @@ export default function SearchBar({ searchContent, setSearchContent, filterModal
 const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+    modalContainer: {
+        backgroundColor: '#000000aa',
+        flex: 1,
+        height: 200,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     searchContainer: {
         backgroundColor: COLORS.secondary,
         flexDirection: 'row',
@@ -55,6 +68,35 @@ const styles = StyleSheet.create({
         opacity: .7,
         top: 3,
     },
+    filterModalContainer: {
+        backgroundColor: '#0000006c',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    filterModal: {
+        backgroundColor: COLORS.secondary,
+        width: 300,
+        height: 300,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    modalCloseButton: {
+        width: 40,
+        height: 40,
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1,
+    },
+    modalCloseButtonText: {
+        color: COLORS.off_white,
+        fontSize: 20,
+        fontWeight: 'bold',
+    }
 });
 
 

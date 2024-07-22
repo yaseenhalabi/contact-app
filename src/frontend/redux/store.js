@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import peopleReducer from './peopleSlice';
+import peopleSlice from './peopleSlice';
 import tagsSlice from './tagsSlice';
+import preferencesSlice from './preferencesSlice';
 const store = configureStore({
   reducer: {
-    people: peopleReducer,
+    people: peopleSlice,
     tags: tagsSlice,
+    preferences: preferencesSlice,
   },
 });
 

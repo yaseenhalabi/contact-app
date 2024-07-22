@@ -8,6 +8,7 @@ import SearchBar from '../components/global/SearchBar';
 import { useEffect } from 'react'
 import 'react-native-get-random-values';
 import { v6 as uuidv6 } from 'uuid';
+import PeopleFilters from '../components/people screen/PeopleFilters';
 
 export default function PeopleScreen({ route, navigation}) {
     useEffect(() => navigation.addListener('state', () => {
@@ -20,7 +21,21 @@ export default function PeopleScreen({ route, navigation}) {
     const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState('');
     const peopleState = useSelector(state => state.people);
-    const people = searchContent.length == 0 ? peopleState : peopleState.filter(person => person.name.toLowerCase().includes(searchContent.toLowerCase()));
+    let people = peopleState.filter(person => person.name.toLowerCase().includes(searchContent.toLowerCase()));
+    const preferences = useSelector(state => state.preferences.people);
+    if (preferences.sortMethod == 'alphabetical') {
+        people = people.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    else if (preferences.sortMethod == 'alphabetical-reverse') {
+        people = people.sort((a, b) => b.name.localeCompare(a.name));
+    }
+
+    if (preferences.tagFilters) {
+        for (let tag of preferences.tagFilters) {
+            people = people.filter(person => person.tags.includes(tag));
+        }
+    }
+
     const [newName, setNewName] = useState('');
     const [addingPerson, setAddingPerson] = useState(false);
 
@@ -54,7 +69,11 @@ export default function PeopleScreen({ route, navigation}) {
     return (
         <SafeAreaView style={styles.container}>  
             {/* <AddNameButton isDisabled={searchContent} onPress={() => setAddingPerson(true)}/> */}
-            <SearchBar searchContent={searchContent} setSearchContent={setSearchContent}/>
+            <SearchBar 
+                searchContent={searchContent}
+                setSearchContent={setSearchContent}
+                filterModalComponent={<PeopleFilters />}
+            />
             <ScrollView>
                 {
                     addingPerson &&

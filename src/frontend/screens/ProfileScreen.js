@@ -16,11 +16,6 @@ import NotesInput from '../components/profile screen/NotesInput';
 
 export default function ProfileScreen({ route, navigation }) {
     const ID = route.params.id;
-    const dispatch = useDispatch();
-    const personData = useSelector(state => state.people.find(person => person.id == ID)) || { name: '', notes: '', xLink: '', instagramLink: '' };
-    const { notes, xLink, instagramLink } = personData;
-    
-    const updateNotes = (newNotes) => dispatch(updatePersonsNotes({ID, newNotes})); 
 
     return (
         <SafeAreaView style={styles.container} testID="ProfileScreen">
