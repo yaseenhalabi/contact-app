@@ -4,7 +4,7 @@ export const preferencesSlice = createSlice({
     name: 'preferences',
     initialState: {
         people: {
-            sortMethod: 'alphabetical',
+            sortMethod: '',
             tagFilters: [],
 
         },
@@ -13,18 +13,18 @@ export const preferencesSlice = createSlice({
         }
     },
     reducers: {
-        setPeoplePrefernces: (state, action) => {
-            state.people.newPeoplePreferences = action.payload;
+        updatePeoplePreferences: (state, action) => {
+            state.people = action.payload;
         },
-        setTagPreferences: (state, action) => {
-            state.tags.newTagPreferences = action.payload;
+        updateTagPreferences: (state, action) => {
+            state.tags = action.payload;
         },
     }
 });
 
 export const {
-    setPeoplePrefernces,
-    setTagPreferences,
+    updatePeoplePreferences,
+    updateTagPreferences,
 } = preferencesSlice.actions;
 
 export default preferencesSlice.reducer

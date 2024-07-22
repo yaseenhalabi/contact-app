@@ -22,12 +22,15 @@ export default function PeopleScreen({ route, navigation}) {
     const [searchContent, setSearchContent] = useState('');
     const peopleState = useSelector(state => state.people);
     let people = peopleState.filter(person => person.name.toLowerCase().includes(searchContent.toLowerCase()));
-    const preferences = useSelector(state => state.preferences.people);
+    const preferences = useSelector(state => state.preferences.people) || {};
     if (preferences.sortMethod == 'alphabetical') {
         people = people.sort((a, b) => a.name.localeCompare(b.name));
     }
     else if (preferences.sortMethod == 'alphabetical-reverse') {
         people = people.sort((a, b) => b.name.localeCompare(a.name));
+    }
+    else if (preferences.sortMethod == 'birthday') {
+        console.log('sorting by birthday');
     }
 
     if (preferences.tagFilters) {
