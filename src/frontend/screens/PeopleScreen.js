@@ -23,14 +23,36 @@ export default function PeopleScreen({ route, navigation}) {
     const peopleState = useSelector(state => state.people);
     let people = peopleState.filter(person => person.name.toLowerCase().includes(searchContent.toLowerCase()));
     const preferences = useSelector(state => state.preferences.people) || {};
+
+    const calculateDaysUntilBirthday = (birthday) => {
+        today = new Date();
+        bday = new Date(birthday);
+        bday.setFullYear(today.getFullYear());
+        if( today.getTime() > bday.getTime()) bday.setFullYear(bday.getFullYear()+1);
+        time_diff = bday.getTime()-today.getTime();
+        days = Math.ceil(time_diff/(1000*60*60*24));
+        return days;
+    }
+
     if (preferences.sortMethod == 'alphabetical') {
         people = people.sort((a, b) => a.name.localeCompare(b.name));
     }
     else if (preferences.sortMethod == 'alphabetical-reverse') {
         people = people.sort((a, b) => b.name.localeCompare(a.name));
     }
-    else if (preferences.sortMethod == 'birthday') {
-        console.log('sorting by birthday');
+    else if (preferences.sortMethod == 'birthday-soonest') {
+        people = people.sort((a, b) => {
+            if (a.birthday && b.birthday) {
+                return calculateDaysUntilBirthday(a.birthday) - calculateDaysUntilBirthday(b.birthday);
+            }
+            else if (a.birthday) {
+                return -1;
+            }
+            else if (b.birthday) {
+                return 1;
+            }
+            return 0;
+        });
     }
 
     if (preferences.tagFilters) {

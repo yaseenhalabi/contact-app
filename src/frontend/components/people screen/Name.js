@@ -8,6 +8,9 @@ export default function Name({ name, isInput, handleNameChange, onSubmit }) {
                 <TextInput
                     style={styles.text}
                     value={name}
+                    autoComplete='off'
+                    autoCapitalize='words'
+                    autoCorrect={false}
                     placeholder='Enter name...'
                     onChangeText={handleNameChange}
                     onSubmitEditing={onSubmit}

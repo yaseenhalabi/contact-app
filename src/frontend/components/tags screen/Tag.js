@@ -21,6 +21,9 @@ export default function Tag({ onPress, tagName, color, width, height, gap, isTex
                         onChangeText={handleChangeText}
                         autoFocus
                         onEndEditing={onEnter}
+                        autoComplete='off'
+                        autoCapitalize='words'
+                        autoCorrect={false}
                     />
                     :
                     <Text style={styles.tagText}>{tagName}</Text>

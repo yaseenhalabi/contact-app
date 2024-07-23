@@ -10,6 +10,9 @@ export default function SearchBar({ searchContent, setSearchContent, filterModal
         <View style={styles.searchContainer}>
             <Image source={searchIcon} style={styles.searchImage}/>
             <TextInput 
+                autoCapitalize='none'
+                autoComplete='off'
+                autoCorrect={false}
                 style={styles.searchInput} 
                 placeholder="Search..." 
                 placeholderTextColor={styles.searchInput.color} 
@@ -86,8 +89,8 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         position: 'absolute',
-        top: 10,
-        right: 10,
+        top: 0,
+        right: 0,
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 1,
