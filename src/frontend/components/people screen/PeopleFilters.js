@@ -6,6 +6,25 @@ import { useState } from 'react';
 import searchIcon from '../../assets/icons/searchicon.png';
 
 export default function PeopleFilters() {
+    const [input, setInput] = useState('');
+    const [suggestion, setSuggestion] = useState('');
+    const tagSuggestions = useSelector(state => state.tags);
+    const handleChange = (text) => {
+      const currentSuggestion = tagSuggestions.find(s => s.name.toLowerCase().startsWith(text.toLowerCase()));
+      if (currentSuggestion && text.length > 0) {
+        setSuggestion(currentSuggestion.name)
+          } else {
+        setSuggestion('')
+      }
+      setInput(text)
+    };
+    const handleReturn = () => {
+        if (suggestion.length > 0) {
+            setInput(suggestion);
+            setSuggestion('');
+        }
+        
+    }
     const dispatch = useDispatch();
     const preferences = useSelector(state => state.preferences.people);
     const updatePreferences = (newPeoplePreferences) => dispatch(updatePeoplePreferences(newPeoplePreferences));
@@ -21,7 +40,6 @@ export default function PeopleFilters() {
         updatePreferences({...preferences, sortMethod: newSortBy});
     }
 
-    const tagOptions = useSelector(state => state.tags);
     return (
         <View style={styles.container}>
             <View style={styles.sortByContainer}>
@@ -42,13 +60,23 @@ export default function PeopleFilters() {
                 <View style={styles.sortByTagInputContainer}>
                     <Image source={searchIcon} style={styles.searchIcon} />
                     <TextInput 
+                        value={input}
+                        onChangeText={handleChange} 
                         style={styles.sortByTagInput}
                         placeholder="Tag Name"
                         placeholderTextColor={"#888"}
                         autoCapitalize='none'
                         autoComplete='off'
                         autoCorrect={false}
+                        onEndEditing={() => handleReturn()}
+
                     />
+                    {input.length < 14 && suggestion.length > 0 &&
+                    <View style={styles.autofillTextContainer}>
+                        <Text style={styles.text}>{input}</Text>
+                        <Text style={{...styles.text, color: COLORS.placeholder}}>{suggestion.substring(input.length)}</Text>
+                    </View>
+                    }
                 </View>
             </View>
 
@@ -97,6 +125,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         flex: 1,
         width: 'auto',
+        maxWidth: 150,
     },
     searchIcon: {
         width: 15,
@@ -108,6 +137,17 @@ const styles = StyleSheet.create({
         color: COLORS.off_white,
         fontFamily: 'Trebuc',
         fontSize: 15,
+        textAlign: 'left',
         flex: 2,
-    }
+    },
+    autofillTextContainer: {
+        position: 'absolute',
+        left: 10+15+5,
+        top: 5,
+        flexDirection: 'row',
+        maxWidth: 110,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        
+    },
 });
