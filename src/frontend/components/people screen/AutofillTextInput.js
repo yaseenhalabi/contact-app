@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         flex: 1,
         width: 'auto',
-        maxWidth: 150,
+        maxWidth: 170,
     },
     searchIcon: {
         width: 15,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 20,
         flexDirection: 'row',
-        maxWidth: 110,
+        maxWidth: 120,
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         

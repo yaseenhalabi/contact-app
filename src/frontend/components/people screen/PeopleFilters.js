@@ -28,8 +28,19 @@ export default function PeopleFilters() {
         updatePreferences({...preferences, tagFilters: [...preferences.tagFilters, tag]});
     }
 
+    const resetFilters = () => {
+        setSelectedSortBy('none');
+        updatePreferences({sortMethod: 'none', tagFilters: []});
+    }
     return (
         <View style={styles.container}>
+            <TouchableOpacity 
+                style={styles.resetFiltersContainer}
+                onPress={resetFilters}
+                hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+            >
+                <Text style={styles.resetFiltersText}>Reset Filters</Text>
+            </TouchableOpacity>
             <View style={styles.sortByContainer}>
                 <Text style={styles.text}>Sort By:</Text>
                 { sortByOptions.map(option => (
@@ -93,19 +104,18 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primary,
         paddingHorizontal: 10,
         paddingVertical: 5,
+        borderRadius: 8,
     },
     sortByTagContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'space-between',
-        alignItems: 'center',
         gap: 10,
+        alignItems: 'center',
     },
     sortByTagInputContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 10,
         paddingVertical: 5,
         flex: 1,
         width: 'auto',
@@ -145,7 +155,18 @@ const styles = StyleSheet.create({
         color: COLORS.off_white,
         fontFamily: 'Trebuc',
         fontSize: 10,
+    },
+    resetFiltersContainer: {
+        right: 5,
+        position: 'absolute',
+        bottom: 5,
+    },
+    resetFiltersText: {
+        color: COLORS.off_white,
+        fontFamily: 'Trebuc',
+        fontSize: 10,
     }
+    
 
     
 });
