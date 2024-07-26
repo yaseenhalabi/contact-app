@@ -2,42 +2,31 @@ import { View, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity, Image,
 import { COLORS } from '../../utils/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePeoplePreferences } from '../../redux/preferencesSlice';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import searchIcon from '../../assets/icons/searchicon.png';
+import AutofillTextInput from './AutofillTextInput';
 
 export default function PeopleFilters() {
-    const [input, setInput] = useState('');
-    const [suggestion, setSuggestion] = useState('');
-    const tagSuggestions = useSelector(state => state.tags);
-    const handleChange = (text) => {
-      const currentSuggestion = tagSuggestions.find(s => s.name.toLowerCase().startsWith(text.toLowerCase()));
-      if (currentSuggestion && text.length > 0) {
-        setSuggestion(currentSuggestion.name)
-          } else {
-        setSuggestion('')
-      }
-      setInput(text)
-    };
-    const handleReturn = () => {
-        if (suggestion.length > 0) {
-            setInput(suggestion);
-            setSuggestion('');
-        }
-        
-    }
     const dispatch = useDispatch();
+    const tagSuggestions = useSelector(state => state.tags);
     const preferences = useSelector(state => state.preferences.people);
     const updatePreferences = (newPeoplePreferences) => dispatch(updatePeoplePreferences(newPeoplePreferences));
+    const [selectedSortBy, setSelectedSortBy] = useState(preferences.sortMethod || 'none');
     const sortByOptions = [
         {name: 'None', value: 'none'},
         {name: 'A-Z', value: 'alphabetical'},
         {name: 'Z-A', value: 'alphabetical-reverse'},
         {name: 'Soonest Birthday', value: 'birthday-soonest'},
     ] 
-    const [selectedSortBy, setSelectedSortBy] = useState(preferences.sortMethod || 'none');
     const updateSortBy = (newSortBy) => {
         setSelectedSortBy(newSortBy);
         updatePreferences({...preferences, sortMethod: newSortBy});
+    }
+    const handleReturn = (suggestion) => {
+        const tag = tagSuggestions.find(s => s.name.toLowerCase() == suggestion.toLowerCase());
+        if (!tag) return
+        if (preferences.tagFilters.map(tag => tag.id).includes(tag.id)) return;
+        updatePreferences({...preferences, tagFilters: [...preferences.tagFilters, tag]});
     }
 
     return (
@@ -58,27 +47,19 @@ export default function PeopleFilters() {
             <View style={styles.sortByTagContainer}>
                 <Text style={styles.text}>Has Tag(s):</Text>
                 <View style={styles.sortByTagInputContainer}>
-                    <Image source={searchIcon} style={styles.searchIcon} />
-                    <TextInput 
-                        value={input}
-                        onChangeText={handleChange} 
-                        style={styles.sortByTagInput}
-                        placeholder="Tag Name"
-                        placeholderTextColor={"#888"}
-                        autoCapitalize='none'
-                        autoComplete='off'
-                        autoCorrect={false}
-                        onEndEditing={() => handleReturn()}
-
-                    />
-                    {input.length < 14 && suggestion.length > 0 &&
-                    <View style={styles.autofillTextContainer}>
-                        <Text style={styles.text}>{input}</Text>
-                        <Text style={{...styles.text, color: COLORS.placeholder}}>{suggestion.substring(input.length)}</Text>
-                    </View>
-                    }
+                    <AutofillTextInput suggestions={tagSuggestions} onEndEditing={(tagId) => handleReturn(tagId)} />
                 </View>
             </View>
+            {
+            preferences.tagFilters.length > 0 &&
+            <View style={styles.tagContainer}>
+                {preferences.tagFilters.map(tag => (
+                    <View key={tag.id} style={{...styles.tag, backgroundColor: tag.color}}>
+                        <Text style={styles.tagText}>{tag.name}</Text>
+                    </View>
+                ))}
+            </View>
+            }
 
         </View>
     )
@@ -106,7 +87,6 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primary,
         paddingHorizontal: 10,
         paddingVertical: 5,
-        borderRadius: 8,
     },
     sortByTagContainer: {
         flexDirection: 'row',
@@ -122,7 +102,6 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primary,
         paddingHorizontal: 10,
         paddingVertical: 5,
-        borderRadius: 8,
         flex: 1,
         width: 'auto',
         maxWidth: 150,
@@ -133,21 +112,29 @@ const styles = StyleSheet.create({
         marginRight: 5,
         opacity: .3,
     },
-    sortByTagInput: {
-        color: COLORS.off_white,
-        fontFamily: 'Trebuc',
-        fontSize: 15,
-        textAlign: 'left',
-        flex: 2,
-    },
-    autofillTextContainer: {
-        position: 'absolute',
-        left: 10+15+5,
-        top: 5,
+    tagContainer: {
         flexDirection: 'row',
-        maxWidth: 110,
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        
+        flexWrap: 'wrap',
+        gap: 6,
+        backgroundColor: COLORS.primary,
+        padding: 5,
     },
+    tag: {
+        backgroundColor: "#FF6B85",
+        borderRadius: 360,
+        paddingVertical: 4,
+        paddingHorizontal: 13,
+        width: 'auto',
+        maxHeight: 20,
+        alignItems: 'flex-start',
+        zIndex: 9,
+    },
+    tagText: {
+        color: COLORS.white,
+        fontFamily: 'trebuc',
+        fontWeight: 'bold',
+        fontSize: 9,
+        width: '100%',
+    },
+    
 });
