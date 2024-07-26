@@ -3,7 +3,6 @@ import { COLORS } from '../../utils/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePeoplePreferences } from '../../redux/preferencesSlice';
 import { useState, useRef } from 'react';
-import searchIcon from '../../assets/icons/searchicon.png';
 import AutofillTextInput from './AutofillTextInput';
 
 export default function PeopleFilters() {
@@ -52,6 +51,7 @@ export default function PeopleFilters() {
             </View>
             {
             preferences.tagFilters.length > 0 &&
+            <View>
             <View style={styles.tagContainer}>
                 {preferences.tagFilters.map(tag => (
                     <View key={tag.id} style={{...styles.tag, backgroundColor: tag.color}}>
@@ -59,8 +59,14 @@ export default function PeopleFilters() {
                     </View>
                 ))}
             </View>
+            <TouchableOpacity 
+                style={styles.clearTagsContainer}
+                onPress={() => updatePreferences({...preferences, tagFilters: []})}
+            >
+                <Text style={styles.clearTagsText}>Clear Tags</Text>
+            </TouchableOpacity>
+            </View>
             }
-
         </View>
     )
 }
@@ -99,28 +105,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: COLORS.primary,
         paddingHorizontal: 10,
         paddingVertical: 5,
         flex: 1,
         width: 'auto',
         maxWidth: 150,
     },
-    searchIcon: {
-        width: 15,
-        height: 15,
-        marginRight: 5,
-        opacity: .3,
-    },
     tagContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 6,
+        gap: 5,
         backgroundColor: COLORS.primary,
         padding: 5,
+        borderRadius: 15,
     },
     tag: {
-        backgroundColor: "#FF6B85",
         borderRadius: 360,
         paddingVertical: 4,
         paddingHorizontal: 13,
@@ -136,5 +135,17 @@ const styles = StyleSheet.create({
         fontSize: 9,
         width: '100%',
     },
+    clearTagsContainer: {
+        borderRadius: 5,
+        alignItems: 'flex-start',
+        marginTop: 2,
+    },
+    clearTagsText: {
+        opacity: .6,
+        color: COLORS.off_white,
+        fontFamily: 'Trebuc',
+        fontSize: 10,
+    }
+
     
 });

@@ -34,7 +34,7 @@ export default function AutofillTextInput({ suggestions, onEndEditing }) {
                 onChangeText={handleChange} 
                 style={styles.sortByTagInput}
                 placeholder="Tag Name"
-                placeholderTextColor={"#888"}
+                placeholderTextColor={"#ffffff69"}
                 autoCapitalize='none'
                 autoComplete='off'
                 autoCorrect={false}
@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: COLORS.primary,
         borderRadius: 8,
         flex: 1,
         width: 'auto',
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
         width: 15,
         height: 15,
         marginRight: 5,
-        opacity: .3,
+        opacity: .7,
     },
     sortByTagInput: {
         color: COLORS.off_white,
