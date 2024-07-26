@@ -1,10 +1,10 @@
-import { Modal, TouchableOpacity, ScrollView, TouchableWithoutFeedback, View, StyleSheet, Text, Image, TextInput, Dimensions } from 'react-native';
+import { Modal, TouchableOpacity, View, StyleSheet, Text, Image, TextInput, Dimensions } from 'react-native';
 import { useState } from 'react';
 import { COLORS } from '../../utils/colors';
 import searchIcon from '../../assets/icons/searchicon.png';
 import filterIcon from '../../assets/icons/filtericon.png';
 
-export default function SearchBar({ searchContent, setSearchContent, filterModalComponent }){
+export default function SearchBar({ searchContent, setSearchContent, filterModalComponent, showFilter }){
     const [filterModalOn, setFilterModalOn] = useState(false);
     return (
         <View style={styles.searchContainer}>
@@ -19,10 +19,13 @@ export default function SearchBar({ searchContent, setSearchContent, filterModal
                 value={searchContent} 
                 onChangeText={setSearchContent} 
             />
+            {
+            showFilter &&
             <TouchableOpacity onPress={() => setFilterModalOn(true)}>
                 <Image source={filterIcon} style={styles.searchImage}/>
             </TouchableOpacity>
-            <Modal transparent={true} visible={filterModalOn} >
+            }
+            <Modal transparent={true} visible={filterModalOn && showFilter}>
                 <View style={styles.filterModalContainer}>
                     <View style={styles.filterModal}>
                         <TouchableOpacity style={styles.modalCloseButton} onPress={() => setFilterModalOn(false)}>

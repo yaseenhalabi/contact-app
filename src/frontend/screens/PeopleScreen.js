@@ -4,6 +4,7 @@ import { COLORS } from '../utils/colors';
 import Name from '../components/people screen/Name';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPerson } from '../redux/peopleSlice'
+import { updatePeoplePreferences } from '../redux/preferencesSlice';
 import SearchBar from '../components/global/SearchBar';
 import { useEffect } from 'react'
 import 'react-native-get-random-values';
@@ -11,18 +12,20 @@ import { v6 as uuidv6 } from 'uuid';
 import PeopleFilters from '../components/people screen/PeopleFilters';
 
 export default function PeopleScreen({ route, navigation}) {
-    useEffect(() => navigation.addListener('state', () => {
-        if (route.params?.addingPerson) {
-            setAddingPerson(true)
-            navigation.setParams({addingPerson: false})
-        }
-    }, [navigation]))
 
     const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState('');
     const peopleState = useSelector(state => state.people);
     let people = peopleState.filter(person => person.name.toLowerCase().includes(searchContent.toLowerCase()));
     const preferences = useSelector(state => state.preferences.people) || {};
+
+    useEffect(() => navigation.addListener('state', () => {
+        if (route.params?.addingPerson) {
+            dispatch(updatePeoplePreferences({sortMethod: 'none', tagFilters: []}))
+            setAddingPerson(true)
+            navigation.setParams({addingPerson: false})
+        }
+    }, [navigation]))
 
     const calculateDaysUntilBirthday = (birthday) => {
         today = new Date();
@@ -98,6 +101,7 @@ export default function PeopleScreen({ route, navigation}) {
                 searchContent={searchContent}
                 setSearchContent={setSearchContent}
                 filterModalComponent={<PeopleFilters />}
+                showFilter
             />
             <ScrollView>
                 {
