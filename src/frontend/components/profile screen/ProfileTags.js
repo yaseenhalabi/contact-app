@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
         paddingHorizontal: 13,
         width: 'auto',
-        maxHeight: 20,
+        maxHeight: 30,
         alignItems: 'flex-start',
         zIndex: 9,
     },
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         color: COLORS.white,
         fontFamily: 'trebuc',
         fontWeight: 'bold',
-        fontSize: 9,
+        fontSize: 11,
         width: '100%',
     },
     tagOptionsContainer: {
