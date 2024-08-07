@@ -3,7 +3,13 @@ import { COLORS } from '../../utils/colors';
 import { updatePersonsAddress } from '../../redux/peopleSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { API_KEY } from '../../secret'
+let API_KEY;
+try {
+    API_KEY = require('../../secret').API_KEY;
+} catch (error) {
+    console.error('Error: Failed to import API_KEY from secret file.');
+}
+
 import { useEffect, useRef } from 'react';
 
 export default function AddressInput({ id }) {
