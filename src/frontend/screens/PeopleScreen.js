@@ -15,9 +15,9 @@ export default function PeopleScreen({ route, navigation}) {
 
     const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState('');
-    let peopleState = useSelector(state => state.people);
-    let people = peopleState.filter(person => person?.name.toLowerCase().includes(searchContent.toLowerCase()) || []);
     const preferences = useSelector(state => state.preferences.people) || {};
+    const peopleState = useSelector(state => state.people);    
+    let people = peopleState.filter(person => person.name.toLowerCase().includes(searchContent.toLowerCase())) || []
 
     useEffect(() => navigation.addListener('state', () => {
         if (route.params?.addingPerson) {
