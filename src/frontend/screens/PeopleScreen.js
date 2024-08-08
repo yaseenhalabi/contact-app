@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import 'react-native-get-random-values';
 import { v6 as uuidv6 } from 'uuid';
 import PeopleFilters from '../components/people screen/PeopleFilters';
+import DeleteFooter from '../components/global/DeleteFooter';
 
 export default function PeopleScreen({ route, navigation}) {
 
@@ -115,6 +116,7 @@ export default function PeopleScreen({ route, navigation}) {
                 ))}
             {people.length == 0 && <Text style={styles.noResultsError}>No People Found</Text>}
             </ScrollView> 
+            <DeleteFooter deleteText={`Delete 2 Contacts`} />
         </SafeAreaView>
     )   
 }
