@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, Image, TextInput } from 'react-native';
 import { COLORS } from '../../utils/colors';
-export default function Name({ name, isInput, handleNameChange, onSubmit }) {
+export default function Name({ name, isInput, handleNameChange, onSubmit, isSelected }) {
     return (
-        <View style={styles.container}>
+        <View style={{...styles.container, backgroundColor: isSelected ? COLORS.secondary : COLORS.primary, borderBottomWidth: isSelected ? 0 : .5}}>
             {
                 isInput ?
                 <TextInput
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         borderColor: '#ffffff51',
-        borderBottomWidth: .5,
         paddingHorizontal: 15,
         paddingVertical: 10,
     },

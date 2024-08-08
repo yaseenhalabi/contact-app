@@ -1,9 +1,9 @@
-import { SafeAreaView, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, FlatListComponent } from 'react-native';
 import { useState } from 'react';
 import { COLORS } from '../utils/colors';
 import Name from '../components/people screen/Name';
 import { useSelector, useDispatch } from 'react-redux';
-import { addPerson } from '../redux/peopleSlice'
+import { addPerson, removePeople } from '../redux/peopleSlice'
 import { updatePeoplePreferences } from '../redux/preferencesSlice';
 import SearchBar from '../components/global/SearchBar';
 import { useEffect } from 'react'
@@ -20,7 +20,8 @@ export default function PeopleScreen({ route, navigation}) {
     const peopleState = useSelector(state => state.people);    
     let people = peopleState.filter(person => person.name.toLowerCase().includes(searchContent.toLowerCase())) || []
 
-    useEffect(() => navigation.addListener('state', () => {
+    // ~~~~~~ adding people from other screens
+    useEffect(() => navigation.addListener('state', () => {    
         if (route.params?.addingPerson) {
             dispatch(updatePeoplePreferences({sortMethod: 'none', tagFilters: []}))
             setAddingPerson(true)
@@ -28,6 +29,7 @@ export default function PeopleScreen({ route, navigation}) {
         }
     }, [navigation]))
 
+    // ~~~~~ sorting people
     const calculateDaysUntilBirthday = (birthday) => {
         today = new Date();
         bday = new Date(birthday);
@@ -65,6 +67,7 @@ export default function PeopleScreen({ route, navigation}) {
         }
     }
 
+     // ~~~~~ adding people
     const [newName, setNewName] = useState('');
     const [addingPerson, setAddingPerson] = useState(false);
 
@@ -95,6 +98,24 @@ export default function PeopleScreen({ route, navigation}) {
         setNewName('');
         navigation.push('Profile', {id})
     }
+
+    // ~~~~~~ delete mode
+    const [isDeleting, setIsDeleting] = useState(true);
+    const [selectedPeople, setSelectedPeople] = useState([]);
+    const selectPerson = (id) => {
+        if (selectedPeople.includes(id)) {
+            setSelectedPeople(selectedPeople.filter(person => person != id));
+        }
+        else {
+            setSelectedPeople([...selectedPeople, id]);
+        }
+    }
+    const deleteSelectedPeople = () => {
+        dispatch(removePeople(selectedPeople));
+        setIsDeleting(false);
+        setSelectedPeople([]);
+    }
+
     return (
         <SafeAreaView style={styles.container}>  
             {/* <AddNameButton isDisabled={searchContent} onPress={() => setAddingPerson(true)}/> */}
@@ -110,13 +131,30 @@ export default function PeopleScreen({ route, navigation}) {
                     <Name name={newName} isInput handleNameChange={setNewName} onSubmit={() => handleAddPerson()}/>
                 }
                 {people.map((data) => (
-                    <TouchableOpacity key={data.id} onPress={() => openProfile(data.id)}>
-                        <Name name={data.name} />
+                    <TouchableOpacity 
+                        key={data.id}
+                        onPress={() => isDeleting ? selectPerson(data.id) : openProfile(data.id)}
+                        onLongPress={() => {
+                            setIsDeleting(true);
+                            selectPerson(data.id);
+                        }}
+                    >
+                        <Name name={data.name} isSelected={selectedPeople.includes(data.id)}/>
                     </TouchableOpacity>
                 ))}
             {people.length == 0 && <Text style={styles.noResultsError}>No People Found</Text>}
             </ScrollView> 
-            <DeleteFooter deleteText={`Delete 2 Contacts`} />
+            {
+            isDeleting && 
+            <DeleteFooter
+                onPress={deleteSelectedPeople}
+                deleteText={`Delete ${selectedPeople.length} Contacts`} 
+                onCancel={() => {
+                    setIsDeleting(false)
+                    setSelectedPeople([])
+                }}
+            />
+            }
         </SafeAreaView>
     )   
 }

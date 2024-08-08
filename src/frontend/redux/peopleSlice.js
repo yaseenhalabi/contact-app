@@ -7,8 +7,9 @@ export const peopleSlice = createSlice({
         addPerson: (state, action) => {
             state.unshift(action.payload);
         },
-        removePerson: (state, action) => {
-            state.people = state.people.filter(person => person.id !== action.payload);
+        removePeople: (state, action) => {
+            const idsToRemove = action.payload;
+            state.splice(0, state.length, ...state.filter(person => !idsToRemove.includes(person.id)));
         },
         updatePersonsName: (state, action) => {
             state.find(person => person.id === action.payload.id).name = action.payload.newName
@@ -33,7 +34,7 @@ export const peopleSlice = createSlice({
 
 export const {
     addPerson,
-    removePerson,
+    removePeople,
     updatePersonsName,
     updatePersonsNotes,
     updatePersonsAddress,
