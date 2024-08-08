@@ -7,7 +7,7 @@ let API_KEY;
 try {
     API_KEY = require('../../secret').API_KEY;
 } catch (error) {
-    console.error('Error: Failed to import API_KEY from secret file.');
+    API_KEY = '';
 }
 
 import { useEffect, useRef } from 'react';
