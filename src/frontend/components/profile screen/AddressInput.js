@@ -3,15 +3,14 @@ import { COLORS } from '../../utils/colors';
 import { updatePersonsAddress } from '../../redux/peopleSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { useEffect, useRef } from 'react';
+
 let API_KEY;
 try {
-    API_KEY = require('../../secret').API_KEY;
+    API_KEY = require('../../secret').default;
 } catch (error) {
     API_KEY = '';
 }
-
-import { useEffect, useRef } from 'react';
-
 export default function AddressInput({ id }) {
     const dispatch = useDispatch();
     const address = useSelector(state => state.people.find(person => person.id == id)?.address);
