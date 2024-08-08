@@ -1,25 +1,32 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { useFonts } from 'expo-font';
+import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
-import store from './redux/store';
 import { Provider } from 'react-redux';
 import { PaperProvider } from 'react-native-paper';
+import { store, persistor } from './redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
 import Tabs from './navigation/Tabs';
 
 export default function App() {
-
-  useFonts({
+  const [fontsLoaded] = Font.useFonts({
     'Trebuc': require('./assets/fonts/trebuc.ttf'),
   });
 
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <Provider store={store} testID="app-components">
-      <PaperProvider >
+      <PersistGate loading={null} persistor={persistor}>
+        <PaperProvider>
           <NavigationContainer>
-            <Tabs/>
-            <StatusBar style="light" testID="status-bar"/>
+            <Tabs />
+            <StatusBar style="light" testID="status-bar" />
           </NavigationContainer>
-      </PaperProvider>
+        </PaperProvider>
+      </PersistGate>
     </Provider>
   );
 }
