@@ -2,20 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const peopleSlice = createSlice({
     name: 'people',
-    initialState: [
-        {
-            id: '29051',
-            name: "John Sock",
-            tags: ['2', '5', '1'],
-            birthday: "1995-05-01T00:00:00.000Z",
-            address: "123 Fake Street",
-            notes: `This is a not this is more stuffthis is some more notes`,
-            xLink: "https://www.google.com",
-            instagramLink: "https://www.instagram.com",
-            images: []
-        },
-        
-    ],
+    initialState: [],
     reducers: {
         addPerson: (state, action) => {
             state.unshift(action.payload);
