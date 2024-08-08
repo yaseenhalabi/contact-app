@@ -85,7 +85,7 @@ export default function TagsScreen({ navigation, route}) {
                         />
                     ))}
                 </View>
-                {filteredTags.length == 0 && <Text style={styles.noResultsError}>No Results Found</Text>}
+                {filteredTags.length == 0 && <Text style={styles.noResultsError}>No Tags Found</Text>}
             </ScrollView>
         </SafeAreaView>
     )   

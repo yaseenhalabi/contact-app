@@ -113,7 +113,7 @@ export default function PeopleScreen({ route, navigation}) {
                         <Name name={data.name} />
                     </TouchableOpacity>
                 ))}
-            {people.length == 0 && <Text style={styles.noResultsError}>No Results Found</Text>}
+            {people.length == 0 && <Text style={styles.noResultsError}>No People Found</Text>}
             </ScrollView> 
         </SafeAreaView>
     )   
