@@ -4,10 +4,9 @@ import { updatePersonsAddress } from '../../redux/peopleSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useEffect, useRef } from 'react';
-
 let API_KEY;
 try {
-    API_KEY = require('../../secret').default;
+    API_KEY = require('../../utils/secret').default;
 } catch (error) {
     API_KEY = '';
 }

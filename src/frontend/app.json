@@ -12,6 +12,7 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
+      "bundleIdentifier": "com.contactapp.frontend",
       "supportsTablet": true
     },
     "android": {
