@@ -145,7 +145,7 @@ export default function PeopleScreen({ route, navigation}) {
                         <Name name={data.name} isSelected={selectedPeople.includes(data.id)}/>
                     </TouchableOpacity>
                 ))}
-            {people.length == 0 && <Text style={styles.noResultsError}>No People Found</Text>}
+            {people.length == 0 && !addingPerson && <Text style={styles.noResultsError}>No People Found</Text>}
             </ScrollView> 
             {
             isDeleting && 
