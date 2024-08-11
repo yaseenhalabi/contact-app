@@ -3,10 +3,11 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updatePersonsTags } from '../../redux/peopleSlice';
-import { addTag, removeTag } from '../../redux/tagsSlice';
+import { addTag } from '../../redux/tagsSlice';
 import { COLORS, TAG_COLORS } from '../../utils/colors';
 import 'react-native-get-random-values';
 import { v6 as uuidv6 } from 'uuid';
+import DeleteFooter from '../global/DeleteFooter';
 
 export default function ProfileTags({ id }) {
     const dispatch = useDispatch();
@@ -44,12 +45,11 @@ export default function ProfileTags({ id }) {
             id: uuidv6()
         });
     };
-
     const addTagToProfile = (tagId) => {
         updateCurrentTagIds([...profileTagIds, tagId]);
         setAddingTag(false);
     };
-
+    // ~~~~~~ tag search filtering
     const tagSearchData = allTags.filter(tag => tag.name.toLowerCase().includes(newTag.name.toLowerCase()) && !profileTagIds.includes(tag.id));
 
     return (

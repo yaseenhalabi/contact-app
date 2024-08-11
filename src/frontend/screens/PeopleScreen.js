@@ -100,7 +100,7 @@ export default function PeopleScreen({ route, navigation}) {
     }
 
     // ~~~~~~ delete mode
-    const [isDeleting, setIsDeleting] = useState(true);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [selectedPeople, setSelectedPeople] = useState([]);
     const selectPerson = (id) => {
         if (selectedPeople.includes(id)) {

@@ -4,7 +4,7 @@ import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { PaperProvider } from 'react-native-paper';
-import { store, persistor } from './redux/store';
+import { store, persistor } from './store';
 import { PersistGate } from 'redux-persist/integration/react';
 import Tabs from './navigation/Tabs';
 
