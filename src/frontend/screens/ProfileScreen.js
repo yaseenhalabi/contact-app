@@ -1,4 +1,4 @@
-import { View, TouchableWithoutFeedback, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, Keyboard } from 'react-native';
+import { View, ScrollView, TouchableWithoutFeedback, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, Keyboard } from 'react-native';
 import Linking from 'react-native/Libraries/Linking/Linking';
 import instagramLogo from '../assets/icons/instagramlogowhite.png';
 import backArrowIcon from '../assets/icons/backarrowicon.png';
@@ -13,12 +13,12 @@ import AddressInput from '../components/profile screen/AddressInput';
 import TitleInput from '../components/profile screen/TitleInput';
 import PhotoPicker from '../components/profile screen/PhotoPicker';
 import NotesInput from '../components/profile screen/NotesInput';
-
+import { useRef } from 'react';
 export default function ProfileScreen({ route, navigation }) {
     const ID = route.params.id;
-
     return (
         <SafeAreaView style={styles.container} testID="ProfileScreen">
+            <ScrollView>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
                     <View style={styles.section}>
@@ -34,7 +34,7 @@ export default function ProfileScreen({ route, navigation }) {
                     </View>
                     <NotesInput id={ID} />
 
-                    <PhotoPicker id={ID} />
+                    <PhotoPicker id={ID}/>
                     {/* <View style={styles.socialsContainer}>
                         {instagramLink && (
                             <TouchableOpacity onPress={() => Linking.openURL(instagramLink)}>
@@ -49,6 +49,7 @@ export default function ProfileScreen({ route, navigation }) {
                     </View> */}
                 </View>
             </TouchableWithoutFeedback>
+            </ScrollView>
         </SafeAreaView>
     );
 }
