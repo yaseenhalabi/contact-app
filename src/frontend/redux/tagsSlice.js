@@ -7,15 +7,15 @@ export const tagsSlice = createSlice({
         addTag: (state, action) => {
             state.unshift(action.payload);
         },
-        removeTag: (state, action) => {
-            state = state.filter(tag => tag.id !== action.payload);
+        removeTags: (state, action) => {
+            return state.filter(tag => !action.payload.includes(tag.id));
         }
     }
 });
 
 export const {
     addTag,
-    removeTag,
+    removeTags,
 } = tagsSlice.actions;
 
 export default tagsSlice.reducer

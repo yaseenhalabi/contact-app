@@ -4,9 +4,10 @@ import { COLORS, TAG_COLORS } from '../utils/colors.js';
 import SearchBar from '../components/global/SearchBar.js';
 import Tag from '../components/tags screen/Tag';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTag } from '../redux/tagsSlice.js';
+import { addTag, removeTags } from '../redux/tagsSlice.js';
 import 'react-native-get-random-values';
 import { v6 as uuidv6 } from 'uuid';
+import DeleteFooter from '../components/global/DeleteFooter.js';
 // Constants for tag spacing
 const NUM_COLUMNS = 2;
 const GAP_IN_BETWEEN = 10;
@@ -15,8 +16,9 @@ const TAG_BOX_HEIGHT = 70;
 
 export default function TagsScreen({ navigation, route}) {
 
+    const [isDeleting, setIsDeleting] = useState(false);
     useEffect(() => navigation.addListener('state', () => {
-        if (route.params?.addingTag) {
+        if (route.params?.addingTag && !isDeleting) {
             setAddingTag(true);
             navigation.setParams({addingTag: false})
         }
@@ -53,6 +55,39 @@ export default function TagsScreen({ navigation, route}) {
             }
         )
     }
+    // deleting tags
+    const [selectedTags, setSelectedTags] = useState([]);
+    const selectTag = (id) => {
+        if (selectedTags.includes(id)) {
+            setSelectedTags(selectedTags.filter(tag => tag != id));
+            if (selectedTags.length === 1) {
+                setIsDeleting(false);
+            }
+        }
+        else {
+            setSelectedTags([...selectedTags, id]);
+        }
+    }
+    const deleteSelectedTags = () => {
+        dispatch(removeTags(selectedTags));
+        setIsDeleting(false);
+        setSelectedTags([]);
+    }
+    const handleTagPress = (id) => {
+        if (isDeleting) {
+            selectTag(id);
+        }
+        else {
+            navigation.push('TaggedPeople', {tagId: id, tagName: allTags.find(tag => tag.id == id).name})
+        }
+    }
+    const handleTagLongPress = (id) => {
+        if (!isDeleting) {
+            setIsDeleting(true);
+            setSelectedTags([id]);
+        }
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>  
@@ -75,7 +110,9 @@ export default function TagsScreen({ navigation, route}) {
                     }
                     {filteredTags.map(tag => (
                         <Tag 
-                            onPress={() => navigation.push('TaggedPeople', {tagId: tag.id, tagName: tag.name})}
+                            onPress={() => handleTagPress(tag.id)}
+                            onLongPress={() => handleTagLongPress(tag.id)}
+                            isSelected={selectedTags.includes(tag.id)}
                             key={tag.id}
                             tagName={tag.name} 
                             color={tag.color} 
@@ -85,8 +122,19 @@ export default function TagsScreen({ navigation, route}) {
                         />
                     ))}
                 </View>
-                {filteredTags.length == 0 && <Text style={styles.noResultsError}>No Tags Found</Text>}
+                {filteredTags.length == 0 && !addingTag && <Text style={styles.noResultsError}>No Tags Found</Text>}
             </ScrollView>
+            {
+            isDeleting && 
+            <DeleteFooter
+                onPress={deleteSelectedTags}
+                deleteText={`Delete ${selectedTags.length} Contacts`} 
+                onCancel={() => {
+                    setIsDeleting(false)
+                    setSelectedTags([])
+                }}
+            />
+            }
         </SafeAreaView>
     )   
 }

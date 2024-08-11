@@ -14,6 +14,7 @@ import DeleteFooter from '../components/global/DeleteFooter';
 
 export default function PeopleScreen({ route, navigation}) {
 
+    const [isDeleting, setIsDeleting] = useState(false);
     const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState('');
     const preferences = useSelector(state => state.preferences.people) || {};
@@ -22,7 +23,7 @@ export default function PeopleScreen({ route, navigation}) {
 
     // ~~~~~~ adding people from other screens
     useEffect(() => navigation.addListener('state', () => {    
-        if (route.params?.addingPerson) {
+        if (route.params?.addingPerson && !isDeleting) {
             dispatch(updatePeoplePreferences({sortMethod: 'none', tagFilters: []}))
             setAddingPerson(true)
             navigation.setParams({addingPerson: false})
@@ -100,11 +101,13 @@ export default function PeopleScreen({ route, navigation}) {
     }
 
     // ~~~~~~ delete mode
-    const [isDeleting, setIsDeleting] = useState(false);
     const [selectedPeople, setSelectedPeople] = useState([]);
     const selectPerson = (id) => {
         if (selectedPeople.includes(id)) {
             setSelectedPeople(selectedPeople.filter(person => person != id));
+            if (selectedPeople.length === 1) {
+                setIsDeleting(false);
+            }
         }
         else {
             setSelectedPeople([...selectedPeople, id]);
