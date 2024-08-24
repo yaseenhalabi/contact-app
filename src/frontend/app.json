@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "the contact app",
+    "slug": "the contact app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,14 +12,17 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "bundleIdentifier": "com.contactapp.frontend",
+      "bundleIdentifier": "com.contactapp.thecontactapp",
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -28,15 +31,22 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/trebuc.ttf"]
+          "fonts": [
+            "./assets/fonts/trebuc.ttf"
+          ]
         }
       ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
+          "photosPermission": "The app accesses your photos to upload pictures for your contacts."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "6468c20e-1cdc-4774-bb60-4182702654b3"
+      }
+    }
   }
 }
