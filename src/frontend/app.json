@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "the contact app",
-    "slug": "thecontactapp",
+    "name": "Halabi",
+    "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icons/app-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -13,7 +13,8 @@
     },
     "ios": {
       "bundleIdentifier": "com.contactapp.thecontactapp",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
