@@ -1,54 +1,35 @@
 import { View, ScrollView, TouchableWithoutFeedback, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, Keyboard } from 'react-native';
-import Linking from 'react-native/Libraries/Linking/Linking';
-import instagramLogo from '../assets/icons/instagramlogowhite.png';
-import backArrowIcon from '../assets/icons/backarrowicon.png';
-import xLogo from '../assets/icons/xlogowhite.png';
-import { COLORS } from '../utils/colors';
-import { useSelector, useDispatch } from 'react-redux';
-import { updatePersonsNotes } from '../redux/peopleSlice';
-
 import BirthdayPicker from '../components/profile screen/BirthdayPicker';
 import ProfileTags from '../components/profile screen/ProfileTags';
 import AddressInput from '../components/profile screen/AddressInput';
 import TitleInput from '../components/profile screen/TitleInput';
 import PhotoPicker from '../components/profile screen/PhotoPicker';
 import NotesInput from '../components/profile screen/NotesInput';
-import { useRef } from 'react';
+import { COLORS } from '../utils/colors';
+import backArrowIcon from '../assets/icons/backarrowicon.png';
+
 export default function ProfileScreen({ route, navigation }) {
     const ID = route.params.id;
     return (
         <SafeAreaView style={styles.container} testID="ProfileScreen">
             <ScrollView keyboardShouldPersistTaps='handled' >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={styles.container}>
-                    <View style={styles.section}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, marginBottom: 5 }}>
-                            <TitleInput id={ID} />
-                            <TouchableOpacity onPress={() => navigation.pop()} style={{ opacity: 0.5, justifyContent: 'center', position: 'static' }}>
-                                <Image source={backArrowIcon} style={{ width: 25, height: 25 }} />
-                            </TouchableOpacity>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View style={styles.container}>
+                        <View style={styles.section}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, marginBottom: 5 }}>
+                                <TitleInput id={ID} />
+                                <TouchableOpacity onPress={() => navigation.pop()} style={{ opacity: 0.5, justifyContent: 'center', position: 'static' }}>
+                                    <Image source={backArrowIcon} style={{ width: 25, height: 25 }} />
+                                </TouchableOpacity>
+                            </View>
+                            <ProfileTags id={ID} />
+                            <BirthdayPicker id={ID} />
+                            <AddressInput id={ID} />
                         </View>
-                        <ProfileTags id={ID} />
-                        <BirthdayPicker id={ID} />
-                        <AddressInput id={ID} />
+                        <NotesInput id={ID} />
+                        <PhotoPicker id={ID}/>
                     </View>
-                    <NotesInput id={ID} />
-
-                    <PhotoPicker id={ID}/>
-                    {/* <View style={styles.socialsContainer}>
-                        {instagramLink && (
-                            <TouchableOpacity onPress={() => Linking.openURL(instagramLink)}>
-                                <Image source={instagramLogo} style={{ width: 40, height: 40 }} />
-                            </TouchableOpacity>
-                        )}
-                        {xLink && (
-                            <TouchableOpacity onPress={() => Linking.openURL(xLink)}>
-                                <Image source={xLogo} style={{ width: 40, height: 40 }} />
-                            </TouchableOpacity>
-                        )}
-                    </View> */}
-                </View>
-            </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>
             </ScrollView>
         </SafeAreaView>
     );

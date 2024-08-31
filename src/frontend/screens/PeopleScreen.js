@@ -1,61 +1,56 @@
-import { SafeAreaView, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, FlatListComponent } from 'react-native';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { v6 as uuidv6 } from 'uuid';
+import { addPerson, removePeople } from '../redux/peopleSlice';
+import { updatePeoplePreferences } from '../redux/preferencesSlice';
 import { COLORS } from '../utils/colors';
 import Name from '../components/people screen/Name';
-import { useSelector, useDispatch } from 'react-redux';
-import { addPerson, removePeople } from '../redux/peopleSlice'
-import { updatePeoplePreferences } from '../redux/preferencesSlice';
 import SearchBar from '../components/global/SearchBar';
-import { useEffect } from 'react'
-import 'react-native-get-random-values';
-import { v6 as uuidv6 } from 'uuid';
 import PeopleFilters from '../components/people screen/PeopleFilters';
 import DeleteFooter from '../components/global/DeleteFooter';
 
-export default function PeopleScreen({ route, navigation}) {
-
+export default function PeopleScreen({ route, navigation }) {
     const [isDeleting, setIsDeleting] = useState(false);
     const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState('');
     const preferences = useSelector(state => state.preferences.people) || {};
-    const peopleState = useSelector(state => state.people);    
-    let people = peopleState.filter(person => person.name.toLowerCase().includes(searchContent.toLowerCase())) || []
+    const peopleState = useSelector(state => state.people);
+    let people = peopleState.filter(person => person.name.toLowerCase().includes(searchContent.toLowerCase())) || [];
 
-    // ~~~~~~ adding people from other screens
-    useEffect(() => navigation.addListener('state', () => {    
-        if (route.params?.addingPerson && !isDeleting) {
-            dispatch(updatePeoplePreferences({sortMethod: 'none', tagFilters: []}))
-            setAddingPerson(true)
-            navigation.setParams({addingPerson: false})
-        }
-    }, [navigation]))
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('state', () => {
+            if (route.params?.addingPerson && !isDeleting) {
+                dispatch(updatePeoplePreferences({ sortMethod: 'none', tagFilters: [] }));
+                setAddingPerson(true);
+                navigation.setParams({ addingPerson: false });
+            }
+        });
 
-    // ~~~~~ sorting people
+        return unsubscribe;
+    }, [navigation]);
+
     const calculateDaysUntilBirthday = (birthday) => {
-        today = new Date();
-        bday = new Date(birthday);
+        const today = new Date();
+        const bday = new Date(birthday);
         bday.setFullYear(today.getFullYear());
-        if( today.getTime() > bday.getTime()) bday.setFullYear(bday.getFullYear()+1);
-        time_diff = bday.getTime()-today.getTime();
-        days = Math.ceil(time_diff/(1000*60*60*24));
+        if (today.getTime() > bday.getTime()) bday.setFullYear(bday.getFullYear() + 1);
+        const time_diff = bday.getTime() - today.getTime();
+        const days = Math.ceil(time_diff / (1000 * 60 * 60 * 24));
         return days;
-    }
+    };
 
-    if (preferences.sortMethod == 'alphabetical') {
+    if (preferences.sortMethod === 'alphabetical') {
         people = people.sort((a, b) => a.name.localeCompare(b.name));
-    }
-    else if (preferences.sortMethod == 'alphabetical-reverse') {
+    } else if (preferences.sortMethod === 'alphabetical-reverse') {
         people = people.sort((a, b) => b.name.localeCompare(a.name));
-    }
-    else if (preferences.sortMethod == 'birthday-soonest') {
+    } else if (preferences.sortMethod === 'birthday-soonest') {
         people = people.sort((a, b) => {
             if (a.birthday && b.birthday) {
                 return calculateDaysUntilBirthday(a.birthday) - calculateDaysUntilBirthday(b.birthday);
-            }
-            else if (a.birthday) {
+            } else if (a.birthday) {
                 return -1;
-            }
-            else if (b.birthday) {
+            } else if (b.birthday) {
                 return 1;
             }
             return 0;
@@ -68,7 +63,6 @@ export default function PeopleScreen({ route, navigation}) {
         }
     }
 
-     // ~~~~~ adding people
     const [newName, setNewName] = useState('');
     const [addingPerson, setAddingPerson] = useState(false);
 
@@ -87,79 +81,74 @@ export default function PeopleScreen({ route, navigation}) {
             notes: '',
             xLink: '',
             instagramLink: '',
-        }
+        };
         dispatch(addPerson(newBlankPerson));
         setAddingPerson(false);
         setNewName('');
-        navigation.push('Profile', {id: newID})
-    }
+        navigation.push('Profile', { id: newID });
+    };
 
     const openProfile = (id) => {
         setAddingPerson(false);
         setNewName('');
-        navigation.push('Profile', {id})
-    }
+        navigation.push('Profile', { id });
+    };
 
-    // ~~~~~~ delete mode
     const [selectedPeople, setSelectedPeople] = useState([]);
+
     const selectPerson = (id) => {
         if (selectedPeople.includes(id)) {
-            setSelectedPeople(selectedPeople.filter(person => person != id));
+            setSelectedPeople(selectedPeople.filter(person => person !== id));
             if (selectedPeople.length === 1) {
                 setIsDeleting(false);
             }
-        }
-        else {
+        } else {
             setSelectedPeople([...selectedPeople, id]);
         }
-    }
+    };
+
     const deleteSelectedPeople = () => {
         dispatch(removePeople(selectedPeople));
         setIsDeleting(false);
         setSelectedPeople([]);
-    }
+    };
 
     return (
-        <SafeAreaView style={styles.container}>  
-            {/* <AddNameButton isDisabled={searchContent} onPress={() => setAddingPerson(true)}/> */}
-            <SearchBar 
+        <SafeAreaView style={styles.container}>
+            <SearchBar
                 searchContent={searchContent}
                 setSearchContent={setSearchContent}
                 filterModalComponent={<PeopleFilters />}
                 showFilter
             />
             <ScrollView>
-                {
-                    addingPerson &&
-                    <Name name={newName} isInput handleNameChange={setNewName} onSubmit={() => handleAddPerson()}/>
-                }
+                {addingPerson && <Name name={newName} isInput handleNameChange={setNewName} onSubmit={handleAddPerson} />}
                 {people.map((data) => (
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         key={data.id}
-                        onPress={() => isDeleting ? selectPerson(data.id) : openProfile(data.id)}
+                        onPress={() => (isDeleting ? selectPerson(data.id) : openProfile(data.id))}
                         onLongPress={() => {
                             setIsDeleting(true);
                             selectPerson(data.id);
                         }}
                     >
-                        <Name name={data.name} isSelected={selectedPeople.includes(data.id)}/>
+                        <Name name={data.name} isSelected={selectedPeople.includes(data.id)} />
                     </TouchableOpacity>
                 ))}
-            {people.length == 0 && !addingPerson && <Text style={styles.noResultsError}>No People Found</Text>}
-            </ScrollView> 
-            {
-            isDeleting && 
-            <DeleteFooter
-                onPress={deleteSelectedPeople}
-                deleteText={`Delete ${selectedPeople.length} Contacts`} 
-                onCancel={() => {
-                    setIsDeleting(false)
-                    setSelectedPeople([])
-                }}
-            />
-            }
+                {people.length === 0 && !addingPerson && <Text style={styles.noResultsError}>No People Found</Text>}
+            </ScrollView>
+            {isDeleting && (
+                <DeleteFooter
+                    onPress={deleteSelectedPeople}
+                    deleteText={`Delete ${selectedPeople.length} Contacts`}
+                    onCancel={() => {
+                        setIsDeleting(false);
+                        setSelectedPeople([]);
+                    }}
+                />
+            )}
         </SafeAreaView>
-    )   
+    );
 }
 
 const { width } = Dimensions.get('window');
@@ -173,7 +162,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.secondary,
         flexDirection: 'row',
         borderColor: '#ffffff51',
-        borderBottomWidth: .2,
+        borderBottomWidth: 0.2,
         paddingHorizontal: 15,
         paddingVertical: 10,
         columnGap: 10,
@@ -182,7 +171,7 @@ const styles = StyleSheet.create({
         color: COLORS.off_white,
         fontFamily: 'Trebuc',
         fontSize: 20,
-        opacity: .7,
+        opacity: 0.7,
         width: width - 93,
     },
     searchImage: {
@@ -190,7 +179,7 @@ const styles = StyleSheet.create({
         height: 20,
         alignContent: 'center',
         alignItems: 'center',
-        opacity: .7,
+        opacity: 0.7,
     },
     noResultsError: {
         color: COLORS.placeholder,
@@ -198,9 +187,5 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginTop: 10,
         textAlign: 'center',
-    }
+    },
 });
-
-
-
-

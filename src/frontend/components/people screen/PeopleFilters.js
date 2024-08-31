@@ -1,85 +1,84 @@
-import { View, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity, Image, Modal, Touchable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../utils/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePeoplePreferences } from '../../redux/preferencesSlice';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import AutofillTextInput from './AutofillTextInput';
 
 export default function PeopleFilters() {
     const dispatch = useDispatch();
     const tagSuggestions = useSelector(state => state.tags);
-    const preferences = useSelector(state => state.preferences.people);
+    const { sortMethod, tagFilters } = useSelector(state => state.preferences.people);
     const updatePreferences = (newPeoplePreferences) => dispatch(updatePeoplePreferences(newPeoplePreferences));
-    const [selectedSortBy, setSelectedSortBy] = useState(preferences.sortMethod || 'none');
+    const [selectedSortBy, setSelectedSortBy] = useState(sortMethod || 'none');
     const sortByOptions = [
-        {name: 'None', value: 'none'},
-        {name: 'A-Z', value: 'alphabetical'},
-        {name: 'Z-A', value: 'alphabetical-reverse'},
-        {name: 'Soonest Birthday', value: 'birthday-soonest'},
-    ] 
+        { name: 'None', value: 'none' },
+        { name: 'A-Z', value: 'alphabetical' },
+        { name: 'Z-A', value: 'alphabetical-reverse' },
+        { name: 'Soonest Birthday', value: 'birthday-soonest' },
+    ];
     const updateSortBy = (newSortBy) => {
         setSelectedSortBy(newSortBy);
-        updatePreferences({...preferences, sortMethod: newSortBy});
-    }
+        updatePreferences({ ...preferences, sortMethod: newSortBy });
+    };
     const handleReturn = (suggestion) => {
-        const tag = tagSuggestions.find(s => s.name.toLowerCase() == suggestion.toLowerCase());
-        if (!tag) return
+        const tag = tagSuggestions.find(s => s.name.toLowerCase() === suggestion.toLowerCase());
+        if (!tag) return;
         if (preferences.tagFilters.map(tag => tag.id).includes(tag.id)) return;
-        updatePreferences({...preferences, tagFilters: [...preferences.tagFilters, tag]});
-    }
+        updatePreferences({ ...preferences, tagFilters: [...preferences.tagFilters, tag] });
+    };
 
     const resetFilters = () => {
         setSelectedSortBy('none');
-        updatePreferences({sortMethod: 'none', tagFilters: []});
-    }
+        updatePreferences({ sortMethod: 'none', tagFilters: [] });
+    };
+    
     return (
         <View style={styles.container}>
-            <TouchableOpacity 
+            <TouchableOpacity
                 style={styles.resetFiltersContainer}
                 onPress={resetFilters}
-                hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
                 <Text style={styles.resetFiltersText}>Reset Filters</Text>
             </TouchableOpacity>
             <View style={styles.sortByContainer}>
                 <Text style={styles.text}>Sort By:</Text>
-                { sortByOptions.map(option => (
-                    <TouchableOpacity 
-                        onPress={() => updateSortBy(option.value)} 
-                        key={option.value} 
-                        style={{...styles.sortByItemContainer, opacity: selectedSortBy == option.value ? 1 : .6}}
+                {sortByOptions.map(option => (
+                    <TouchableOpacity
+                        onPress={() => updateSortBy(option.value)}
+                        key={option.value}
+                        style={{ ...styles.sortByItemContainer, opacity: selectedSortBy === option.value ? 1 : .6 }}
                     >
                         <Text style={styles.text}>{option.name}</Text>
                     </TouchableOpacity>
-                ))
-                }
+                ))}
             </View>
             <View style={styles.sortByTagContainer}>
                 <Text style={styles.text}>Has Tag(s):</Text>
                 <View style={styles.sortByTagInputContainer}>
-                    <AutofillTextInput suggestions={tagSuggestions} onEndEditing={(tagId) => handleReturn(tagId)} />
+                    <AutofillTextInput suggestions={tagSuggestions} onEndEditing={handleReturn} />
                 </View>
             </View>
-            {
-            preferences.tagFilters.length > 0 &&
-            <View>
-            <View style={styles.tagContainer}>
-                {preferences.tagFilters.map(tag => (
-                    <View key={tag.id} style={{...styles.tag, backgroundColor: tag.color}}>
-                        <Text style={styles.tagText}>{tag.name}</Text>
+            {tagFilters.length > 0 && (
+                <View>
+                    <View style={styles.tagContainer}>
+                        {tagFilters.map(tag => (
+                            <View key={tag.id} style={{ ...styles.tag, backgroundColor: tag.color }}>
+                                <Text style={styles.tagText}>{tag.name}</Text>
+                            </View>
+                        ))}
                     </View>
-                ))}
-            </View>
-            <TouchableOpacity 
-                style={styles.clearTagsContainer}
-                onPress={() => updatePreferences({...preferences, tagFilters: []})}
-            >
-                <Text style={styles.clearTagsText}>Clear Tags</Text>
-            </TouchableOpacity>
-            </View>
-            }
+                    <TouchableOpacity
+                        style={styles.clearTagsContainer}
+                        onPress={() => updatePreferences({ ...preferences, tagFilters: [] })}
+                    >
+                        <Text style={styles.clearTagsText}>Clear Tags</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
         marginTop: 2,
     },
     clearTagsText: {
-        opacity: .6,
+        opacity: 0.6,
         color: COLORS.off_white,
         fontFamily: 'Trebuc',
         fontSize: 10,
@@ -165,8 +164,5 @@ const styles = StyleSheet.create({
         color: COLORS.off_white,
         fontFamily: 'Trebuc',
         fontSize: 10,
-    }
-    
-
-    
+    },
 });

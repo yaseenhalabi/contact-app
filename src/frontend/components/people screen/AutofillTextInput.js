@@ -1,30 +1,30 @@
 import { View, Text, StyleSheet, TextInput, Image } from 'react-native';
 import { COLORS } from '../../utils/colors';
-import { updatePeoplePreferences } from '../../redux/preferencesSlice';
 import { useState } from 'react';
 import searchIcon from '../../assets/icons/searchicon.png';
 
 export default function AutofillTextInput({ suggestions, onEndEditing }) {
     const [input, setInput] = useState('');
     const [suggestion, setSuggestion] = useState('');
+
     const handleChange = (text) => {
         const suggested_tag = suggestions.find(s => s.name.toLowerCase().startsWith(text.toLowerCase()));
         if (suggested_tag && text.length > 0) {
-            setSuggestion(suggested_tag.name)
+            setSuggestion(suggested_tag.name);
             setInput(text);
         } else {
-        setSuggestion('')
-      }
-      setInput(text)
+            setSuggestion('');
+        }
+        setInput(text);
     };
-    const handleEndEditing = (x) => {
+
+    const handleEndEditing = () => {
         if (suggestion.length > 0) {
             onEndEditing(suggestion);
         }
         setSuggestion('');
         setInput('');
-        
-    }
+    };
 
     return (
         <View style={styles.sortByTagInputContainer}>
@@ -34,7 +34,7 @@ export default function AutofillTextInput({ suggestions, onEndEditing }) {
                 onChangeText={handleChange} 
                 style={styles.sortByTagInput}
                 placeholder="Tag Name"
-                placeholderTextColor={"#ffffff69"}
+                placeholderTextColor="#ffffff69"
                 autoCapitalize='none'
                 autoComplete='off'
                 autoCorrect={false}
@@ -43,11 +43,11 @@ export default function AutofillTextInput({ suggestions, onEndEditing }) {
             {input.length < 14 && suggestion.length > 0 &&
             <View style={styles.autofillTextContainer}>
                 <Text style={styles.text}>{input}</Text>
-                <Text style={{...styles.text, color: COLORS.placeholder}}>{suggestion.substring(input.length)}</Text>
+                <Text style={{ ...styles.text, color: COLORS.placeholder }}>{suggestion.substring(input.length)}</Text>
             </View>
             }
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -85,6 +85,5 @@ const styles = StyleSheet.create({
         maxWidth: 120,
         overflow: 'hidden',
         textOverflow: 'ellipsis',
-        
     },
 });

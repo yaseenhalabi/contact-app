@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const tagsSlice = createSlice({
+const tagsSlice = createSlice({
     name: 'tags',
     initialState: [],
     reducers: {
@@ -13,10 +13,6 @@ export const tagsSlice = createSlice({
     }
 });
 
-export const {
-    addTag,
-    removeTags,
-} = tagsSlice.actions;
+export const { addTag, removeTags } = tagsSlice.actions;
 
-export default tagsSlice.reducer
-
+export default tagsSlice.reducer;

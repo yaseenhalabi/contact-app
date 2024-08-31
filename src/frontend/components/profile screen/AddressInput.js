@@ -1,38 +1,33 @@
+import React, { useEffect, useRef } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { COLORS } from '../../utils/colors';
-import { updatePersonsAddress } from '../../redux/peopleSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { useEffect, useRef } from 'react';
-let API_KEY;
-try {
-    API_KEY = require('../../utils/secret').default;
-} catch (error) {
-    API_KEY = '';
-}
+import { updatePersonsAddress } from '../../redux/peopleSlice';
+import { COLORS } from '../../utils/colors';
+import secret from '../../utils/secret';
+
 export default function AddressInput({ id }) {
     const dispatch = useDispatch();
-    const address = useSelector(state => state.people.find(person => person.id == id)?.address);
-    const updateAddress = (newAddress) => dispatch(updatePersonsAddress({id, newAddress}));
+    const address = useSelector(state => state.people.find(person => person.id === id)?.address);
+    const updateAddress = (newAddress) => dispatch(updatePersonsAddress({ id, newAddress }));
     const ref = useRef();
 
     useEffect(() => {
         ref.current?.setAddressText(address);
-    }, []);
+    }, [address]);
+
     return (
         <View style={styles.addressContainer}>
-            <Text style={{...styles.mediumText, marginBottom: 5, fontWeight: '600'}}>Address: </Text>
+            <Text style={{ ...styles.mediumText, marginBottom: 5, fontWeight: '600' }}>Address: </Text>
             <GooglePlacesAutocomplete
-                // currentLocation
                 disableScroll={true}
                 ref={ref}
-
                 onPress={(data) => {
                     updateAddress(data.description);
                 }}
                 enablePoweredByContainer={false}
                 query={{
-                    key: API_KEY,
+                    key: secret.API_KEY,
                     language: 'en',
                 }}
                 styles={{
@@ -42,13 +37,11 @@ export default function AddressInput({ id }) {
                         top: 40,
                     },
                 }}
-                textInputProps={
-                    {
-                        defaultValue: address,
-                        placeholder: 'Enter Address...',
-                        placeholderTextColor: COLORS.placeholder,
-                    }
-                }
+                textInputProps={{
+                    defaultValue: address,
+                    placeholder: 'Enter Address...',
+                    placeholderTextColor: COLORS.placeholder,
+                }}
             />
         </View>
     );
@@ -62,10 +55,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'relative'
     },
-
     textInput: {
         color: COLORS.off_white,
-        fontFamily: 'trebuc',
+        fontFamily: 'trebuchet',
         fontSize: 14,
         backgroundColor: COLORS.secondary,
         padding: 5,
@@ -74,7 +66,7 @@ const styles = StyleSheet.create({
     },
     mediumText: {
         color: COLORS.off_white,
-        fontFamily: 'trebuc',
+        fontFamily: 'trebuchet',
         fontSize: 14,
     },
 });

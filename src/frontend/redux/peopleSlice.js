@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const peopleSlice = createSlice({
+const peopleSlice = createSlice({
     name: 'people',
     initialState: [],
     reducers: {
@@ -12,22 +12,40 @@ export const peopleSlice = createSlice({
             state.splice(0, state.length, ...state.filter(person => !idsToRemove.includes(person.id)));
         },
         updatePersonsName: (state, action) => {
-            state.find(person => person.id === action.payload.id).name = action.payload.newName
+            const person = state.find(person => person.id === action.payload.id);
+            if (person) {
+                person.name = action.payload.newName;
+            }
         },
         updatePersonsNotes: (state, action) => {
-            state.find(person => person.id === action.payload.id).notes = action.payload.newNotes
+            const person = state.find(person => person.id === action.payload.id);
+            if (person) {
+                person.notes = action.payload.newNotes;
+            }
         },
         updatePersonsAddress: (state, action) => {
-            state.find(person => person.id === action.payload.id).address = action.payload.newAddress
+            const person = state.find(person => person.id === action.payload.id);
+            if (person) {
+                person.address = action.payload.newAddress;
+            }
         },
         updatePersonsBirthday: (state, action) => {
-            state.find(person => person.id === action.payload.id).birthday = action.payload.newBirthday
+            const person = state.find(person => person.id === action.payload.id);
+            if (person) {
+                person.birthday = action.payload.newBirthday;
+            }
         },
         updatePersonsTags: (state, action) => {
-            state.find(person => person.id === action.payload.id).tags = action.payload.newIds
+            const person = state.find(person => person.id === action.payload.id);
+            if (person) {
+                person.tags = action.payload.newIds;
+            }
         },
         updatePersonsImages: (state, action) => {
-            state.find(person => person.id === action.payload.id).images = action.payload.newImages
+            const person = state.find(person => person.id === action.payload.id);
+            if (person) {
+                person.images = action.payload.newImages;
+            }
         }
     },
 });
@@ -43,5 +61,4 @@ export const {
     updatePersonsImages
 } = peopleSlice.actions;
 
-export default peopleSlice.reducer
-
+export default peopleSlice.reducer;

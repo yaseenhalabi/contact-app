@@ -1,30 +1,30 @@
+import React, { useState } from 'react';
 import { Modal, TouchableOpacity, View, StyleSheet, Text, Image, TextInput, Dimensions } from 'react-native';
-import { useState } from 'react';
 import { COLORS } from '../../utils/colors';
 import searchIcon from '../../assets/icons/searchicon.png';
 import filterIcon from '../../assets/icons/filtericon.png';
 
-export default function SearchBar({ searchContent, setSearchContent, filterModalComponent, showFilter }){
+export default function SearchBar({ searchContent, setSearchContent, filterModalComponent, showFilter }) {
     const [filterModalOn, setFilterModalOn] = useState(false);
+
     return (
         <View style={styles.searchContainer}>
-            <Image source={searchIcon} style={styles.searchImage}/>
-            <TextInput 
+            <Image source={searchIcon} style={styles.searchImage} />
+            <TextInput
                 autoCapitalize='none'
                 autoComplete='off'
                 autoCorrect={false}
-                style={styles.searchInput} 
-                placeholder="Search..." 
-                placeholderTextColor={styles.searchInput.color} 
-                value={searchContent} 
-                onChangeText={setSearchContent} 
+                style={styles.searchInput}
+                placeholder="Search..."
+                placeholderTextColor={COLORS.off_white}
+                value={searchContent}
+                onChangeText={setSearchContent}
             />
-            {
-            showFilter &&
-            <TouchableOpacity onPress={() => setFilterModalOn(true)}>
-                <Image source={filterIcon} style={styles.searchImage}/>
-            </TouchableOpacity>
-            }
+            {showFilter && (
+                <TouchableOpacity onPress={() => setFilterModalOn(true)}>
+                    <Image source={filterIcon} style={styles.searchImage} />
+                </TouchableOpacity>
+            )}
             <Modal transparent={true} visible={filterModalOn && showFilter}>
                 <View style={styles.filterModalContainer}>
                     <View style={styles.filterModal}>
@@ -33,22 +33,15 @@ export default function SearchBar({ searchContent, setSearchContent, filterModal
                         </TouchableOpacity>
                         {filterModalComponent}
                     </View>
-                </View>          
+                </View>
             </Modal>
-        </View> 
-    )
+        </View>
+    );
 }
 
 const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-    modalContainer: {
-        backgroundColor: '#000000aa',
-        flex: 1,
-        height: 200,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     searchContainer: {
         backgroundColor: COLORS.secondary,
         flexDirection: 'row',
@@ -63,7 +56,7 @@ const styles = StyleSheet.create({
         color: COLORS.off_white,
         fontFamily: 'Trebuc',
         fontSize: 18,
-        opacity: .7,
+        opacity: 0.7,
         width: width - 105,
     },
     searchImage: {
@@ -71,7 +64,7 @@ const styles = StyleSheet.create({
         height: 17,
         alignContent: 'center',
         alignItems: 'center',
-        opacity: .7,
+        opacity: 0.7,
         top: 3,
     },
     filterModalContainer: {
@@ -102,9 +95,5 @@ const styles = StyleSheet.create({
         color: COLORS.off_white,
         fontSize: 20,
         fontWeight: 'bold',
-    }
+    },
 });
-
-
-
-

@@ -1,32 +1,33 @@
+import React, { useRef } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { useRef } from 'react';
 import { updatePersonsNotes } from '../../redux/peopleSlice';
 import { COLORS } from '../../utils/colors';
 
 export default function NotesInput({ id }) {
     const dispatch = useDispatch();
-    const notes = useSelector(state => state.people.find(person => person.id == id)?.notes) || "";
-    const updateNotes = (newNotes) => dispatch(updatePersonsNotes({id, newNotes}));
-    const notesInput = useRef(null);
+    const notes = useSelector(state => state.people.find(person => person.id === id)?.notes) || "";
+    const updateNotes = (newNotes) => dispatch(updatePersonsNotes({ id, newNotes }));
+    const notesInputRef = useRef(null);
+
     const handleBoxPress = () => {
-        notesInput.current.focus();
+        notesInputRef.current.focus();
     }
 
     return (
         <TouchableWithoutFeedback onPress={handleBoxPress}>
             <View style={styles.notesContainer}>
                 <Text style={styles.subTitle}>Notes</Text>
-                <TextInput 
-                    ref={notesInput}
-                    style={[styles.mediumText, { maxHeight: 150}]}
+                <TextInput
+                    ref={notesInputRef}
+                    style={[styles.mediumText, { maxHeight: 150 }]}
                     placeholder='Enter Notes Here...'
                     placeholderTextColor={COLORS.placeholder}
                     multiline={true}
                     value={notes}
                     onChangeText={updateNotes}
                 />
-            </View> 
+            </View>
         </TouchableWithoutFeedback>
     )
 }
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     notesContainer: {
         paddingHorizontal: 20,
         paddingVertical: 15,
-        backgroundColor: COLORS.secondary, 
+        backgroundColor: COLORS.secondary,
         zIndex: -1,
         height: 200,
     },
@@ -50,4 +51,4 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         fontWeight: '600',
     },
-})
+});

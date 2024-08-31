@@ -1,8 +1,11 @@
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ProfileScreen from '../screens/ProfileScreen'; 
 import PeopleScreen from '../screens/PeopleScreen';
+
 const Stack = createNativeStackNavigator();
-export default function StackNavigatorInPeopleScreen({navigation, route}) {
+
+export default function StackNavigatorInPeopleScreen({ navigation, route }) {
     return (
         <Stack.Navigator 
             screenOptions={{
@@ -10,8 +13,8 @@ export default function StackNavigatorInPeopleScreen({navigation, route}) {
                 fullScreenGestureEnabled: true,
             }}
         >
-            <Stack.Screen name="ListOfNames" component={PeopleScreen} params={route.params}/>
+            <Stack.Screen name="ListOfNames" component={PeopleScreen} initialParams={route.params} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
         </Stack.Navigator>
-    )
+    );
 }

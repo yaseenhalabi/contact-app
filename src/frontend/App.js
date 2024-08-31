@@ -16,8 +16,6 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
-  // persistor.purge();
-
 
   return (
     <Provider store={store} testID="app-components">
