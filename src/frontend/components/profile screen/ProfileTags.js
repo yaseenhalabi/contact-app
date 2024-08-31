@@ -57,7 +57,6 @@ export default function ProfileTags({ id }) {
     const [deletingTags, setDeletingTags] = useState(false);
     const [tagsToDelete, setTagsToDelete] = useState([]);
     const deleteTag = (tagId) => {
-        console.log("deleting tag", tagId);
         if (tagsToDelete.includes(tagId)) {
             setTagsToDelete(tagsToDelete.filter(id => id != tagId));
         }
@@ -75,7 +74,6 @@ export default function ProfileTags({ id }) {
         deleteTag(id);
     }
     const cancelDelete = () => {
-        console.log("cancel delete");
         setDeletingTags(false);
         setTagsToDelete([]);
     }
@@ -106,7 +104,10 @@ export default function ProfileTags({ id }) {
                     <View style={[styles.tag, { backgroundColor: '#0000003b', borderRadius: 0 }]}>
                         <TextInput 
                             style={styles.smallText}
+                            autoCapitalize='words'
+                            autoCorrect={false}
                             onChangeText={(value) => setNewTag({...newTag, name: value})}
+                            value={newTag.name}
                             autoFocus={true}
                             onEndEditing={() => confirmNewTag()}
                             maxLength={30}

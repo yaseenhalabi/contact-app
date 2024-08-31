@@ -64,7 +64,7 @@ export default function PeopleScreen({ route, navigation}) {
 
     if (preferences.tagFilters) {
         for (let tag of preferences.tagFilters) {
-            people = people.filter(person => person.tags.includes(tag));
+            people = people.filter(person => person.tags.includes(tag.id));
         }
     }
 

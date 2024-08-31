@@ -18,7 +18,7 @@ export default function ProfileScreen({ route, navigation }) {
     const ID = route.params.id;
     return (
         <SafeAreaView style={styles.container} testID="ProfileScreen">
-            <ScrollView keyboardShouldPersistTaps='handled'>
+            <ScrollView keyboardShouldPersistTaps='handled' >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
                     <View style={styles.section}>

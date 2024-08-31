@@ -15,6 +15,7 @@ export const preferencesSlice = createSlice({
     reducers: {
         updatePeoplePreferences: (state, action) => {
             state.people = action.payload;
+            console.log(state.people.tagFilters);
         },
         updateTagPreferences: (state, action) => {
             state.tags = action.payload;

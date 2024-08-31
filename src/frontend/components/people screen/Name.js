@@ -6,6 +6,7 @@ export default function Name({ name, isInput, handleNameChange, onSubmit, isSele
             {
                 isInput ?
                 <TextInput
+                    onBlur={onSubmit}
                     style={styles.text}
                     value={name}
                     autoComplete='off'

@@ -23,6 +23,8 @@ export default function AddressInput({ id }) {
         <View style={styles.addressContainer}>
             <Text style={{...styles.mediumText, marginBottom: 5, fontWeight: '600'}}>Address: </Text>
             <GooglePlacesAutocomplete
+                // currentLocation
+                disableScroll={true}
                 ref={ref}
 
                 onPress={(data) => {

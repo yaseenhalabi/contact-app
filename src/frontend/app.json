@@ -14,7 +14,7 @@
     "ios": {
       "bundleIdentifier": "com.contactapp.thecontactapp",
       "supportsTablet": true,
-      "buildNumber": "2"
+      "buildNumber": "4"
     },
     "android": {
       "adaptiveIcon": {
