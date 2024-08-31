@@ -2,7 +2,7 @@
   "expo": {
     "name": "Halabi",
     "slug": "frontend",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icons/app-icon.png",
     "userInterfaceStyle": "light",
@@ -14,7 +14,7 @@
     "ios": {
       "bundleIdentifier": "com.contactapp.thecontactapp",
       "supportsTablet": true,
-      "buildNumber": "4"
+      "buildNumber": "7"
     },
     "android": {
       "adaptiveIcon": {
